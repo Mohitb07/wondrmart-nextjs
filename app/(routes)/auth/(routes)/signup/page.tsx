@@ -1,5 +1,3 @@
-"use client";
-
 import SignUpBody from "../components/SignUpBody";
 
 export const metadata = {

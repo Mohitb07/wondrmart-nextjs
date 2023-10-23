@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 
 import { Button, Input, Link } from "@nextui-org/react";

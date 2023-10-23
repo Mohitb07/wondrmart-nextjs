@@ -1,5 +1,3 @@
-"use client";
-
 import SignInBody from "../components/SignInBody";
 
 export const metadata = {

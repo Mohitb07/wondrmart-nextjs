@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { Button, Input, Link } from "@nextui-org/react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/SVG";
 import NextLink from "next/link";
@@ -64,9 +63,17 @@ export default function SignUpBody() {
 
   return (
     <>
-      <form method="post" onSubmit={formik.handleSubmit}>
+      <form
+        className="space-y-5 md:space-y-4"
+        noValidate
+        method="post"
+        onSubmit={formik.handleSubmit}
+      >
         <Input
-          isInvalid={false}
+          isInvalid={
+            (isError && Boolean(error.response?.data.message.username)) ||
+            (formik.touched.username && Boolean(formik.errors.username))
+          }
           isRequired
           value={formik.values.username}
           onChange={formik.handleChange}
@@ -85,7 +92,10 @@ export default function SignUpBody() {
         />
         <Input
           isRequired
-          isInvalid={false}
+          isInvalid={
+            (isError && Boolean(error.response?.data.message.email)) ||
+            (formik.touched.email && Boolean(formik.errors.email))
+          }
           onChange={handleChange}
           variant="bordered"
           type="email"
@@ -101,8 +111,11 @@ export default function SignUpBody() {
           }}
         />
         <Input
-          isInvalid={false}
           isRequired
+          isInvalid={
+            (isError && Boolean(error.response?.data.message.phone)) ||
+            (formik.touched.phone && Boolean(formik.errors.phone))
+          }
           onChange={formik.handleChange}
           variant="bordered"
           type="tel"
@@ -118,8 +131,11 @@ export default function SignUpBody() {
           }}
         />
         <Input
-          isInvalid={false}
           isRequired
+          isInvalid={
+            (isError && Boolean(error.response?.data.message.address)) ||
+            (formik.touched.address && Boolean(formik.errors.address))
+          }
           onChange={formik.handleChange}
           variant="bordered"
           type="tel"
@@ -135,8 +151,11 @@ export default function SignUpBody() {
           }}
         />
         <Input
-          isInvalid={false}
           isRequired
+          isInvalid={
+            (isError && Boolean(error.response?.data.message.password)) ||
+            (formik.touched.password && Boolean(formik.errors.password))
+          }
           onChange={formik.handleChange}
           name="password"
           label="Password"
@@ -162,7 +181,7 @@ export default function SignUpBody() {
           type={isPasswordVisible ? "text" : "password"}
         />
         <Input
-          isInvalid={false}
+          isInvalid={formik.touched.confirmPassword && Boolean(formik.errors.password)}
           onChange={formik.handleChange}
           isRequired
           label="Confirm Password"

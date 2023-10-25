@@ -56,7 +56,6 @@ export type Product = {
     phone: string;
     address: string;
     password: string;
-    confirmPassword: string;
     [key: string]: string;
   };
   

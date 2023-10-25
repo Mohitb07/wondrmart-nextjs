@@ -28,7 +28,7 @@ const useRegister = () => {
     onSuccess: (data: UserData) => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
       console.log('data', data)
-    //   window.location.href = "/";
+      window.location.href = "/";
     },
   });
 };

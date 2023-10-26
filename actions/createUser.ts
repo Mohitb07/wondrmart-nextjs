@@ -5,9 +5,17 @@ export const createUser = async (body: SignUpFormData): Promise<UserData> => {
   const formData = new FormData();
   Object.keys(body).forEach((key) => formData.append(key, body[key]));
 
-  const res = await axios.post(`/auth/signup/api/register`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  
-  return res.data;
+  try {
+    const res = await axios.post(`/auth/signup/api/register`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log("create user", res.data);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("create user error", error.response);
+      throw error;
+    }
+    throw error;
+  }
 };

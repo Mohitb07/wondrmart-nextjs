@@ -4,6 +4,7 @@ import { ReactQueryProvider } from "@/providers/ReactQuery";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
+import { AuthUserProvider } from "@/context/authUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryProvider>
           <UIProvider>
-            <Navbar />
-            {children}
+            <AuthUserProvider>
+              <Navbar />
+              {children}
+            </AuthUserProvider>
           </UIProvider>
         </ReactQueryProvider>
       </body>

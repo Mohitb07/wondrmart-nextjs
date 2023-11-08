@@ -1,5 +1,4 @@
-import axios, { AxiosError } from "axios";
-import { BASE_URL } from "@/api";
+import axios from "axios";
 import { SignUpFormData } from "@/types";
 
 export async function POST(request: Request) {
@@ -13,7 +12,7 @@ export async function POST(request: Request) {
   };
 
   try {
-    const res = await axios.post(`${BASE_URL}/register`, body, {
+    const res = await axios.post(`${process.env.BASE_URL}/register`, body, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -22,7 +21,7 @@ export async function POST(request: Request) {
       throw new Error("Access token not found in response");
     }
 
-    const cookie = `accessToken=${accessToken}; Path=/; HttpOnly; SameSite=Strict`;
+    const cookie = `accessToken=${accessToken}; Path=/; SameSite=Strict`;
     return new Response(JSON.stringify(res.data), {
       headers: {
         "Set-Cookie": cookie,

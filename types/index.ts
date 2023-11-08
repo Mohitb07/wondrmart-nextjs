@@ -58,6 +58,12 @@ export type Product = {
     password: string;
     [key: string]: string;
   };
+
+  export type SignInFormData = {
+    email: string;
+    password: string;
+    [key: string]: string;
+  };
   
   export type User = {
     address: string;

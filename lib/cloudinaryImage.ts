@@ -12,7 +12,7 @@ export const cloudinaryImage = ({
   width: number;
 }) => {
   const image = new CloudinaryImage(imageUrl, {
-    cloudName: process.env.CLOUDINARY_NAME,
+    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
   })
     .resize(fit().width(width).height(height))
     .roundCorners(byRadius(20))

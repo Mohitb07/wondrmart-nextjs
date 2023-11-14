@@ -23,12 +23,29 @@ import NextLink from "next/link";
 
 import { AcmeLogo } from "./Logo";
 import { useAuthUser } from "@/hooks/useAuthUser";
+import { useLogOut } from "@/hooks/useLogout";
+import { usePathname } from "next/navigation";
 
 export default function StyledNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { logOut } = useLogOut();
   const { user, isLoading } = useAuthUser();
+  const pathname = usePathname();
 
-  const menuItems = ["Profile", "Cart", "Orders", "Log Out"];
+  const menuItems = [
+    {
+      name: "Products",
+      href: "/",
+    },
+    {
+      name: "Categories",
+      href: "/categories",
+    },
+    {
+      name: "Top Sellers",
+      href: "/topseller",
+    },
+  ];
 
   let authStateContent = null;
 
@@ -58,10 +75,27 @@ export default function StyledNavbar() {
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">{user.email}</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem key="profile">
+              <Link className="w-full" color="foreground" href="/user/123">
+                Profile
+              </Link>
+            </DropdownItem>
+            <DropdownItem key="cart">
+              <Link className="w-full" color="foreground" href="/cart">
+                Cart
+              </Link>
+            </DropdownItem>
+            <DropdownItem key="orders">
+              <Link className="w-full" color="foreground" href="/orders">
+                Orders
+              </Link>
+            </DropdownItem>
+            <DropdownItem
+              className="w-full"
+              onClick={logOut}
+              key="logout"
+              color="danger"
+            >
               Log Out
             </DropdownItem>
           </DropdownMenu>
@@ -110,39 +144,28 @@ export default function StyledNavbar() {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Products
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Orders
-          </Link>
-        </NavbarItem>
+        {menuItems.map((item, index) => (
+          <NavbarItem isActive={pathname === item.href} key={`${item.name}-${index}`}>
+            <Link
+              color={pathname === item.href ? "primary" : "foreground"}
+              href={item.href}
+            >
+              {item.name}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
       {authStateContent}
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+          <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
+              color={pathname === item.href ? "primary" : "foreground"}
               className="w-full"
-              href="#"
+              href={item.href}
               size="lg"
             >
-              {item}
+              {item.name}
             </Link>
           </NavbarMenuItem>
         ))}

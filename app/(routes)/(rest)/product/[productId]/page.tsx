@@ -1,4 +1,9 @@
+import Container from "@/common/Container";
 import React from "react";
+import ImageGallery from "./components/ImageGallery";
+import CTA from "./components/CTA";
+import ProductDetailSection from "./components/ProductDetail";
+import CardCTA from "./components/CTA/Card";
 
 type ProductDetailProps = {};
 
@@ -8,6 +13,23 @@ export const metadata = {
 };
 
 const ProductDetail: React.FC<ProductDetailProps> = () => {
-  return <div>ProductDetail Page</div>;
+  return (
+    <Container>
+      <main className="p-6 space-y-5">
+        {/* <h1 className="text-4xl font-bold">Products Detail</h1> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <section className="shadow-2xl shadow-zinc-50">
+            <ImageGallery />
+          </section>
+          <section className="mt-5 space-y-3 flex-1">
+            <ProductDetailSection />
+          </section>
+          <section className="hidden lg:block">
+            <CardCTA/>
+          </section>
+        </div>
+      </main>
+    </Container>
+  );
 };
 export default ProductDetail;

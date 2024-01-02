@@ -115,7 +115,7 @@ export default function StyledNavbar() {
             as={NextLink}
             color="primary"
             href="/auth/signup"
-            variant="solid"
+            variant="shadow"
           >
             Sign Up
           </Button>

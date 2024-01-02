@@ -1,7 +1,6 @@
 import Container from "@/common/Container";
 import React from "react";
 import ImageGallery from "./components/ImageGallery";
-import CTA from "./components/CTA";
 import ProductDetailSection from "./components/ProductDetail";
 import CardCTA from "./components/CTA/Card";
 

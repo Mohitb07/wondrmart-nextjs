@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/button";
 import Container from "@/common/Container";
 import React from "react";
+import CartItem from "./components/CartItem";
 
 type CartProps = {};
 
@@ -13,9 +14,31 @@ const Cart: React.FC<CartProps> = () => {
   return (
     <div className="">
       <Container>
-        <div className="px-4 py-16 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold">Shopping Cart</h1>
-          <Button>Click me</Button>
+        <div className="px-2 py-5 md:py-10 sm:px-6 lg:px-8">
+            <h1 className="text-2xl ml-2 md:ml-0 md:text-3xl font-bold my-2">Mohit&apos;s Cart</h1>
+          <div className="grid md:grid-cols-3 gap-20">
+            {/* left section */}
+            <div className="col-span-2">
+              <div className="flex flex-col gap-3">
+                <CartItem />
+                <CartItem />
+                <CartItem />
+                <CartItem isLast/>
+              </div>
+            </div>
+            {/* right section */}
+            <div className="">
+              <div>
+                <h1>Subtotal (1 item):</h1>
+                <h1>19999</h1>
+              </div>
+              <div>
+                <Button color="primary" variant="shadow" size="lg" fullWidth>
+                  Proceed to Checkout
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </Container>
     </div>

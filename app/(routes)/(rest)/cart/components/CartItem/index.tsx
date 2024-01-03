@@ -26,14 +26,16 @@ const CartItem: React.FC<CartItemProps> = ({ isLast }) => {
           </div>
           <div className="flex flex-1 flex-col justify-between py-2">
             <div className="flex justify-between">
-              <h1 className="text-base md:text-lg">Apple AirPods Pro (2nd Generation)</h1>
+              <h1 className="text-base md:text-lg">
+                Apple AirPods Pro (2nd Generation)
+              </h1>
               <span>
                 <MdDeleteOutline className="text-2xl text-slate-500" />
               </span>
             </div>
-            <div className="flex items-center justify-between flex-row-reverse md:flex-row">
+            <div className="flex items-center justify-between flex-row-reverse flex-nowrap md:flex-row">
               <span className="text-base md:text-lg">19999</span>
-              <div className="space-x-3">
+              <div className="space-x-3 flex items-center">
                 <Button
                   color="primary"
                   variant="faded"

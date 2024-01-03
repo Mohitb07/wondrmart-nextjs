@@ -17,7 +17,7 @@ type CardCTAProps = {};
 const CardCTA: React.FC<CardCTAProps> = () => {
   return (
     <Card className="py-4">
-      <CardHeader className="pb-0 pt-2 px-4 flex items-start gap-7 justify-center">
+      <CardHeader className="pb-0 pt-2 px-4 flex items-start gap-2 justify-center">
         <ProductServices/>
       </CardHeader>
       <Divider className="my-1"/>

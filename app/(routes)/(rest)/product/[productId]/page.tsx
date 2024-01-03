@@ -16,11 +16,12 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
     <Container>
       <main className="p-6 space-y-5">
         {/* <h1 className="text-4xl font-bold">Products Detail</h1> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <section className="shadow-2xl shadow-zinc-50">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* white overlay background applied to hide the empty space because of the grid */}
+          <section className="shadow-gray-300 shadow-2xl bg-white rounded-lg">
             <ImageGallery />
           </section>
-          <section className="mt-5 space-y-3 flex-1">
+          <section className="mt-5 space-y-3 flex-1 lg:col-span-2">
             <ProductDetailSection />
           </section>
           <section className="hidden lg:block">

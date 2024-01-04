@@ -51,21 +51,47 @@ const ProductCard = ({
             <h2 className="line-clamp-2">{name}</h2>
           </div>
         </Link>
-        <div className="flex items-center justify-between mt-[1rem]">
+        <div className="flex items-center justify-between mt-[1rem] flex-wrap">
           <div>
             <h2 className="text-xs md:text-sm">{formattedPrice}</h2>
           </div>
           <div>
-            <div className="w-[6rem] flex items-center justify-end text-[1rem] max-sm:text-sm">
-              <button className="bg-[#BEF264] text-black font-bold rounded-tl-xl rounded-bl-xl px-3 py-1">
+            <div className="flex items-center justify-end text-[1rem] max-sm:text-sm gap-2">
+              {/* <button className="bg-[#BEF264] text-black font-bold rounded-tl-xl rounded-bl-xl px-3 py-1">
                 -
-              </button>
-              <button disabled className="bg-[#BEF264] text-black font-bold py-1 w-6 text-center">
+              </button> */}
+              {/* <button disabled className="bg-[#BEF264] text-black font-bold py-1 w-6 text-center">
                 1
               </button>
               <button className=" bg-[#BEF264] rounded-tr-xl rounded-br-xl px-3 text-black font-bold py-1 ">
                 +
-              </button>
+              </button> */}
+
+              <Button
+                isIconOnly
+                size="sm"
+                color="primary"
+                variant="faded"
+                aria-label="increase quantity"
+                style={{
+                  fontSize: "1.2rem",
+                }}
+              >
+                -
+              </Button>
+              <span>1</span>
+              <Button
+                isIconOnly
+                size="sm"
+                color="primary"
+                variant="faded"
+                aria-label="increase quantity"
+                style={{
+                  fontSize: "1.2rem",
+                }}
+              >
+                +
+              </Button>
             </div>
           </div>
         </div>

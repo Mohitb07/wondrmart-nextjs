@@ -1,3 +1,5 @@
+"use client"
+
 import { AdvancedImage } from "@cloudinary/react";
 import { formatPrice } from "@/lib/formatPrice";
 import { cloudinaryImage } from "@/lib/cloudinaryImage";
@@ -38,7 +40,8 @@ const ProductCard = ({
   return (
     <div
       data-testid="product-card"
-      className="max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+      // className="max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+      className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
     >
       <Link href={`/product/${id}`}>
         <div className="overflow-hidden h-[12rem] flex justify-center items-center bg-white">
@@ -48,7 +51,7 @@ const ProductCard = ({
       <div className="px-2 md:p-3 flex-1 flex flex-col justify-between">
         <Link href={`/product/${id}`}>
           <div>
-            <h2 className="line-clamp-2">{name}</h2>
+            <h2 className="line-clamp-1">{name}</h2>
           </div>
         </Link>
         <div className="flex items-center justify-between mt-[1rem] flex-wrap">

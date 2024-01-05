@@ -6,7 +6,6 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,4 +25,11 @@ body {
     )
     rgb(var(--background-start-rgb));
   height: 100vh;
+}
+
+.card {
+  flex: 0 0 auto;
+  min-width: 0; /* this is the key */
+  flex-basis: 50%;
+  /* other styles for the card */
 }

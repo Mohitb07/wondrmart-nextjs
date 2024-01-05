@@ -1,4 +1,12 @@
+import Container from "@/common/Container";
+import Image from "next/image";
+import { FaBoxOpen } from "react-icons/fa";
+import { HiLocationMarker } from "react-icons/hi";
+import { FaHeart } from "react-icons/fa6";
+
 import React from "react";
+import AccountCTA from "./components/CTA";
+import RecommendedProducts from "@/common/RecommendedProducts";
 
 type UserProps = {};
 
@@ -8,6 +16,20 @@ export const metadata = {
 };
 
 const User: React.FC<UserProps> = () => {
-  return <div>User Page</div>;
+  return (
+    <Container>
+      <main className="p-6 space-y-5">
+        <h1 className="text-4xl font-bold">Your Account</h1>
+        <div className="grid lg:grid-cols-3 grid-cols-2 gap-5 lg:gap-10">
+          <AccountCTA title="Your Orders" subtitle="Track, return, or buy things again" Logo={<FaBoxOpen className="text-[#EACEB3] text-7xl"/>}/>
+          <AccountCTA title="Your Addresses" subtitle="Edit addresses for orders" Logo={<HiLocationMarker className="text-[#e6834e] text-7xl"/>}/>
+          <AccountCTA title="Your Wishlist" subtitle="Edit, remove or add to cart" Logo={<FaHeart className="text-[#d24646] text-7xl"/>}/>
+        </div>
+        <div className="">
+          <RecommendedProducts/>
+        </div>
+      </main>
+    </Container>
+  );
 };
 export default User;

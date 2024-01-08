@@ -1,140 +1,219 @@
+"use client";
+
 import ProductCard from "@/app/(routes)/(rest)/components/ProductCard";
-import ProductsList from "@/app/(routes)/(rest)/components/ProductsList";
-import React from "react";
+import React, { WheelEvent, useEffect, useRef, useState } from "react";
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 type RecommendedProductsProps = {};
 
+const PRODUCT_LIST = [
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 1",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 2 fadffffffffffffffffffffffffffffffff ",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 3",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 4",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 5",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 6",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 7",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 8",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 9",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 10",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 11",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 12",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 13",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 14",
+    price: "200",
+  },
+  {
+    id: "123",
+    image_url: "fasfd",
+    name: "watch se 15",
+    price: "200",
+  },
+];
+
 const RecommendedProducts: React.FC<RecommendedProductsProps> = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isBackButtonVisible, setIsBackButtonVisible] = useState(false);
+  const [isForwardButtonVisible, setIsForwardButtonVisible] = useState(true);
+
+  useEffect(() => {
+    function checkScroll() {
+      if (containerRef.current) {
+        const { scrollLeft } = containerRef.current;
+        const scrollPosition = containerRef.current.scrollLeft;
+        const maxScroll =
+          containerRef.current.scrollWidth - containerRef.current.clientWidth;
+        if (scrollPosition < maxScroll) {
+          setIsForwardButtonVisible(true);
+        } else {
+          setIsForwardButtonVisible(false);
+        }
+        if (scrollLeft > 0) {
+          setIsBackButtonVisible(true);
+        } else {
+          setIsBackButtonVisible(false);
+        }
+      }
+    }
+
+    containerRef.current &&
+      containerRef.current.addEventListener("scroll", checkScroll);
+
+    return () => {
+      containerRef.current &&
+        containerRef.current.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
+  const handleBackButtonClick = () => {
+    if (containerRef.current) {
+      const item = containerRef.current.querySelector(".card");
+      const previousItem = item as HTMLElement;
+      if (previousItem) {
+        const newPos =
+          containerRef.current.scrollLeft -
+          previousItem.offsetWidth -
+          previousItem.offsetLeft;
+        containerRef.current.scrollTo({
+          top: 0,
+          left: newPos,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  const handleForwardButtonClick = () => {
+    if (containerRef.current) {
+      const item = containerRef.current.querySelector(".card");
+      const currentElement = item as HTMLElement;
+      const nextItem = currentElement.nextElementSibling as HTMLElement;
+      if (nextItem) {
+        const newPos =
+          containerRef.current.scrollLeft +
+          currentElement.offsetWidth +
+          nextItem.offsetLeft;
+        containerRef.current.scrollTo({
+          top: 0,
+          left: newPos,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  // HAVE TO FIX THIS
+  const handleScroll = (event: WheelEvent) => {
+    const container = event.target as HTMLDivElement;
+    const scrollAmount = event.deltaY;
+    container.scrollTo({
+      top: 0,
+      left: container.scrollLeft + scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="space-y-5">
-      <h2 className="text-2xl">You may like</h2>
-      <div className="flex items-center overflow-x-scroll gap-5">
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se fadffffffffffffffffffffffffffffffff"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
-        <ProductCard
-          id="123"
-          image_url="fasfd"
-          isInCartLoading={false}
-          name="watch se"
-          price="200"
-        />
+      <h2 className="text-2xl">You might like</h2>
+      <div className="relative px-1 overflow-hidden">
+        <div
+          className="flex items-center gap-5 overflow-x-scroll transition-all scrollbar-hide ease-in-out duration-300"
+          ref={containerRef}
+          onWheel={handleScroll}
+        >
+          {isBackButtonVisible && (
+            <MdOutlineArrowBackIos
+              onClick={handleBackButtonClick}
+              className="absolute hidden md:block overflow-x-scroll left-0 top-1/2 z-50 text-gray-600 text-4xl hover:cursor-pointer transition-opacity ease-in-out duration-300"
+            />
+          )}
+          {isForwardButtonVisible && (
+            <MdOutlineArrowForwardIos
+              onClick={handleForwardButtonClick}
+              className="absolute hidden md:block overflow-x-scroll right-0 top-1/2 z-50 text-gray-600 text-4xl hover:cursor-pointer transition-opacity ease-in-out duration-300"
+            />
+          )}
+          {PRODUCT_LIST.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              image_url={product.image_url}
+              isInCartLoading={false}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,9 @@ import React, { WheelEvent, useEffect, useRef, useState } from "react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 
-type RecommendedProductsProps = {};
+type RecommendedProductsProps = {
+  userId: string;
+};
 
 const PRODUCT_LIST = [
   {
@@ -192,16 +194,20 @@ const RecommendedProducts: React.FC<RecommendedProductsProps> = () => {
           onWheel={handleScroll}
         >
           {isBackButtonVisible && (
-            <MdOutlineArrowBackIos
-              onClick={handleBackButtonClick}
-              className="absolute hidden md:block overflow-x-scroll left-0 top-1/2 z-50 text-gray-600 text-4xl hover:cursor-pointer transition-opacity ease-in-out duration-300"
-            />
+            <div className="absolute left-3 top-1/2 z-50 hidden md:block transition-opacity ease-in-out duration-300 bg-slate-700 rounded-full p-2">
+              <MdOutlineArrowBackIos
+                onClick={handleBackButtonClick}
+                className="text-gray-200 text-3xl hover:cursor-pointer "
+              />
+            </div>
           )}
           {isForwardButtonVisible && (
-            <MdOutlineArrowForwardIos
-              onClick={handleForwardButtonClick}
-              className="absolute hidden md:block overflow-x-scroll right-0 top-1/2 z-50 text-gray-600 text-4xl hover:cursor-pointer transition-opacity ease-in-out duration-300"
-            />
+            <div className="absolute right-3 top-1/2 z-50 hidden md:block transition-opacity ease-in-out duration-300 bg-slate-700 rounded-full p-2">
+              <MdOutlineArrowForwardIos
+                onClick={handleForwardButtonClick}
+                className="text-gray-200 text-3xl hover:cursor-pointer"
+              />
+            </div>
           )}
           {PRODUCT_LIST.map((product) => (
             <ProductCard

@@ -1,5 +1,7 @@
 import Container from "@/common/Container";
 import Body from "./components/Body";
+import BreadCrumb from "./components/BreadCrumb";
+
 
 export const metadata = {
   title: "Your Addresses",
@@ -18,7 +20,8 @@ export default function AddressModePage({
       <main className="p-6 space-y-5">
         <h1 className="text-4xl font-bold">Your Address</h1>
         <p className="text-lg">
-          {mode === "create" ? "Add" : "Edit"} your address
+          {/* {mode === "create" ? "Add" : "Edit"} your address */}
+          <BreadCrumb mode={mode} />
         </p>
         <div className="flex justify-center items-center min-w-[20rem] md:min-w-[60rem] w-full">
           {mode === "create" && (

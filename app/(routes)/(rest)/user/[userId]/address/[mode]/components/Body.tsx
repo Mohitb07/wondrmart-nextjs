@@ -1,79 +1,30 @@
 "use client";
 
-import {
-  Button,
-  Input,
-  Select,
-  SelectItem,
-} from "@nextui-org/react";
-import React from "react";
+import { REGIONS_COUNTRIES } from "@/constants";
+import { Button, Input, Select, SelectItem } from "@nextui-org/react";
+import React, { useState } from "react";
 
 type BodyProps = {
-    mode: string;
+  mode: string;
 };
 
-export const animals = [
-  {
-    label: "Cat",
-    value: "cat",
-    description: "The second most popular pet in the world",
-  },
-  {
-    label: "Dog",
-    value: "dog",
-    description: "The most popular pet in the world",
-  },
-  {
-    label: "Elephant",
-    value: "elephant",
-    description: "The largest land animal",
-  },
-  { label: "Lion", value: "lion", description: "The king of the jungle" },
-  { label: "Tiger", value: "tiger", description: "The largest cat species" },
-  {
-    label: "Giraffe",
-    value: "giraffe",
-    description: "The tallest land animal",
-  },
-  {
-    label: "Dolphin",
-    value: "dolphin",
-    description: "A widely distributed and diverse group of aquatic mammals",
-  },
-  {
-    label: "Penguin",
-    value: "penguin",
-    description: "A group of aquatic flightless birds",
-  },
-  {
-    label: "Zebra",
-    value: "zebra",
-    description: "A several species of African equids",
-  },
-  {
-    label: "Shark",
-    value: "shark",
-    description:
-      "A group of elasmobranch fish characterized by a cartilaginous skeleton",
-  },
-  {
-    label: "Whale",
-    value: "whale",
-    description: "Diverse group of fully aquatic placental marine mammals",
-  },
-  {
-    label: "Otter",
-    value: "otter",
-    description: "A carnivorous mammal in the subfamily Lutrinae",
-  },
-  {
-    label: "Crocodile",
-    value: "crocodile",
-    description: "A large semiaquatic reptile",
-  },
-];
+const Body: React.FC<BodyProps> = ({ mode }) => {
+  const [address, setAddress] = useState({
+    country: "IN",
+    state: "",
+  });
 
-const Body: React.FC<BodyProps> = ({mode}) => {
+  const regions =
+    REGIONS_COUNTRIES.find((c) => c.countryShortCode === address.country)
+      ?.regions || [];
+
+  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setAddress({
+      ...address,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <>
       <form
@@ -84,15 +35,20 @@ const Body: React.FC<BodyProps> = ({mode}) => {
       >
         <Select
           isRequired
+          name="country"
           variant="bordered"
           label="Country/Region"
-          placeholder="Select an animal"
-          defaultSelectedKeys={["cat"]}
+          placeholder="Select a country/region"
+          defaultSelectedKeys={[address.country]}
+          onChange={handleSelectionChange}
           //   className="max-w-xs"
         >
-          {animals.map((animal) => (
-            <SelectItem key={animal.value} value={animal.value}>
-              {animal.label}
+          {REGIONS_COUNTRIES.map((country) => (
+            <SelectItem
+              key={country.countryShortCode}
+              value={country.countryName.toLowerCase()}
+            >
+              {country.countryName}
             </SelectItem>
           ))}
         </Select>
@@ -221,13 +177,17 @@ const Body: React.FC<BodyProps> = ({mode}) => {
           isRequired
           variant="bordered"
           label="State"
+          name="state"
           placeholder="Choose a state"
-        //   defaultSelectedKeys={["cat"]}
+          onChange={handleSelectionChange}
           //   className="max-w-xs"
         >
-          {animals.map((animal) => (
-            <SelectItem key={animal.value} value={animal.value}>
-              {animal.label}
+          {regions.map((region) => (
+            <SelectItem
+              key={region.shortCode || region.name}
+              value={region.name.toLowerCase()}
+            >
+              {region.name}
             </SelectItem>
           ))}
         </Select>
@@ -238,7 +198,7 @@ const Body: React.FC<BodyProps> = ({mode}) => {
           color="primary"
           variant="shadow"
         >
-            {mode === "create" ? "Add" : "Edit"} Address
+          {mode === "create" ? "Add" : "Edit"} Address
         </Button>
       </form>
     </>

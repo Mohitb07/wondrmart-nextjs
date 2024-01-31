@@ -18,7 +18,7 @@ export default async function AddressPage({
   return (
     <Container>
       <main className="p-6 space-y-5">
-        <h1 className="text-4xl font-bold">Your Address</h1>
+        <h1 className="text-4xl font-bold">Your Addresses</h1>
         <div className="grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* <div className="p-20 w-full border rounded-lg border-dashed border-white md:min-w-[300px] md:max-w-[380px]">
             <Link

@@ -3,15 +3,19 @@
 import { REGIONS_COUNTRIES } from "@/constants";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useState } from "react";
+import { isPinCodeValid } from "@/lib/addressFilters";
 
 type BodyProps = {
   mode: string;
+  addressId?: string;
 };
 
-const Body: React.FC<BodyProps> = ({ mode }) => {
+const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
   const [address, setAddress] = useState({
     country: "IN",
     state: "",
+    pinCode: "",
+    mobile: "",
   });
 
   const regions =
@@ -19,6 +23,21 @@ const Body: React.FC<BodyProps> = ({ mode }) => {
       ?.regions || [];
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setAddress({
+      ...address,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "mobile" && e.target.value.length > 10) return;
+    if (e.target.name === "pinCode" && e.target.value.length > 6) return;
+    if (
+      e.target.name === "pinCode" &&
+      e.target.value.length > 0 &&
+      !isPinCodeValid(e.target.value)
+    )
+      return;
     setAddress({
       ...address,
       [e.target.name]: e.target.value,
@@ -81,10 +100,12 @@ const Body: React.FC<BodyProps> = ({ mode }) => {
           //   }
           //   onChange={formik.handleChange}
           variant="bordered"
-          type="tel"
-          name="phone"
+          value={address.mobile}
+          type="text"
+          name="mobile"
           label="Mobile number"
           placeholder="Enter your phone no."
+          onChange={handleChange}
           //   errorMessage={
           //     (isError && error.response?.data.message.phone) ||
           //     (formik.touched.phone && formik.errors.phone)
@@ -101,10 +122,12 @@ const Body: React.FC<BodyProps> = ({ mode }) => {
           //   }
           //   onChange={formik.handleChange}
           variant="bordered"
-          type="number"
-          name="pincode"
+          value={address.pinCode}
+          type="text"
+          name="pinCode"
           label="Pincode"
           placeholder="6 digits PIN code"
+          onChange={handleChange}
           //   errorMessage={
           //     (isError && error.response?.data.message.address) ||
           //     (formik.touched.address && formik.errors.address)

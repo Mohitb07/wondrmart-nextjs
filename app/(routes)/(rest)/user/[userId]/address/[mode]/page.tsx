@@ -18,7 +18,7 @@ export default function AddressModePage({
   return (
     <Container>
       <main className="p-6 space-y-5">
-        <h1 className="text-4xl font-bold">Your Address</h1>
+        <h1 className="text-4xl font-bold">{mode[0].toUpperCase() + mode.substring(1)} Address</h1>
         <p className="text-lg">
           {/* {mode === "create" ? "Add" : "Edit"} your address */}
           <BreadCrumb mode={mode} />

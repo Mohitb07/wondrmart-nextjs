@@ -7,10 +7,8 @@ export const metadata = {
 
 export default async function WishlistPage() {
   return (
-    <Container>
-      <main className="p-6 space-y-5">
-        <h1 className="text-4xl font-bold">Your Wishlist</h1>
-      </main>
-    </Container>
+    <div>
+      <h1 className="text-3xl font-bold text-center ">Coming Soon...</h1>
+    </div>
   );
 }

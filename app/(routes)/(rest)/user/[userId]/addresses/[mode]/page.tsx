@@ -1,7 +1,4 @@
-import Container from "@/common/Container";
 import Body from "./components/Body";
-import BreadCrumb from "./components/BreadCrumb";
-
 
 export const metadata = {
   title: "Your Addresses",
@@ -16,25 +13,17 @@ export default function AddressModePage({
   const { mode } = params;
 
   return (
-    // <Container>
-    //   <main className="p-6 space-y-5">
-    //     <h1 className="text-4xl font-bold">{mode[0].toUpperCase() + mode.substring(1)} Address</h1>
-    //     <p className="text-lg">
-    //       <BreadCrumb mode={mode} />
-    //     </p>
-        <div className="flex justify-center items-center min-w-[20rem] md:min-w-[60rem] w-full">
-          {mode === "create" && (
-            <div className="w-[500px]">
-              <Body mode="create" />
-            </div>
-          )}
-          {mode === "edit" && (
-            <div className="w-[500px]">
-              <Body mode="edit" />
-            </div>
-          )}
+    <div className="flex justify-center items-center min-w-[20rem] md:min-w-[60rem] w-full">
+      {mode === "create" && (
+        <div className="w-[500px]">
+          <Body mode="create" />
         </div>
-    //   </main>
-    // </Container>
+      )}
+      {mode === "edit" && (
+        <div className="w-[500px]">
+          <Body mode="edit" />
+        </div>
+      )}
+    </div>
   );
 }

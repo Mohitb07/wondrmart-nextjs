@@ -1,9 +1,8 @@
 "use client";
 
 import Container from "@/common/Container";
-import { usePathname } from "next/navigation";
-import BreadCrumb from "./components/BreadCrumbs";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 export default function UserLayout({
   children,
@@ -35,10 +34,6 @@ export default function UserLayout({
   }
 
   const paths = pathname.split("/").slice(1);
-  console.log("paths", paths);
-  const filteredPaths = paths.filter((path) => path !== params.userId);
-  console.log("filteredPaths", filteredPaths);
-
   const breadCrumbList = paths.map((path, index) => {
     const href = `/${paths.slice(0, index + 2).join("/")}`;
     console.log("path", path, index, href);
@@ -54,16 +49,6 @@ export default function UserLayout({
     <Container>
       <main className="p-6 space-y-5">
         <h1 className="text-4xl font-bold">{pageTitle}</h1>
-        {/* <Breadcrumbs size="lg">
-          {filteredPaths.map((path, index) => {
-            const href = `/${filteredPaths.slice(0, index + 1).join("/")}`;
-            return (
-              <BreadcrumbItem key={index} href={href}>
-                {path[0].toUpperCase() + path.substring(1)}
-              </BreadcrumbItem>
-            );
-          })}
-        </Breadcrumbs> */}
         <Breadcrumbs size="lg">
           {filteredBreadCrumbList.map((breadcrumb, index) => {
             return (

@@ -54,8 +54,8 @@ const StyledCard: React.FC<CardProps> = ({
           <>
             <div>
               <Link
-                href="/user/[userId]/address/[mode]"
-                as={`/user/${userId}/address/edit`}
+                href="/user/[userId]/addresses/[mode]"
+                as={`/user/${userId}/addresses/edit`}
               >
                 Edit
               </Link>

@@ -3,7 +3,7 @@
 import { REGIONS_COUNTRIES } from "@/constants";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useState } from "react";
-import { isPinCodeValid } from "@/lib/addressFilters";
+import { isPinCodeValid, isMobileNumberValid } from "@/lib/addressFilters";
 
 type BodyProps = {
   mode: string;
@@ -30,6 +30,7 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.name, e.target.value.length, e.target.value);
     if (e.target.name === "mobile" && e.target.value.length > 10) return;
     if (e.target.name === "pinCode" && e.target.value.length > 6) return;
     if (
@@ -38,6 +39,13 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
       !isPinCodeValid(e.target.value)
     )
       return;
+    if (
+      e.target.name === "mobile" &&
+      e.target.value.length > 0 &&
+      !isMobileNumberValid(e.target.value)
+    )
+      return;
+
     setAddress({
       ...address,
       [e.target.name]: e.target.value,
@@ -101,7 +109,6 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           //   onChange={formik.handleChange}
           variant="bordered"
           value={address.mobile}
-          type="text"
           name="mobile"
           label="Mobile number"
           placeholder="Enter your phone no."

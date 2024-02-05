@@ -4,7 +4,7 @@ import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 type BreadCrumbProps = {
-  mode: string;
+  mode?: string;
 };
 
 const BreadCrumb: React.FC<BreadCrumbProps> = ({ mode }) => {

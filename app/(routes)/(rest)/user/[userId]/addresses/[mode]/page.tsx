@@ -16,13 +16,12 @@ export default function AddressModePage({
   const { mode } = params;
 
   return (
-    <Container>
-      <main className="p-6 space-y-5">
-        <h1 className="text-4xl font-bold">{mode[0].toUpperCase() + mode.substring(1)} Address</h1>
-        <p className="text-lg">
-          {/* {mode === "create" ? "Add" : "Edit"} your address */}
-          <BreadCrumb mode={mode} />
-        </p>
+    // <Container>
+    //   <main className="p-6 space-y-5">
+    //     <h1 className="text-4xl font-bold">{mode[0].toUpperCase() + mode.substring(1)} Address</h1>
+    //     <p className="text-lg">
+    //       <BreadCrumb mode={mode} />
+    //     </p>
         <div className="flex justify-center items-center min-w-[20rem] md:min-w-[60rem] w-full">
           {mode === "create" && (
             <div className="w-[500px]">
@@ -35,7 +34,7 @@ export default function AddressModePage({
             </div>
           )}
         </div>
-      </main>
-    </Container>
+    //   </main>
+    // </Container>
   );
 }

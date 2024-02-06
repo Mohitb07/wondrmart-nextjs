@@ -1,8 +1,8 @@
 "use client"
 
 import { AdvancedImage } from "@cloudinary/react";
-import { formatPrice } from "@/lib/formatPrice";
-import { cloudinaryImage } from "@/lib/cloudinaryImage";
+import { formatPrice } from "@/utils/formatPrice";
+import { cloudinaryImage } from "@/utils/cloudinaryImage";
 
 import Link from "next/link";
 import { Button, ButtonGroup } from "@nextui-org/react";

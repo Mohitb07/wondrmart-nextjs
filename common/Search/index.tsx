@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
-import { debounce } from "@/lib/debounce";
+import { debounce } from "@/utils/debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const customPlaceholder = [

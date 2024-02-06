@@ -3,7 +3,7 @@
 import { REGIONS_COUNTRIES } from "@/constants";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useState } from "react";
-import { isPinCodeValid, isMobileNumberValid } from "@/lib/addressFilters";
+import { isPinCodeValid, isMobileNumberValid } from "@/utils/addressFilters";
 
 type BodyProps = {
   mode: string;

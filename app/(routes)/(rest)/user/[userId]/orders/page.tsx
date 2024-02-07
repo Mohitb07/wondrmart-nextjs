@@ -1,4 +1,4 @@
-import Container from "@/common/Container";
+import OrderCard from "./components/OrderCard";
 
 export const metadata = {
   title: "Your Orders",
@@ -7,8 +7,11 @@ export const metadata = {
 
 export default function OrdersPage() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center ">Coming Soon...</h1>
+    <div className="space-y-3">
+      <OrderCard orderId="123"/>
+      <OrderCard orderId="421"/>
+      <OrderCard orderId="414"/>
+      <OrderCard orderId="622"/>
     </div>
   );
 }

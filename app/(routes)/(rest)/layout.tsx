@@ -23,10 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryProvider>
           <UIProvider>
-            <AuthUserProvider>
-              <Navbar />
-              {children}
-            </AuthUserProvider>
+            {/* <AuthUserProvider> */}
+            <Navbar />
+            {children}
+            {/* </AuthUserProvider> */}
           </UIProvider>
         </ReactQueryProvider>
       </body>

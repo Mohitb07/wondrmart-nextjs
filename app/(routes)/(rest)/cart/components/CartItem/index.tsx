@@ -12,7 +12,7 @@ type CartItemProps = {
 const CartItem: React.FC<CartItemProps> = ({ isLast }) => {
   return (
     <>
-      <Card className="w-full p-2 shadow-2xl shadow-gray-900" isBlurred>
+      <Card className="w-full p-2 shadow-2xl shadow-gray-900 border border-gray-800" isBlurred>
         <div className="flex gap-3">
           <div>
             <Image

@@ -19,8 +19,6 @@ export default function UserLayout({
     (pathname.split("/").pop() === "create" ||
       pathname.split("/").pop() === "edit");
 
-  console.log("isAddressmode", isAddressMode);
-
   const formattedTitle =
     (pathname.split("/").pop() || "")[0].toUpperCase() +
     (pathname.split("/").pop() || "").substring(1);

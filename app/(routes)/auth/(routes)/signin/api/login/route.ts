@@ -9,7 +9,6 @@ export async function POST(request: Request) {
     password: formData.get("password") as string,
   };
 
-  console.log("body", body);
   try {
     const res = await axios.post(`${process.env.BASE_URL}/login`, body, {
       headers: { "Content-Type": "application/json" },
@@ -27,6 +26,14 @@ export async function POST(request: Request) {
         },
         status: 200,
       });
+    } else {
+      // Invalid credentials or something went wrong
+      return new Response(JSON.stringify({ message: "Invalid credentials" }), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 401,
+      });
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -40,7 +47,6 @@ export async function POST(request: Request) {
       }
     }
 
-    console.error("An error occurred:", error);
     return new Response(JSON.stringify({ message: "Something went wrong" }), {
       headers: {
         "Content-Type": "application/json",

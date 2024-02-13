@@ -1,6 +1,11 @@
-"use client"
+"use client";
 
-import { AdvancedImage } from "@cloudinary/react";
+import {
+  AdvancedImage,
+  lazyload,
+  placeholder,
+  responsive,
+} from "@cloudinary/react";
 import { formatPrice } from "@/utils/formatPrice";
 import { cloudinaryImage } from "@/utils/cloudinaryImage";
 
@@ -45,18 +50,21 @@ const ProductCard = ({
     >
       <Link href={`/product/${id}`}>
         <div className="overflow-hidden h-[12rem] flex justify-center items-center bg-white">
-          <AdvancedImage cldImg={productImage} />
+          <AdvancedImage
+            cldImg={productImage}
+            plugins={[lazyload(), responsive(), placeholder({ mode: "blur" })]}
+          />
         </div>
       </Link>
-      <div className="px-2 md:p-3 flex-1 flex flex-col justify-between">
+      <div className="px-2 py-1 md:p-3 flex-1 flex flex-col justify-between">
         <Link href={`/product/${id}`}>
           <div>
-            <h2 className="line-clamp-1">{name}</h2>
+            <h2 className="line-clamp-1 text-sm">{name}</h2>
           </div>
         </Link>
         <div className="flex items-center justify-between mt-[1rem] flex-wrap">
           <div>
-            <h2 className="text-xs md:text-sm">{formattedPrice}</h2>
+            <h2 className="text-sm">{formattedPrice}</h2>
           </div>
           <div>
             <div className="flex items-center justify-end text-[1rem] max-sm:text-sm gap-2">

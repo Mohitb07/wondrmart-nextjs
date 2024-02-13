@@ -4346,11 +4346,6 @@ tiny-case@^1.0.3:
   resolved "https://registry.yarnpkg.com/tiny-case/-/tiny-case-1.0.3.tgz#d980d66bc72b5d5a9ca86fb7c9ffdb9c898ddd03"
   integrity sha512-Eet/eeMhkO6TX8mnUteS9zgPbUMQa4I6Kkp5ORiBD5476/m+PIRiumP5tmh5ioJpH7k51Kehawy2UDfsnxxY8Q==
 
-tiny-cookie@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/tiny-cookie/-/tiny-cookie-2.5.0.tgz#df6ce3de905ac2421e3b8149b71fdf171f86fd8d"
-  integrity sha512-uU2J4VjyCdeDaQLD4NODxn+vn97WMC6f579QzcO+wh+P2p993NjtqAiAnP0k6CYWHA6PfeRpT0eEQQ4EF2z25g==
-
 tiny-warning@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"

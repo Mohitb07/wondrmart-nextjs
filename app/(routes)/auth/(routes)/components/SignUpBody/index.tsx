@@ -15,8 +15,6 @@ export const registerValidationSchema = yup.object({
     .string()
     .email("Invalid email address")
     .required("Email is required"),
-  phone: yup.string().required("Phone is required"),
-  address: yup.string().required("Address is required"),
   password: yup
     .string()
     .required("Password is required")
@@ -42,8 +40,6 @@ export default function SignUpBody() {
     initialValues: {
       username: "",
       email: "",
-      phone: "",
-      address: "",
       password: "",
       confirmPassword: "",
     },
@@ -113,46 +109,6 @@ export default function SignUpBody() {
         <Input
           isRequired
           isInvalid={
-            (isError && Boolean(error.response?.data.message.phone)) ||
-            (formik.touched.phone && Boolean(formik.errors.phone))
-          }
-          onChange={formik.handleChange}
-          variant="bordered"
-          type="tel"
-          name="phone"
-          label="Phone No"
-          placeholder="Enter your phone no."
-          errorMessage={
-            (isError && error.response?.data.message.phone) ||
-            (formik.touched.phone && formik.errors.phone)
-          }
-          onError={() => {
-            console.log("error");
-          }}
-        />
-        <Input
-          isRequired
-          isInvalid={
-            (isError && Boolean(error.response?.data.message.address)) ||
-            (formik.touched.address && Boolean(formik.errors.address))
-          }
-          onChange={formik.handleChange}
-          variant="bordered"
-          type="tel"
-          name="address"
-          label="Address"
-          placeholder="Enter your delivery address"
-          errorMessage={
-            (isError && error.response?.data.message.address) ||
-            (formik.touched.address && formik.errors.address)
-          }
-          onError={() => {
-            console.log("error");
-          }}
-        />
-        <Input
-          isRequired
-          isInvalid={
             (isError && Boolean(error.response?.data.message.password)) ||
             (formik.touched.password && Boolean(formik.errors.password))
           }
@@ -181,7 +137,9 @@ export default function SignUpBody() {
           type={isPasswordVisible ? "text" : "password"}
         />
         <Input
-          isInvalid={formik.touched.confirmPassword && Boolean(formik.errors.password)}
+          isInvalid={
+            formik.touched.confirmPassword && Boolean(formik.errors.password)
+          }
           onChange={formik.handleChange}
           isRequired
           label="Confirm Password"

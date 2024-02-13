@@ -19,15 +19,13 @@ const useRegister = () => {
     mutationFn: (data: SignUpFormData) =>
       createUser({
         email: data.email,
-        address: data.address,
         confirmPassword: data.confirmPassword,
         password: data.password,
-        phone: data.phone,
         username: data.username,
       }),
     onSuccess: (data: UserData) => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      console.log('data', data)
+      console.log("data", data);
       window.location.href = "/";
     },
   });

@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as Cookies from "tiny-cookie";
+import Cookies from "js-cookie";
 import { QueryClient } from "@tanstack/react-query";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -12,8 +12,10 @@ const queryClient = new QueryClient();
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = Cookies.getCookie("accessToken");
-    config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== "undefined") {
+      const token = Cookies.get("accessToken");
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (err) => {
@@ -29,9 +31,12 @@ axiosInstance.interceptors.response.use(
   (err) => {
     // console.log("response error", err);
     if (err.response && err.response.status === 401) {
-      const token = Cookies.getCookie("accessToken");
+      let token = null;
+      if (typeof window !== "undefined") {
+        token = Cookies.get("accessToken");
+      }
       if (token) {
-        Cookies.removeCookie("accessToken");
+        Cookies.remove("accessToken");
         queryClient.invalidateQueries({ queryKey: ["user"] });
         queryClient.removeQueries({ queryKey: ["cartItems"], exact: true });
       }

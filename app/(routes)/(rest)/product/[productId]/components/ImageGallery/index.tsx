@@ -1,18 +1,36 @@
-import Image from "next/image";
+"use client";
+
+import {
+  AdvancedImage,
+  lazyload,
+  placeholder,
+  responsive
+} from "@cloudinary/react";
+import { CloudinaryImage } from "@cloudinary/url-gen/index";
 import React from "react";
 
-type ImageGalleryProps = {};
+type ImageGalleryProps = {
+  src: CloudinaryImage;
+};
 
-const ImageGallery: React.FC<ImageGalleryProps> = () => {
+const ImageGallery: React.FC<ImageGalleryProps> = ({ src }) => {
   return (
-    <Image
-      className="rounded-lg"
-      src="https://m.media-amazon.com/images/I/61SUj2aKoEL._SX679_.jpg"
-      alt="product image"
-      width={500}
-      height={500}
-      layout="responsive"
-      priority
+    // <Image
+    //   className="rounded-lg"
+    //   src={src}
+    //   alt="product image"
+    //   width={500}
+    //   height={500}
+    //   layout="responsive"
+    //   priority
+    // />
+    <AdvancedImage
+      cldImg={src}
+      plugins={[
+        lazyload(),
+        responsive(),
+        placeholder({ mode: "blur" }),
+      ]}
     />
   );
 };

@@ -3,33 +3,33 @@
 import React from "react";
 
 import {
+  Avatar,
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
-  Button,
-  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Dropdown,
-  DropdownTrigger,
-  Avatar,
-  DropdownMenu,
-  DropdownItem,
+  NavbarMenuToggle,
   Spinner,
 } from "@nextui-org/react";
 import NextLink from "next/link";
 
-import { AcmeLogo } from "./Logo";
-import { useAuthUser } from "@/hooks/useAuthUser";
+import useGetUser from "@/hooks/useGetUser";
 import { useLogOut } from "@/hooks/useLogout";
 import { usePathname } from "next/navigation";
+import { AcmeLogo } from "./Logo";
 
 export default function StyledNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { logOut } = useLogOut();
-  const { user, isLoading } = useAuthUser();
+  const { data: user, isInitialLoading } = useGetUser();
   const pathname = usePathname();
 
   const menuItems = [
@@ -49,7 +49,7 @@ export default function StyledNavbar() {
 
   let authStateContent = null;
 
-  if (isLoading) {
+  if (isInitialLoading) {
     authStateContent = (
       <NavbarContent justify="end">
         <Spinner />
@@ -145,7 +145,10 @@ export default function StyledNavbar() {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
-          <NavbarItem isActive={pathname === item.href} key={`${item.name}-${index}`}>
+          <NavbarItem
+            isActive={pathname === item.href}
+            key={`${item.name}-${index}`}
+          >
             <Link
               color={pathname === item.href ? "primary" : "foreground"}
               href={item.href}

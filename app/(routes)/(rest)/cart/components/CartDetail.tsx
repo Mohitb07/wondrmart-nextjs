@@ -1,0 +1,51 @@
+"use client";
+
+import React from "react";
+import CartItem from "./CartItem";
+import CouponInput from "./Coupon";
+import OrderSummary from "./Summary";
+import { Button } from "@nextui-org/react";
+
+type CartDetailProps = {};
+
+const CartDetail: React.FC<CartDetailProps> = () => {
+  return (
+    <>
+      <h1 className="text-2xl ml-2 md:ml-0 md:text-3xl font-bold my-2">
+        Mohit&apos;s Cart
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-10 md:gap-10 lg:gap-20">
+        {/* left section */}
+        <div className="lg:col-span-2">
+          <div className="flex flex-col gap-3">
+            <CartItem />
+            <CartItem />
+            <CartItem />
+            <CartItem isLast />
+          </div>
+        </div>
+        {/* right section */}
+        <div className="space-y-5 p-2">
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold">Coupons</h2>
+            <CouponInput />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold">Price Details</h2>
+            <OrderSummary />
+          </div>
+          <Button
+            color="primary"
+            className="mt-3"
+            variant="shadow"
+            size="lg"
+            fullWidth
+          >
+            Proceed to Checkout
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+};
+export default CartDetail;

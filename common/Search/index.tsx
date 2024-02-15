@@ -2,32 +2,17 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-
 import { debounce } from "@/utils/debounce";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { SEARCH_FIELD_CUSTOM_PLACEHOLDERS } from "@/constants";
 
-const customPlaceholder = [
-  "wondrMart",
-  "food",
-  "electronics",
-  "fashion",
-  "home & kitchen",
-  "health & beauty",
-  "baby products",
-  "sports & fitness",
-  "automotive & industrial",
-  "books & stationery",
-  "gaming",
-  "computing",
-  "pet supplies",
-  "garden & outdoors",
-  "other categories",
-];
 const Search = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [placeholder, setPlaceholder] = useState(customPlaceholder[0]);
+  const [placeholder, setPlaceholder] = useState(
+    SEARCH_FIELD_CUSTOM_PLACEHOLDERS[0]
+  );
   const [isChanging, setIsChanging] = useState(false);
   const [search, setSearch] = useState(""); // search query [TODO: implement search functionality]
   const [isFocused, setIsFocused] = useState(false);
@@ -39,8 +24,8 @@ const Search = () => {
       interval = setInterval(() => {
         setIsChanging(true);
         setTimeout(() => {
-          i = (i + 1) % customPlaceholder.length;
-          setPlaceholder(customPlaceholder[i]);
+          i = (i + 1) % SEARCH_FIELD_CUSTOM_PLACEHOLDERS.length;
+          setPlaceholder(SEARCH_FIELD_CUSTOM_PLACEHOLDERS[i]);
           setIsChanging(false);
         }, 500); // half of interval time to sync fade-out and fade-in
       }, 2000);
@@ -49,7 +34,7 @@ const Search = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const fetchData = (query: string) => {
+  const updateSearchUrl = (query: string) => {
     if (!query.length) {
       return router.push(`${pathname}`);
     }
@@ -58,7 +43,7 @@ const Search = () => {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const debouncedSearch = useCallback(debounce(fetchData, 500), []);
+  const debouncedSearch = useCallback(debounce(updateSearchUrl, 500), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;

@@ -4,11 +4,36 @@ import React from "react";
 import CartItem from "./CartItem";
 import CouponInput from "./Coupon";
 import OrderSummary from "./Summary";
-import { Button } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
+import { useQuery } from "@tanstack/react-query";
+import { getCartItems } from "@/actions/getCartItems";
+import { formatPrice } from "@/utils/formatPrice";
+import { calculateCartPrice } from "@/utils/cartPrice";
 
 type CartDetailProps = {};
 
 const CartDetail: React.FC<CartDetailProps> = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["cartItems"],
+    queryFn: getCartItems,
+  });
+
+  if (isLoading) {
+    return (
+      <div>
+        <div className="flex items-center justify-center h-[500px] ">
+          <Spinner color="primary" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error: {JSON.stringify(isError)}</div>;
+  }
+
+  const cartItems = data?.cart[0]?.cart_items || [];
+  let totalCartSum = calculateCartPrice(cartItems);
   return (
     <>
       <h1 className="text-2xl ml-2 md:ml-0 md:text-3xl font-bold my-2">
@@ -18,10 +43,19 @@ const CartDetail: React.FC<CartDetailProps> = () => {
         {/* left section */}
         <div className="lg:col-span-2">
           <div className="flex flex-col gap-3">
-            <CartItem />
-            <CartItem />
-            <CartItem />
-            <CartItem isLast />
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.cart_item_id}
+                image_url={item.products.image_url}
+                product_id={item.product_id}
+                quantity={item.quantity}
+                title={item.products.name}
+                unit_amount={item.products.price}
+                total_amount={item.total_amount}
+                cart_id={item.cart_id}
+                cart_item_id={item.cart_item_id}
+              />
+            ))}
           </div>
         </div>
         {/* right section */}
@@ -32,7 +66,7 @@ const CartDetail: React.FC<CartDetailProps> = () => {
           </div>
           <div className="space-y-2">
             <h2 className="text-xl font-semibold">Price Details</h2>
-            <OrderSummary />
+            <OrderSummary totalAmount={totalCartSum} />
           </div>
           <Button
             color="primary"

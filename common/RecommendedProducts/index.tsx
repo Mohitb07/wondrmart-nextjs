@@ -184,6 +184,34 @@ const RecommendedProducts: React.FC<RecommendedProductsProps> = () => {
     });
   };
 
+  // const handleScroll = (event: WheelEvent) => {
+  //   const container = event.target as HTMLDivElement;
+  //   const scrollAmount = event.deltaY;
+  //   const maxScroll =
+  //     container.scrollWidth - container.clientWidth;
+  //   const newScrollLeft = container.scrollLeft + scrollAmount;
+
+  //   if (newScrollLeft < 0) {
+  //     container.scrollTo({
+  //       top: 0,
+  //       left: 0,
+  //       behavior: "smooth",
+  //     });
+  //   } else if (newScrollLeft > maxScroll) {
+  //     container.scrollTo({
+  //       top: 0,
+  //       left: maxScroll,
+  //       behavior: "smooth",
+  //     });
+  //   } else {
+  //     container.scrollTo({
+  //       top: 0,
+  //       left: newScrollLeft,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // };
+
   return (
     <div className="space-y-5">
       <h2 className="text-2xl">You might like</h2>
@@ -212,6 +240,7 @@ const RecommendedProducts: React.FC<RecommendedProductsProps> = () => {
           {PRODUCT_LIST.map((product) => (
             <ProductCard
               key={product.id}
+              productId={product.id}
               id={product.id}
               name={product.name}
               price={product.price}

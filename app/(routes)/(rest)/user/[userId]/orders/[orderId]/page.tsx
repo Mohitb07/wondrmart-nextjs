@@ -24,7 +24,7 @@ export default function OrderDetail({ params }: OrderDetailProps) {
         </div>
         <div className="space-y-3 h-full">
           <h2 className="text-xl font-bold">Order Summary</h2>
-          <OrderSummary textSize="sm" amountSize="base"/>
+          <OrderSummary textSize="sm" amountSize="base" totalAmount={0}/>
         </div>
       </div>
       <div className="mt-5 space-y-5">

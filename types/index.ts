@@ -78,3 +78,8 @@ export type UserData = {
   user: User;
   accessToken: string;
 };
+
+export interface CartItemData {
+  cart: CartType[];
+}
+

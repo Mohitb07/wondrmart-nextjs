@@ -1,17 +1,22 @@
 "use client";
 
+import { formatPrice } from "@/utils/formatPrice";
 import { Card, CardBody, Divider } from "@nextui-org/react";
 import React from "react";
 
 type OrderSummaryProps = {
   textSize?: "sm" | "base" | "lg";
   amountSize?: "sm" | "base" | "lg";
+  totalAmount: number;
 };
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
   textSize = "base",
   amountSize = "lg",
+  totalAmount = 0,
 }) => {
+  const formattedTotalAmount = formatPrice(totalAmount);
+
   return (
     <Card className="w-full md:min-w-[300px] min-h-[240px] border-2 border-transparent">
       <CardBody>
@@ -35,7 +40,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             className={`flex justify-between text-${amountSize} font-semibold`}
           >
             <span>Total Amount</span>
-            <span>₹ 2700</span>
+            <span>{formattedTotalAmount}</span>
           </div>
         </div>
       </CardBody>

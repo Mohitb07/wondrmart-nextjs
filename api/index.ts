@@ -12,10 +12,10 @@ const queryClient = new QueryClient();
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (typeof window !== "undefined") {
-      const token = Cookies.get("accessToken");
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    const token = Cookies.get("accessToken");
+    if (!token) return new Promise((resolve, reject) => reject("No token found"));
+    config.headers.Authorization = `Bearer ${token}`;
+
     return config;
   },
   (err) => {

@@ -11,6 +11,8 @@ import { cloudinaryImage } from "@/utils/cloudinaryImage";
 
 import Link from "next/link";
 import { Button, ButtonGroup } from "@nextui-org/react";
+import useAddToCart from "@/hooks/useAddToCart";
+import useUpdateQuantity from "@/hooks/useUpdateQty";
 
 // import AddToCart from "../AddToCartBtn";
 
@@ -22,6 +24,7 @@ type ProductProps = {
   cartQty?: string;
   isInCartLoading: boolean;
   cartId?: string;
+  productId: string;
 };
 
 const ProductCard = ({
@@ -30,9 +33,12 @@ const ProductCard = ({
   name,
   price,
   cartQty,
+  productId,
   isInCartLoading,
   cartId,
 }: ProductProps) => {
+  const { mutate, isLoading: isAdding } = useAddToCart();
+  const { mutate: updateQuantity } = useUpdateQuantity();
   const formattedPrice = formatPrice(Number(price));
   const formattedCartQty = Number(cartQty);
 
@@ -41,6 +47,41 @@ const ProductCard = ({
     height: 150,
     width: 150,
   });
+
+  const handleAddToCart = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    mutate({ id: productId, price });
+  };
+
+  const onQuantityChange = (qty: number) => {
+    updateQuantity({
+      product_id: productId,
+      unit_amount: price,
+      quantity: qty.toString(),
+      cart_id: cartId,
+    });
+  };
+
+  const onAddQty = () => {
+    const currentQty = formattedCartQty;
+    if (currentQty === 4) {
+      // toast({
+      //   title: "Stock Limit",
+      //   description: "You cannot add more of this item",
+      //   status: "warning",
+      //   position: "bottom",
+      //   isClosable: true,
+      // });
+      return;
+    }
+    onQuantityChange(currentQty + 1);
+  };
+  const onRemoveQty = () => {
+    const currentQty = formattedCartQty;
+    if (currentQty > 0) {
+      onQuantityChange(currentQty - 1);
+    }
+  };
 
   return (
     <div
@@ -52,7 +93,7 @@ const ProductCard = ({
         <div className="overflow-hidden h-[12rem] flex justify-center items-center bg-white">
           <AdvancedImage
             cldImg={productImage}
-            plugins={[lazyload(), responsive(), placeholder({ mode: "blur" })]}
+            plugins={[placeholder({ mode: "blur" })]}
           />
         </div>
       </Link>
@@ -77,32 +118,50 @@ const ProductCard = ({
               <button className=" bg-[#BEF264] rounded-tr-xl rounded-br-xl px-3 text-black font-bold py-1 ">
                 +
               </button> */}
-
-              <Button
-                isIconOnly
-                size="sm"
-                color="primary"
-                variant="faded"
-                aria-label="increase quantity"
-                style={{
-                  fontSize: "1.2rem",
-                }}
-              >
-                -
-              </Button>
-              <span>1</span>
-              <Button
-                isIconOnly
-                size="sm"
-                color="primary"
-                variant="faded"
-                aria-label="increase quantity"
-                style={{
-                  fontSize: "1.2rem",
-                }}
-              >
-                +
-              </Button>
+              {formattedCartQty > 0 ? (
+                <>
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    color="primary"
+                    variant="faded"
+                    aria-label="increase quantity"
+                    style={{
+                      fontSize: "1.2rem",
+                    }}
+                    onClick={onRemoveQty}
+                  >
+                    -
+                  </Button>
+                  <span>{formattedCartQty}</span>
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    color="primary"
+                    variant="faded"
+                    aria-label="increase quantity"
+                    style={{
+                      fontSize: "1.2rem",
+                    }}
+                    onClick={onAddQty}
+                  >
+                    +
+                  </Button>
+                </>
+              ) : (
+                <form onSubmit={handleAddToCart}>
+                  <Button
+                    type="submit"
+                    size="sm"
+                    color="primary"
+                    variant="faded"
+                    isLoading={isInCartLoading || isAdding}
+                    disabled={isAdding || isInCartLoading}
+                  >
+                    {!isInCartLoading && "Add"}
+                  </Button>
+                </form>
+              )}
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import { Divider } from "@nextui-org/react";
 import React from "react";
+import { sanitize } from "isomorphic-dompurify";
 import CTA from "../CTA";
 import ProductServices from "../Services";
 
@@ -16,6 +17,7 @@ const ProductInfo: React.FC<ProductInfo> = ({
   price,
   description,
 }) => {
+  const formattedDescription = sanitize(description);
   return (
     <>
       <h1 className="text-base md:text-2xl font-bold">{productName}</h1>
@@ -48,7 +50,10 @@ const ProductInfo: React.FC<ProductInfo> = ({
           </p>
         </li>
       </ul> */}
-      {description}
+      <div
+        dangerouslySetInnerHTML={{ __html: formattedDescription }}
+        className="text-slate-400 text-base ml-4 leading-relaxed"
+      ></div>
     </>
   );
 };

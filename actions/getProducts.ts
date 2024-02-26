@@ -1,4 +1,4 @@
-import { BASE_URL, axiosInstance } from "@/api";
+import { BASE_URL } from "@/api";
 import { Product } from "@/types";
 import axios from "axios";
 

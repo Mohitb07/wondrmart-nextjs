@@ -13,7 +13,6 @@ const queryClient = new QueryClient();
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = Cookies.get("accessToken");
-    if (!token) return new Promise((resolve, reject) => reject("No token found"));
     config.headers.Authorization = `Bearer ${token}`;
 
     return config;
@@ -31,10 +30,7 @@ axiosInstance.interceptors.response.use(
   (err) => {
     // console.log("response error", err);
     if (err.response && err.response.status === 401) {
-      let token = null;
-      if (typeof window !== "undefined") {
-        token = Cookies.get("accessToken");
-      }
+      let token = Cookies.get("accessToken");
       if (token) {
         Cookies.remove("accessToken");
         queryClient.invalidateQueries({ queryKey: ["user"] });

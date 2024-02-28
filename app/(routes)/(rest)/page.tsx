@@ -5,13 +5,23 @@ import { dehydrate, Hydrate } from "@tanstack/react-query";
 import ProductsList from "./components/ProductsList";
 import getQueryClient from "./components/getQueryClient";
 import { getAllProducts } from "@/actions/getProducts";
+import { getProductsCount } from "@/actions/getProductsCount";
+import { getUser } from "@/actions/getUser";
 
 export default async function Home() {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["products", ""],
-    queryFn: () => getAllProducts(""),
+    queryKey: ["products", "", 1],
+    queryFn: () => getAllProducts("", "1"),
   });
+  await queryClient.prefetchQuery({
+    queryKey: ["productsCount", ""],
+    queryFn: () => getProductsCount("")
+  })
+  await queryClient.prefetchQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
+  })
   const dehydrateState = dehydrate(queryClient);
 
   return (

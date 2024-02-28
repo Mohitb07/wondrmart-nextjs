@@ -16,6 +16,10 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
     state: "",
     pinCode: "",
     mobile: "",
+    name: "",
+    city: "",
+    apartment: "",
+    area: "",
   });
 
   const regions =
@@ -88,10 +92,12 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           //   value={formik.values.username}
           //   onChange={formik.handleChange}
           variant="bordered"
+          value={address.name}
           type="text"
           name="name"
           label="Full name (First and Last name)"
           placeholder="Enter your full name"
+          onChange={handleChange}
           //   errorMessage={
           //     (isError && error.response?.data.message.username) ||
           //     (formik.touched.username && formik.errors.username)
@@ -151,10 +157,12 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           //   }
           //   onChange={formik.handleChange}
           variant="bordered"
+          value={address.apartment}
           type="number"
           name="apartment"
           label="Flat, House no., Building, Company, Apartment"
           placeholder=" "
+          onChange={handleChange}
           //   errorMessage={
           //     (isError && error.response?.data.message.address) ||
           //     (formik.touched.address && formik.errors.address)
@@ -171,10 +179,12 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           //   }
           //   onChange={formik.handleChange}
           variant="bordered"
+          value={address.area}
           type="text"
           name="area"
           label="Area, Street, Sector, Village"
           placeholder=" "
+          onChange={handleChange}
           //   errorMessage={
           //     (isError && error.response?.data.message.address) ||
           //     (formik.touched.address && formik.errors.address)
@@ -191,10 +201,12 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           //   }
           //   onChange={formik.handleChange}
           variant="bordered"
+          value={address.city}
           type="text"
           name="city"
           label="Town/City"
           placeholder=" "
+          onChange={handleChange}
           //   errorMessage={
           //     (isError && error.response?.data.message.address) ||
           //     (formik.touched.address && formik.errors.address)

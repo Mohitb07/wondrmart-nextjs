@@ -108,7 +108,7 @@ const ProductCard = ({
             <h2 className="text-sm">{formattedPrice}</h2>
           </div>
           <div>
-            <div className="flex items-center justify-end text-[1rem] max-sm:text-sm gap-2">
+            <div className="flex items-center justify-end text-[1rem] max-sm:text-sm gap-2 w-[6rem]">
               {/* <button className="bg-[#BEF264] text-black font-bold rounded-tl-xl rounded-bl-xl px-3 py-1">
                 -
               </button> */}
@@ -119,7 +119,7 @@ const ProductCard = ({
                 +
               </button> */}
               {formattedCartQty > 0 ? (
-                <>
+                <div className="w-full flex justify-between items-center">
                   <Button
                     isIconOnly
                     size="sm"
@@ -147,18 +147,19 @@ const ProductCard = ({
                   >
                     +
                   </Button>
-                </>
+                </div>
               ) : (
-                <form onSubmit={handleAddToCart}>
+                <form onSubmit={handleAddToCart} className="w-full">
                   <Button
                     type="submit"
+                    fullWidth
                     size="sm"
                     color="primary"
                     variant="faded"
-                    isLoading={isInCartLoading || isAdding}
-                    disabled={isAdding || isInCartLoading}
+                    isLoading={isAdding}
+                    disabled={isAdding}
                   >
-                    {!isInCartLoading && "Add"}
+                    Add
                   </Button>
                 </form>
               )}

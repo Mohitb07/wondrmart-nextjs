@@ -9,6 +9,7 @@ import { getProduct } from "@/actions/getProduct";
 import { Spinner } from "@nextui-org/react";
 import { cloudinaryImage } from "@/utils/cloudinaryImage";
 import { formatPrice } from "@/utils/formatPrice";
+import { notFound } from "next/navigation";
 
 type ProductDetailProps = {
   id: string;
@@ -20,7 +21,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     queryFn: () => getProduct(id),
   });
 
-  console.log("data", data, isLoading, error);
+  if (!data) {
+    notFound();
+  }
 
   if (isLoading) {
     return (
@@ -34,7 +37,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   }
 
   const { name, description, price, image_url, product_id } = data;
-  //   const clean = sanitize(description);
   const productImage = cloudinaryImage({
     imageUrl: image_url,
     height: 500,
@@ -43,18 +45,18 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const formattedPrice = formatPrice(Number(price));
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10">
       {/* white overlay background applied to hide the empty space because of the grid */}
       {/* <section className="shadow-gray-300 shadow-2xl bg-white rounded-lg"> */}
       <div className="flex justify-center items-center md:block">
         <ImageGallery src={productImage} />
       </div>
       {/* </section> */}
-      <section className="mt-5 space-y-3 flex-1 lg:col-span-2">
+      <section className="space-y-3 flex-1 lg:col-span-2">
         <ProductInfo
-          description={data.description}
+          description={description}
           price={formattedPrice}
-          productName={data.name}
+          productName={name}
         />
       </section>
       <section className="hidden lg:block">

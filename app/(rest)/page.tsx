@@ -2,26 +2,29 @@ import Container from "@/common/Container";
 import Search from "@/common/Search";
 import { dehydrate, Hydrate } from "@tanstack/react-query";
 
-import ProductsList from "./components/ProductsList";
-import getQueryClient from "./components/getQueryClient";
 import { getAllProducts } from "@/actions/getProducts";
 import { getProductsCount } from "@/actions/getProductsCount";
-import { getUser } from "@/actions/getUser";
+import getQueryClient from "./components/getQueryClient";
+import ProductsList from "./components/ProductsList";
 
-export default async function Home() {
+type HomeProps = {
+  searchParams: {
+    q: string;
+    page: string;
+  };
+};
+
+export default async function Home({ searchParams }: HomeProps) {
+  const { q, page } = searchParams;
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["products", "", 1],
-    queryFn: () => getAllProducts("", "1"),
+    queryKey: ["products", q || "", page || "1"],
+    queryFn: () => getAllProducts(q || "", page || "1"),
   });
   await queryClient.prefetchQuery({
-    queryKey: ["productsCount", ""],
-    queryFn: () => getProductsCount("")
-  })
-  await queryClient.prefetchQuery({
-    queryKey: ['user'],
-    queryFn: getUser,
-  })
+    queryKey: ["productsCount", q || ""],
+    queryFn: () => getProductsCount(q || ""),
+  });
   const dehydrateState = dehydrate(queryClient);
 
   return (

@@ -1,7 +1,6 @@
-import CartItem from "@/app/(routes)/(rest)/cart/components/CartItem";
+import OrderSummary from "@/app/(rest)/cart/components/Summary";
 import StyledCard from "../../addresses/components/Card";
 import OrderCard from "../components/OrderCard";
-import OrderSummary from "@/app/(routes)/(rest)/cart/components/Summary";
 
 export const metadata = {
   title: "Order Detail",

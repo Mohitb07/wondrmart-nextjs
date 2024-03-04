@@ -20,7 +20,7 @@ const ProductInfo: React.FC<ProductInfo> = ({
   const formattedDescription = sanitize(description);
   return (
     <>
-      <h1 className="text-base md:text-2xl font-bold">{productName}</h1>
+      <h1 className="text-lg md:text-2xl font-bold">{productName}</h1>
       <Divider />
       <p className="text-2xl font-semibold">{price}</p>
       <div className="lg:hidden">

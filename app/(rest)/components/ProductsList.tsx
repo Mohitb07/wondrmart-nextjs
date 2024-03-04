@@ -9,25 +9,42 @@ import { Pagination, Spinner } from "@nextui-org/react";
 import { getCartItems } from "@/actions/getCartItems";
 import useGetUser from "@/hooks/useGetUser";
 import { getProductsCount } from "@/actions/getProductsCount";
+import Image from "next/image";
+import NotFoundSVG from "@/public/not-found.svg";
+import Cookies from "js-cookie";
 
 const LIMIT = 10;
 
 export default function ProductsList() {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
   const searchParams = useSearchParams();
-  const { data: user, isLoading: isUserLoading } = useGetUser();
-  const { data, isLoading, error, isPreviousData } = useQuery({
-    queryKey: ["products", params.get("q") || "", params.get("page") || 1],
-    queryFn: () =>
-      getAllProducts(params.get("q") || "", params.get("page") || "1"),
-    keepPreviousData: true,
+  const query = searchParams.get("q");
+  const page = searchParams.get("page");
+  const {
+    data,
+    isLoading,
+    error,
+    isPreviousData,
+    isError: isProductListError,
+    isFetching,
+    isInitialLoading,
+    isRefetching,
+  } = useQuery({
+    queryKey: ["products", query || "", page || "1"],
+    queryFn: () => getAllProducts(query || "", page || "1"),
+    keepPreviousData: false, // whether to show previous data while fetching new data or show the skeleton
+    refetchOnWindowFocus: false,
   });
+
+  console.log('isLoading', isFetching, isInitialLoading, isRefetching)
+  
   const { data: productsCount, isLoading: isCountLoading } = useQuery({
-    queryKey: ["productsCount", params.get("q") || ""],
-    queryFn: () => getProductsCount(params.get("q") || ""),
+    queryKey: ["productsCount", query || ""],
+    queryFn: () => getProductsCount(query || ""),
+    refetchOnWindowFocus: false,
   });
+
   const {
     data: cartItems,
     isInitialLoading: isCartItemsLoading,
@@ -35,20 +52,16 @@ export default function ProductsList() {
   } = useQuery({
     queryKey: ["cartItems"],
     queryFn: getCartItems,
-    enabled: !!user && !isUserLoading,
+    enabled: Cookies.get("accessToken") ? true : false,
+    refetchOnWindowFocus: false,
     onError: (err) => {
       console.error("Error fetching cart items", err);
     },
   });
+  console.log('data', data?.length)
+  const isProductListFound = data && data.length > 0;
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[500px] ">
-        <Spinner color="primary" />
-      </div>
-    );
-  }
-  if (error) {
+  if (isProductListError) {
     return <div>Error: {JSON.stringify(error)}</div>;
   }
 
@@ -71,7 +84,6 @@ export default function ProductsList() {
 
   return (
     <Container>
-      {/* <h1>Product list {params.get("q")}</h1> */}
       <div
         className={`grid grid-cols-2 ${
           isPreviousData && "opacity-60"
@@ -83,6 +95,7 @@ export default function ProductsList() {
             id={product.product_id}
             image_url={product.image_url}
             isInCartLoading={isCartItemsLoading}
+            isLoading={isFetching || isRefetching}
             name={product.name}
             price={product.price}
             productId={product.product_id}
@@ -91,18 +104,35 @@ export default function ProductsList() {
           />
         ))}
       </div>
-      <div className="flex justify-center items-center my-4">
-        {isCountLoading ? (
-          <Spinner />
-        ) : (
-          <Pagination
-            loop
-            showControls
-            total={totalPages}
-            initialPage={1}
-            onChange={onPageChange}
+      {!isProductListFound && (
+        <div className="flex justify-center items-center h-[500px] flex-col">
+          <Image
+            src={NotFoundSVG}
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: "auto", height: "30%" }}
+            alt="404"
+            priority
           />
-        )}
+          {query ? (
+            <h2 className="text-2xl">No product found for {query}</h2>
+          ) : (
+            <h2 className="text-2xl">No products found</h2>
+          )}
+        </div>
+      )}
+      <div className="flex justify-center items-center my-4">
+        {isCountLoading
+          ? null
+          : isProductListFound && (
+              <Pagination
+                showControls
+                total={totalPages}
+                initialPage={1}
+                onChange={onPageChange}
+              />
+            )}
       </div>
     </Container>
   );

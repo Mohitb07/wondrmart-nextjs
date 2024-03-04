@@ -1,6 +1,6 @@
 "use client";
 
-import ProductCard from "@/app/(routes)/(rest)/components/ProductCard";
+import ProductCard from "@/app/(rest)/components/ProductCard";
 import React, { WheelEvent, useEffect, useRef, useState } from "react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
@@ -239,6 +239,7 @@ const RecommendedProducts: React.FC<RecommendedProductsProps> = () => {
           )}
           {PRODUCT_LIST.map((product) => (
             <ProductCard
+              isLoading={false}
               key={product.id}
               productId={product.id}
               id={product.id}

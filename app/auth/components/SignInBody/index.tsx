@@ -23,8 +23,6 @@ export const loginValidationSchema = yup.object({
 export default function SignInBody() {
   const [isVisible, setIsVisible] = useState(false);
   const { isLoading: isLoggingIn, mutate, isError, error } = useLogin();
-
-  console.log('login error', error)
   
   const formik = useFormik<SignInFormData>({
     initialValues: {

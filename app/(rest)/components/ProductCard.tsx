@@ -86,11 +86,14 @@ const ProductCard = ({
   };
 
   return (
-    <Skeleton isLoaded={!isLoading} className="rounded-lg">
+    <Skeleton
+      isLoaded={!isLoading}
+      className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+    >
       <div
         data-testid="product-card"
         // className="max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
-        className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+        // className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
       >
         <Link href={`/product/${id}`}>
           <div className="overflow-hidden h-[12rem] flex justify-center items-center bg-white">

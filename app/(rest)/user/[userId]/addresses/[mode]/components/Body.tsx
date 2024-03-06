@@ -1,36 +1,60 @@
 "use client";
 
 import { REGIONS_COUNTRIES } from "@/constants";
-import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import React, { useState } from "react";
+import { Button, Checkbox, Input, Select, SelectItem } from "@nextui-org/react";
+import React from "react";
 import { isPinCodeValid, isMobileNumberValid } from "@/utils/addressFilters";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 type BodyProps = {
   mode: string;
   addressId?: string;
 };
 
+export const addressValidationSchema = yup.object({
+  country: yup.string().required("Country is required"),
+  state: yup.string().required("State is required"),
+  pinCode: yup
+    .string()
+    .required("Pincode is required")
+    .matches(/^\d{6}$/, "Invalid Pincode"),
+  mobile: yup
+    .string()
+    .required("Mobile number is required")
+    .matches(/^\d{10}$/, "Invalid mobile number"),
+  name: yup.string().required("Name is required"),
+  city: yup.string().required("City is required"),
+  apartment: yup.string().required("Apartment is required"),
+  area: yup.string().required("Area is required"),
+  isDefault: yup.boolean(),
+});
+
 const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
-  const [address, setAddress] = useState({
-    country: "IN",
-    state: "",
-    pinCode: "",
-    mobile: "",
-    name: "",
-    city: "",
-    apartment: "",
-    area: "",
+  const formik = useFormik({
+    initialValues: {
+      country: "IN",
+      state: "",
+      pinCode: "",
+      mobile: "",
+      name: "",
+      city: "",
+      apartment: "",
+      area: "",
+      isDefault: false,
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+    validationSchema: addressValidationSchema,
   });
 
   const regions =
-    REGIONS_COUNTRIES.find((c) => c.countryShortCode === address.country)
+    REGIONS_COUNTRIES.find((c) => c.countryShortCode === formik.values.country)
       ?.regions || [];
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAddress({
-      ...address,
-      [e.target.name]: e.target.value,
-    });
+    formik.handleChange(e);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,10 +74,11 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
     )
       return;
 
-    setAddress({
-      ...address,
-      [e.target.name]: e.target.value,
-    });
+    formik.handleChange(e);
+  };
+
+  const handleDefaultAddress = (value: boolean) => {
+    formik.setFieldValue("isDefault", value);
   };
 
   return (
@@ -62,7 +87,7 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
         className="space-y-5 md:space-y-4"
         noValidate
         method="post"
-        // onSubmit={formik.handleSubmit}
+        onSubmit={formik.handleSubmit}
       >
         <Select
           isRequired
@@ -70,9 +95,9 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           variant="bordered"
           label="Country/Region"
           placeholder="Select a country/region"
-          defaultSelectedKeys={[address.country]}
-          onChange={handleSelectionChange}
-          //   className="max-w-xs"
+          defaultSelectedKeys={[formik.values.country]}
+          // onChange={handleSelectionChange}
+          isDisabled
         >
           {REGIONS_COUNTRIES.map((country) => (
             <SelectItem
@@ -84,145 +109,129 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           ))}
         </Select>
         <Input
-          //   isInvalid={
-          //     (isError && Boolean(error.response?.data.message.username)) ||
-          //     (formik.touched.username && Boolean(formik.errors.username))
-          //   }
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.username)) ||
+            formik.touched.name && Boolean(formik.errors.name)
+          }
           isRequired
-          //   value={formik.values.username}
-          //   onChange={formik.handleChange}
           variant="bordered"
-          value={address.name}
+          value={formik.values.name}
           type="text"
           name="name"
           label="Full name (First and Last name)"
           placeholder="Enter your full name"
           onChange={handleChange}
-          //   errorMessage={
-          //     (isError && error.response?.data.message.username) ||
-          //     (formik.touched.username && formik.errors.username)
-          //   }
-          onError={() => {
-            console.log("error");
-          }}
+          errorMessage={
+            // (isError && error.response?.data.message.username) ||
+            formik.touched.name && formik.errors.name
+          }
         />
         <Input
           isRequired
-          //   isInvalid={
-          //     (isError && Boolean(error.response?.data.message.phone)) ||
-          //     (formik.touched.phone && Boolean(formik.errors.phone))
-          //   }
-          //   onChange={formik.handleChange}
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.phone)) ||
+            formik.touched.mobile && Boolean(formik.errors.mobile)
+          }
           variant="bordered"
-          value={address.mobile}
+          value={formik.values.mobile}
           name="mobile"
           label="Mobile number"
           placeholder="Enter your phone no."
           onChange={handleChange}
-          //   errorMessage={
-          //     (isError && error.response?.data.message.phone) ||
-          //     (formik.touched.phone && formik.errors.phone)
-          //   }
-          onError={() => {
-            console.log("error");
-          }}
+          errorMessage={
+            // (isError && error.response?.data.message.phone) ||
+            formik.touched.mobile && formik.errors.mobile
+          }
         />
         <Input
           isRequired
-          //   isInvalid={
-          //     (isError && Boolean(error.response?.data.message.address)) ||
-          //     (formik.touched.address && Boolean(formik.errors.address))
-          //   }
-          //   onChange={formik.handleChange}
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.address)) ||
+            formik.touched.pinCode && Boolean(formik.errors.pinCode)
+          }
           variant="bordered"
-          value={address.pinCode}
+          value={formik.values.pinCode}
           type="text"
           name="pinCode"
           label="Pincode"
           placeholder="6 digits PIN code"
           onChange={handleChange}
-          //   errorMessage={
-          //     (isError && error.response?.data.message.address) ||
-          //     (formik.touched.address && formik.errors.address)
-          //   }
-          onError={() => {
-            console.log("error");
-          }}
+          errorMessage={
+            // (isError && error.response?.data.message.address) ||
+            formik.touched.pinCode && formik.errors.pinCode
+          }
         />
         <Input
           isRequired
-          //   isInvalid={
-          //     (isError && Boolean(error.response?.data.message.address)) ||
-          //     (formik.touched.address && Boolean(formik.errors.address))
-          //   }
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.address)) ||
+            formik.touched.apartment && Boolean(formik.errors.apartment)
+          }
           //   onChange={formik.handleChange}
           variant="bordered"
-          value={address.apartment}
-          type="number"
+          value={formik.values.apartment}
+          type="text"
           name="apartment"
           label="Flat, House no., Building, Company, Apartment"
           placeholder=" "
           onChange={handleChange}
-          //   errorMessage={
-          //     (isError && error.response?.data.message.address) ||
-          //     (formik.touched.address && formik.errors.address)
-          //   }
-          onError={() => {
-            console.log("error");
-          }}
+          errorMessage={
+            // (isError && error.response?.data.message.address) ||
+            formik.touched.apartment && formik.errors.apartment
+          }
         />
         <Input
           isRequired
-          //   isInvalid={
-          //     (isError && Boolean(error.response?.data.message.address)) ||
-          //     (formik.touched.address && Boolean(formik.errors.address))
-          //   }
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.address)) ||
+            formik.touched.area && Boolean(formik.errors.area)
+          }
           //   onChange={formik.handleChange}
           variant="bordered"
-          value={address.area}
+          value={formik.values.area}
           type="text"
           name="area"
           label="Area, Street, Sector, Village"
           placeholder=" "
           onChange={handleChange}
-          //   errorMessage={
-          //     (isError && error.response?.data.message.address) ||
-          //     (formik.touched.address && formik.errors.address)
-          //   }
-          onError={() => {
-            console.log("error");
-          }}
+          errorMessage={
+            // (isError && error.response?.data.message.address) ||
+            formik.touched.area && formik.errors.area
+          }
         />
         <Input
           isRequired
-          //   isInvalid={
-          //     (isError && Boolean(error.response?.data.message.address)) ||
-          //     (formik.touched.address && Boolean(formik.errors.address))
-          //   }
-          //   onChange={formik.handleChange}
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.address)) ||
+            formik.touched.city && Boolean(formik.errors.city)
+          }
           variant="bordered"
-          value={address.city}
+          value={formik.values.city}
           type="text"
           name="city"
           label="Town/City"
           placeholder=" "
           onChange={handleChange}
-          //   errorMessage={
-          //     (isError && error.response?.data.message.address) ||
-          //     (formik.touched.address && formik.errors.address)
-          //   }
-          onError={() => {
-            console.log("error");
-          }}
+          errorMessage={
+            // (isError && error.response?.data.message.address) ||
+            formik.touched.city && formik.errors.city
+          }
         />
         <Select
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.address)) ||
+            formik.touched.state && Boolean(formik.errors.state)
+          }
+          errorMessage={
+            // (isError && error.response?.data.message.address) ||
+            formik.touched.state && formik.errors.state
+          }
           isRequired
           variant="bordered"
           label="State"
           name="state"
           placeholder="Choose a state"
           onChange={handleSelectionChange}
-          //   className="max-w-xs"
         >
           {regions.map((region) => (
             <SelectItem
@@ -233,9 +242,32 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
             </SelectItem>
           ))}
         </Select>
+        <Checkbox
+          isInvalid={
+            // (isError && Boolean(error.response?.data.message.address)) ||
+            formik.touched.isDefault && Boolean(formik.errors.isDefault)
+          }
+          name="isDefault"
+          isSelected={formik.values.isDefault}
+          onValueChange={handleDefaultAddress}
+        >
+          Make this my default address
+        </Checkbox>
         <Button
           //   isLoading={isLoading}
           type="submit"
+          isDisabled={
+            !formik.isValid ||
+            formik.isSubmitting ||
+            formik.values.pinCode === "" ||
+            formik.values.mobile === "" ||
+            formik.values.name === "" ||
+            formik.values.city === "" ||
+            formik.values.apartment === "" ||
+            formik.values.area === "" ||
+            formik.values.state === "" ||
+            formik.values.country === ""
+          }
           className="w-full font-bold"
           color="primary"
           variant="shadow"

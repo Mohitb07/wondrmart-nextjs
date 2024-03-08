@@ -7,9 +7,13 @@ export const signInUser = async (body: SignInFormData): Promise<UserData> => {
   Object.keys(body).forEach((key) => formData.append(key, body[key]));
 
   try {
-    const res = await axios.post("/auth/signin/api/login", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_CLIENT_URL}/auth/signin/api/login`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
 
     return res.data;
   } catch (error) {

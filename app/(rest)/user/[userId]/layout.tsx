@@ -34,7 +34,6 @@ export default function UserLayout({
   const paths = pathname.split("/").slice(1);
   const breadCrumbList = paths.map((path, index) => {
     const href = `/${paths.slice(0, index + 2).join("/")}`;
-    console.log("path", path, index, href);
     const text = paths
       .filter((path) => path !== params.userId)
       .map((item) => item[0].toUpperCase() + item.substring(1))[index];

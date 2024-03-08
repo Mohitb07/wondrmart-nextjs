@@ -117,7 +117,7 @@ export default function StyledNavbar() {
                   as={NextLink}
                   className="w-full"
                   color="foreground"
-                  href="/user/123"
+                  href={`/user/${user.customer_id}`}
                 >
                   Profile
                 </Link>

@@ -17,6 +17,13 @@ type CardProps = {
   children?: React.ReactNode;
   isHeaderVisible?: boolean;
   isFooterVisible?: boolean;
+  className?: string;
+  apartment?: string;
+  area?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  mobile?: string;
 };
 
 const StyledCard: React.FC<CardProps> = ({
@@ -25,12 +32,19 @@ const StyledCard: React.FC<CardProps> = ({
   children,
   isHeaderVisible = true,
   isFooterVisible = true,
+  className = "",
+  apartment = "",
+  area = "",
+  city = "",
+  state = "",
+  country = "",
+  mobile = "",
 }) => {
   return (
     <Card
-      className={`w-full md:min-w-[300px] md:max-w-[380px] min-h-[240px] border-2 ${
+      className={`w-full md:min-w-[300px] md:max-w-[380px] min-h-[240px] border ${
         isDefault ? "border-primary" : "border-transparent"
-      }`}
+      } ${className}`}
     >
       {isHeaderVisible && isDefault && (
         <>
@@ -43,13 +57,12 @@ const StyledCard: React.FC<CardProps> = ({
       )}
       <CardBody className="text-sm p-3 px-6 flex justify-center">
         {children || (
-          <div className="leading-8 flex flex-col">
-            <span>Testing </span>
-            <span>T-T TTT TTT</span>
-            <span>Testing Location</span>
-            <span>Testing, Testing 1100123</span>
-            <span>India</span>
-            <span>Phone number: 123456789</span>
+          <div className="leading-5 flex flex-col">
+            <span>{apartment}</span>
+            <span>{area}</span>
+            <span>{city}</span>
+            <span>{state}</span>
+            <span>Phone number: {mobile}</span>
           </div>
         )}
       </CardBody>

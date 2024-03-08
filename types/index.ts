@@ -83,3 +83,32 @@ export interface CartItemData {
   cart: CartType[];
 }
 
+export type Address = {
+  address_id: string;
+  country: string;
+  full_name: string;
+  phone: string;
+  pincode: string;
+  flat_no: string;
+  street: string;
+  city: string;
+  state: string;
+  default: boolean;
+  customer_id: string;
+  createdAt: string;
+  updatedAt: string;
+  customers: string;
+};
+
+export type AddressFormData = {
+  name: string;
+  mobile: string;
+  pinCode: string;
+  apartment: string;
+  area: string;
+  city: string;
+  state: string;
+  country: string;
+  isDefault: boolean;
+  [key: string]: string | boolean;
+};

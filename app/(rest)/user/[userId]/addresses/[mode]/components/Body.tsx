@@ -2,14 +2,26 @@
 
 import { REGIONS_COUNTRIES } from "@/constants";
 import { Button, Checkbox, Input, Select, SelectItem } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { isPinCodeValid, isMobileNumberValid } from "@/utils/addressFilters";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { AddressFormData } from "@/types";
 
 type BodyProps = {
   mode: string;
   addressId?: string;
+  onSubmit?: (values: AddressFormData) => void;
+  default: boolean;
+  isProcessing?: boolean;
+  isAddressLoading?: boolean;
+  pincode: string;
+  phone: string;
+  full_name: string;
+  city: string;
+  state: string;
+  flat_no: string;
+  street: string;
 };
 
 export const addressValidationSchema = yup.object({
@@ -30,28 +42,41 @@ export const addressValidationSchema = yup.object({
   isDefault: yup.boolean(),
 });
 
-const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
+const regions =
+  REGIONS_COUNTRIES.find((c) => c.countryShortCode === "IN")?.regions || [];
+
+const Body: React.FC<BodyProps> = ({
+  mode,
+  onSubmit,
+  isProcessing = false,
+  isAddressLoading = false,
+  state,
+  pincode,
+  phone,
+  full_name,
+  city,
+  flat_no,
+  street,
+  default: isDefault,
+}) => {
   const formik = useFormik({
     initialValues: {
       country: "IN",
-      state: "",
-      pinCode: "",
-      mobile: "",
-      name: "",
-      city: "",
-      apartment: "",
-      area: "",
-      isDefault: false,
+      state: state || "",
+      pinCode: pincode || "",
+      mobile: phone || "",
+      name: full_name || "",
+      city: city || "",
+      apartment: flat_no || "",
+      area: street || "",
+      isDefault: isDefault || false,
     },
     onSubmit: (values) => {
-      console.log(values);
+      onSubmit && onSubmit(values);
     },
+    enableReinitialize: true,
     validationSchema: addressValidationSchema,
   });
-
-  const regions =
-    REGIONS_COUNTRIES.find((c) => c.countryShortCode === formik.values.country)
-      ?.regions || [];
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     formik.handleChange(e);
@@ -80,6 +105,9 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
   const handleDefaultAddress = (value: boolean) => {
     formik.setFieldValue("isDefault", value);
   };
+
+  if (isAddressLoading)
+    return <div className="text-3xl text-center">Loading...</div>;
 
   return (
     <>
@@ -116,6 +144,7 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           isRequired
           variant="bordered"
           value={formik.values.name}
+          defaultValue={full_name}
           type="text"
           name="name"
           label="Full name (First and Last name)"
@@ -232,6 +261,7 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           name="state"
           placeholder="Choose a state"
           onChange={handleSelectionChange}
+          selectedKeys={[formik.values.state]}
         >
           {regions.map((region) => (
             <SelectItem
@@ -254,7 +284,7 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
           Make this my default address
         </Checkbox>
         <Button
-          //   isLoading={isLoading}
+          isLoading={isProcessing}
           type="submit"
           isDisabled={
             !formik.isValid ||
@@ -266,7 +296,9 @@ const Body: React.FC<BodyProps> = ({ mode, addressId = "" }) => {
             formik.values.apartment === "" ||
             formik.values.area === "" ||
             formik.values.state === "" ||
-            formik.values.country === ""
+            formik.values.country === "" ||
+            isAddressLoading ||
+            isProcessing
           }
           className="w-full font-bold"
           color="primary"

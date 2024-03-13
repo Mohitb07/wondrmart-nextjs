@@ -1,8 +1,7 @@
-import Container from "@/common/Container";
+import { getAddresses } from "@/actions/getAddresses";
+import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 import StyledCard from "./components/Card";
-import Link from "next/link";
-import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
 
 export const metadata = {
   title: "Your Addresses",
@@ -15,12 +14,10 @@ export default async function AddressPage({
   params: { userId: string };
 }) {
   const { userId } = params;
+  const addresses = (await getAddresses(userId)) || [];
   return (
-    // <Container>
-    //   <main className="p-6 space-y-5">
-    //     <h1 className="text-4xl font-bold">Your Addresses</h1>
-    <div className="grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      <StyledCard>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <StyledCard isFooterVisible className="h-[262px]">
         <Link
           href="/user/[userId]/addresses/[mode]"
           as={`/user/${userId}/addresses/create`}
@@ -31,14 +28,21 @@ export default async function AddressPage({
           </div>
         </Link>
       </StyledCard>
-      <StyledCard userId={userId} isDefault />
-      <StyledCard userId={userId} />
-      <StyledCard userId={userId} />
-      <StyledCard userId={userId} />
-      <StyledCard userId={userId} />
-      <StyledCard userId={userId} />
+
+      {addresses.map((address) => (
+        <StyledCard
+          userId={userId}
+          key={address.address_id}
+          city={address.city}
+          country={address.country}
+          state={address.state}
+          area={address.street}
+          apartment={address.flat_no}
+          mobile={address.phone}
+          isDefault={address.default}
+          addressId={address.address_id}
+        />
+      ))}
     </div>
-    //   </main>
-    // </Container>
   );
 }

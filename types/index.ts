@@ -112,3 +112,5 @@ export type AddressFormData = {
   isDefault: boolean;
   [key: string]: string | boolean;
 };
+
+export type AddressModes = "create" | "edit";

@@ -24,6 +24,7 @@ type CardProps = {
   state?: string;
   country?: string;
   mobile?: string;
+  addressId?: string;
 };
 
 const StyledCard: React.FC<CardProps> = ({
@@ -39,6 +40,7 @@ const StyledCard: React.FC<CardProps> = ({
   state = "",
   country = "",
   mobile = "",
+  addressId,
 }) => {
   return (
     <Card
@@ -67,12 +69,15 @@ const StyledCard: React.FC<CardProps> = ({
         )}
       </CardBody>
       <CardFooter className="flex text-sm gap-3 px-6">
-        {isFooterVisible &&!children && (
+        {isFooterVisible && !children && (
           <>
             <div>
               <Link
-                href="/user/[userId]/addresses/[mode]"
-                as={`/user/${userId}/addresses/edit`}
+                href={{
+                  pathname: `/user/${userId}/addresses/edit`,
+                  query: { id: addressId },
+                }}
+                // as={`/user/${userId}/addresses/edit`}
               >
                 Edit
               </Link>

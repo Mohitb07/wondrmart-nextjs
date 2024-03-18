@@ -1,21 +1,21 @@
 "use client";
 
+import { getCartItems } from "@/actions/getCartItems";
+import { getAllProducts } from "@/actions/getProducts";
+import { getProductsCount } from "@/actions/getProductsCount";
 import Container from "@/common/Container";
+import NotFoundSVG from "@/public/not-found.svg";
+import { Pagination } from "@nextui-org/react";
+import { useQuery } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProductCard from "./ProductCard";
-import { useQuery } from "@tanstack/react-query";
-import { getAllProducts } from "@/actions/getProducts";
-import { Pagination, Spinner } from "@nextui-org/react";
-import { getCartItems } from "@/actions/getCartItems";
-import useGetUser from "@/hooks/useGetUser";
-import { getProductsCount } from "@/actions/getProductsCount";
-import Image from "next/image";
-import NotFoundSVG from "@/public/not-found.svg";
-import Cookies from "js-cookie";
 
 const LIMIT = 10;
 
 export default function ProductsList() {
+  console.log("called home");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -23,12 +23,10 @@ export default function ProductsList() {
   const page = searchParams.get("page");
   const {
     data,
-    isLoading,
     error,
     isPreviousData,
     isError: isProductListError,
     isFetching,
-    isInitialLoading,
     isRefetching,
   } = useQuery({
     queryKey: ["products", query || "", page || "1"],
@@ -37,8 +35,8 @@ export default function ProductsList() {
     refetchOnWindowFocus: false,
   });
 
-  console.log('isLoading', isFetching, isInitialLoading, isRefetching)
-  
+  // console.log("isLoading", isFetching, isInitialLoading, isRefetching);
+
   const { data: productsCount, isLoading: isCountLoading } = useQuery({
     queryKey: ["productsCount", query || ""],
     queryFn: () => getProductsCount(query || ""),
@@ -58,9 +56,9 @@ export default function ProductsList() {
       console.error("Error fetching cart items", err);
     },
   });
-  console.log('data', data?.length)
   const isProductListFound = data && data.length > 0;
 
+  // Need to handle error
   if (isProductListError) {
     return <div>Error: {JSON.stringify(error)}</div>;
   }

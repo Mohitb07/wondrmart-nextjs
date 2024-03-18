@@ -13,6 +13,14 @@ import Image from "next/image";
 import React from "react";
 import { MdDeleteOutline } from "react-icons/md";
 import ImageGallery from "../../../product/[productId]/components/ImageGallery";
+import { RemoveCartItemMutationData } from "@/hooks/useDeleteCartItem";
+
+type UpdateQuantityData = {
+  product_id: string;
+  unit_amount: string;
+  quantity: string;
+  cart_id: string;
+};
 
 type CartItemProps = {
   isLast?: boolean;
@@ -24,8 +32,10 @@ type CartItemProps = {
   product_id?: string;
   order_item_id?: string;
   isDisabled?: boolean;
-  cart_id?: string;
+  cart_id: string;
   cart_item_id?: string;
+  onUpdateQuantity?: (data: UpdateQuantityData) => void;
+  onRemoveCartItem: (data: RemoveCartItemMutationData) => void;
 };
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -39,17 +49,54 @@ const CartItem: React.FC<CartItemProps> = ({
   cart_id,
   cart_item_id,
   isDisabled = false,
+  onUpdateQuantity,
+  onRemoveCartItem,
 }) => {
-  const formattedPrice = formatPrice(Number(total_amount));
+  const formattedPrice = formatPrice(Number(unit_amount));
+  const formattedQuantity = Number(quantity);
   const productImage = cloudinaryImage({
     imageUrl: image_url,
     height: 120,
     width: 120,
   });
 
-  console.log('productImage', productImage)
-  
-  
+  const handleQuantityChange = (qty: number) => {
+    if (onUpdateQuantity) {
+      onUpdateQuantity({
+        product_id,
+        unit_amount,
+        quantity: qty.toString(),
+        cart_id,
+      });
+    }
+  };
+
+  const onQuantityAdd = () => {
+    if (formattedQuantity === 4) {
+      // toast({
+      //   title: "Stock Limit",
+      //   description: "You cannot add more of this item",
+      //   status: "warning",
+      //   position: "bottom",
+      //   isClosable: true,
+      // });
+      return;
+    }
+    handleQuantityChange(formattedQuantity + 1);
+  };
+
+  const onQuantityRemove = () => {
+    if (formattedQuantity > 0) {
+      handleQuantityChange(formattedQuantity - 1);
+    }
+  };
+
+  const onRemoveCartItemHandler = () => {
+    if (cart_id && cart_item_id) {
+      onRemoveCartItem({ cartId: cart_id, cartItemId: cart_item_id });
+    }
+  };
+
   return (
     <>
       <Card
@@ -66,7 +113,10 @@ const CartItem: React.FC<CartItemProps> = ({
               alt="product image"
               priority
             /> */}
-            <ImageGallery src={productImage} />
+            <AdvancedImage
+              cldImg={productImage}
+              plugins={[lazyload(), responsive()]}
+            />
           </div>
           <div className="flex flex-1 flex-col justify-between py-2">
             <div className="flex justify-between">
@@ -74,7 +124,7 @@ const CartItem: React.FC<CartItemProps> = ({
                 {/* {title.length > 20 ? title.slice(0, 20) + "..." : title} */}
                 {title}
               </h1>
-              <span>
+              <span onClick={onRemoveCartItemHandler} className="cursor-pointer">
                 <MdDeleteOutline className="text-2xl text-slate-500" />
               </span>
             </div>
@@ -90,6 +140,7 @@ const CartItem: React.FC<CartItemProps> = ({
                   style={{
                     fontSize: "1.2rem",
                   }}
+                  onClick={onQuantityRemove}
                 >
                   -
                 </Button>
@@ -103,6 +154,7 @@ const CartItem: React.FC<CartItemProps> = ({
                   style={{
                     fontSize: "1.2rem",
                   }}
+                  onClick={onQuantityAdd}
                 >
                   +
                 </Button>

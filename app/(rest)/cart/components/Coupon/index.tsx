@@ -6,12 +6,14 @@ import { IoMdPricetag } from "react-icons/io";
 
 type CouponInputProps = {};
 
+export const DISCOUNT_VALUE = 500;
+
 const CouponInput: React.FC<CouponInputProps> = () => {
   return (
     <Input
       minLength={6}
       maxLength={6}
-      defaultValue="FREE20"
+      defaultValue={`FREE${DISCOUNT_VALUE}`}
       className="text-primary text-opacity-80"
       isClearable
       radius="lg"
@@ -19,7 +21,7 @@ const CouponInput: React.FC<CouponInputProps> = () => {
       placeholder="Enter Coupon Code"
       isInvalid={false}
       variant="bordered"
-        // errorMessage="Enter a valid coupon code"
+      // errorMessage="Enter a valid coupon code"
       startContent={
         <IoMdPricetag className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
       }

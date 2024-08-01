@@ -20,7 +20,7 @@ const AddressMode = ({ mode }: AddressModeProps) => {
     handleAddress,
     addressId,
     data,
-    isLoading: isAddressLoading,
+    isInitialLoading: isAddressLoading,
     isError,
   } = useGetAddress(mode);
 

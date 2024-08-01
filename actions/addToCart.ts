@@ -1,10 +1,9 @@
 import { axiosInstance } from "../api";
 
-export const addToCart = async (productId: string, productPrice: string) => {
+export const addToCart = async (productId: string) => {
   try {
     const res = await axiosInstance.post(`/carts`, {
       product_id: productId,
-      product_price: productPrice,
     });
     return res.data;
   } catch (error) {

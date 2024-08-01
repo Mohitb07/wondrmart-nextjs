@@ -7,7 +7,7 @@ const useAddToCart = () => {
   const { user } = useAuthUser();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) => addToCart(data.id, data.price),
+    mutationFn: (data: any) => addToCart(data.id),
     onSuccess: (data, variables) => {
       console.log("data success", data);
       console.log("data var", variables);

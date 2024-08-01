@@ -14,7 +14,6 @@ export const metadata = {
 };
 
 const User = ({ params }: { params: { userId: string } }) => {
-  console.log("params", params);
   const { userId } = params;
 
   return (

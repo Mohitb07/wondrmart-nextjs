@@ -15,7 +15,6 @@ import ProductCard from "./ProductCard";
 const LIMIT = 10;
 
 export default function ProductsList() {
-  console.log("called home");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

@@ -1,8 +1,10 @@
 "use client";
 
 import Container from "@/common/Container";
-import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import useGetUser from "@/hooks/useGetUser";
+import { BreadcrumbItem, Breadcrumbs, Skeleton } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import NextTopLoader from "nextjs-toploader";
 
 export default function UserLayout({
   children,
@@ -12,6 +14,7 @@ export default function UserLayout({
   params: { userId: string };
 }) {
   const pathname = usePathname();
+  const { data: user, isLoading } = useGetUser();
   let pageTitle = "";
   const isAccountIndexPage = pathname.split("/").pop() === params.userId;
   const isAddressMode =
@@ -24,7 +27,7 @@ export default function UserLayout({
     (pathname.split("/").pop() || "").substring(1);
 
   if (isAccountIndexPage) {
-    pageTitle = "Your Account";
+    pageTitle = `${user?.username}'s Account`;
   } else if (isAddressMode) {
     pageTitle = `${formattedTitle} Address`;
   } else {
@@ -45,7 +48,9 @@ export default function UserLayout({
   return (
     <Container>
       <main className="p-6 space-y-5">
-        <h1 className="text-4xl font-bold">{pageTitle}</h1>
+        <Skeleton isLoaded={!isLoading} className="inline-block rounded-lg">
+          <h1 className="text-4xl font-bold">{pageTitle}</h1>
+        </Skeleton>
         <Breadcrumbs size="lg">
           {filteredBreadCrumbList.map((breadcrumb, index) => {
             return (

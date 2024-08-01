@@ -103,28 +103,25 @@ const CartItem: React.FC<CartItemProps> = ({
         className="w-full p-2 shadow-2xl shadow-gray-900 border border-gray-800"
         isBlurred
       >
-        <div className="flex gap-3">
-          <div>
-            {/* <Image
-              className="rounded-lg"
-              src="https://m.media-amazon.com/images/I/61SUj2aKoEL._SX679_.jpg"
-              width={120}
-              height={120}
-              alt="product image"
-              priority
-            /> */}
-            <AdvancedImage
-              cldImg={productImage}
-              plugins={[lazyload(), responsive()]}
-            />
+        <div className="flex gap-3 items-center">
+          <div className="flex items-center justify-center h-24 w-24 md:h-28 md:w-28 bg-white rounded-lg overflow-hidden">
+            <div className="">
+              <AdvancedImage
+                cldImg={productImage}
+                plugins={[lazyload(), responsive()]}
+              />
+            </div>
           </div>
-          <div className="flex flex-1 flex-col justify-between py-2">
+          <div className="flex flex-1 flex-col py-2 gap-3">
             <div className="flex justify-between">
-              <h1 className="text-base md:text-lg">
-                {/* {title.length > 20 ? title.slice(0, 20) + "..." : title} */}
-                {title}
+              <h1 className="text-sm md:text-lg line-clamp-3">
+                {title.length > 150 ? title.slice(0, 20) + "..." : title}
+                {/* {title} */}
               </h1>
-              <span onClick={onRemoveCartItemHandler} className="cursor-pointer">
+              <span
+                onClick={onRemoveCartItemHandler}
+                className="cursor-pointer"
+              >
                 <MdDeleteOutline className="text-2xl text-slate-500" />
               </span>
             </div>

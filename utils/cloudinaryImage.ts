@@ -15,7 +15,7 @@ export const cloudinaryImage = ({
     cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
   })
     .resize(fit().width(width).height(height))
-    .roundCorners(byRadius(20))
+    .roundCorners(byRadius(1))
     .format("png");
   return image;
 };

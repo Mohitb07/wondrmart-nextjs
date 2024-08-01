@@ -3,7 +3,10 @@ import { UIProvider } from "@/providers/NextUIProvider";
 import { ReactQueryProvider } from "@/providers/ReactQuery";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import "../globals.css";
+import { Toaster } from "react-hot-toast";
+import BarProvider from "@/providers/ProgressBarProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +23,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <ReactQueryProvider>
-          <UIProvider>
-            <Navbar />
-            {children}
-          </UIProvider>
-        </ReactQueryProvider>
+        <BarProvider>
+          <ReactQueryProvider>
+            <UIProvider>
+              <Navbar />
+              {children}
+              <Toaster
+                position="bottom-center"
+                reverseOrder={false}
+              />
+            </UIProvider>
+          </ReactQueryProvider>
+        </BarProvider>
       </body>
     </html>
   );

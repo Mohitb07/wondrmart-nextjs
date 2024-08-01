@@ -126,7 +126,7 @@ export default function StyledNavbar() {
                 </Link>
               </DropdownItem>
               <DropdownItem key="orders">
-                <Link className="w-full" color="foreground" href="/orders">
+                <Link className="w-full" color="foreground" href={`/user/${user.customer_id}/orders`}>
                   Orders
                 </Link>
               </DropdownItem>

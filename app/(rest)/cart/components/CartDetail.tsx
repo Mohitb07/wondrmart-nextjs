@@ -5,12 +5,15 @@ import useUpdateQuantity from "@/hooks/useUpdateQty";
 import { calculateCartPrice } from "@/utils/cartPrice";
 import { Button, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
+import NotFoundSVG from "@/public/not-found.svg";
 import React from "react";
 import CartItem from "./CartItem";
 import CouponInput from "./Coupon";
 import OrderSummary from "./Summary";
 import useGetUser from "@/hooks/useGetUser";
 import useRemoveCartItem from "@/hooks/useDeleteCartItem";
+import Image from "next/image";
+import Link from "next/link";
 
 const CartDetail = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
@@ -43,7 +46,18 @@ const CartDetail = () => {
         {user?.username}&apos;s Cart
       </h1>
       {data.cart.length === 0 ? (
-        <div className="text-xl text-center">Cart is empty</div>
+        <div className="flex justify-center items-center h-[500px] flex-col">
+          <Image
+            src={NotFoundSVG}
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: "auto", height: "30%" }}
+            alt="404"
+            priority
+          />
+          <div className="text-xl text-center">Cart is empty</div>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-10 md:gap-10 lg:gap-20">
           {/* left section */}
@@ -77,6 +91,8 @@ const CartDetail = () => {
               <OrderSummary totalAmount={totalCartSum} />
             </div>
             <Button
+              as={Link}
+              href="/checkout"
               color="primary"
               className="mt-3"
               variant="shadow"

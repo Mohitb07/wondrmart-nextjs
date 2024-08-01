@@ -2,8 +2,16 @@ import axios from "axios";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const cookie = request.headers.get("Cookie");
-  console.log("cook", cookie);
+  // console.log('request window', request.cookies.get('accessToken')?.value);
+  // const cookie = request.cookies.get("accessToken")?.value;
+  // const cookie = request.headers.get("Cookie");
+  const state = request.headers.get("State");
+  let cookie;
+  if(state === 'client'){
+    cookie = request.headers.get("Cookie")?.split('=')[1];
+  }else {
+    cookie = request.headers.get('Cookie')
+  }  
 
   try {
     const res = await axios.get(`${process.env.BASE_URL}/addresses`, {

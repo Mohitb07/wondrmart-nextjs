@@ -13,8 +13,7 @@ import Link from "next/link";
 import { Button, ButtonGroup, Skeleton } from "@nextui-org/react";
 import useAddToCart from "@/hooks/useAddToCart";
 import useUpdateQuantity from "@/hooks/useUpdateQty";
-
-// import AddToCart from "../AddToCartBtn";
+import toast from "react-hot-toast";
 
 type ProductProps = {
   id: string;
@@ -67,13 +66,15 @@ const ProductCard = ({
   const onAddQty = () => {
     const currentQty = formattedCartQty;
     if (currentQty === 4) {
-      // toast({
-      //   title: "Stock Limit",
-      //   description: "You cannot add more of this item",
-      //   status: "warning",
-      //   position: "bottom",
-      //   isClosable: true,
-      // });
+      toast("You can only add up to 4 items", {
+        icon: "👏",
+        duration: 3000,
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
       return;
     }
     onQuantityChange(currentQty + 1);
@@ -92,14 +93,14 @@ const ProductCard = ({
     >
       <div
         data-testid="product-card"
-        // className="max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
-        // className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+      // className="max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+      // className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
       >
         <Link href={`/product/${id}`}>
           <div className="overflow-hidden h-[12rem] flex justify-center items-center bg-white">
             <AdvancedImage
               cldImg={productImage}
-              // plugins={[placeholder({ mode: "blur" })]}
+            // plugins={[placeholder({ mode: "blur" })]}
             />
           </div>
         </Link>
@@ -163,7 +164,7 @@ const ProductCard = ({
                       color="primary"
                       variant="faded"
                       isLoading={isAdding}
-                      disabled={isAdding}
+                      isDisabled={isAdding}
                     >
                       Add
                     </Button>

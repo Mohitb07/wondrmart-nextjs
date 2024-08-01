@@ -10,6 +10,8 @@ import { Spinner } from "@nextui-org/react";
 import { cloudinaryImage } from "@/utils/cloudinaryImage";
 import { formatPrice } from "@/utils/formatPrice";
 import { notFound } from "next/navigation";
+import { getCartItems } from "@/actions/getCartItems";
+import Cookies from "js-cookie";
 
 type ProductDetailProps = {
   id: string;
@@ -20,11 +22,23 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
+  const {
+    data: cartItems,
+    isInitialLoading: isCartItemsLoading,
+    isError: cartItemsError,
+  } = useQuery({
+    queryKey: ["cartItems"],
+    queryFn: getCartItems,
+    enabled: Cookies.get("accessToken") ? true : false,
+    refetchOnWindowFocus: false,
+    onError: (err) => {
+      console.error("Error fetching cart items", err);
+    },
+  });
 
   if (!data) {
     notFound();
   }
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[500px] ">
@@ -34,6 +48,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   }
   if (isError) {
     return <div>Error: {JSON.stringify(error)}</div>;
+  }
+
+  let cartItemsIds: Record<string, string> = {};
+  if (!isError && cartItems && cartItems.cart.length) {
+    cartItems.cart[0].cart_items.map((item) => {
+      cartItemsIds[item.product_id] = item.quantity.toString();
+    });
   }
 
   const { name, description, price, image_url, product_id } = data;
@@ -60,7 +81,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
         />
       </section>
       <section className="hidden lg:block">
-        <CardCTA />
+        <CardCTA
+          cartQty={cartItemsIds[data.product_id] || "0"}
+          productId={data.product_id}
+          price={data.price}
+          cartId={cartItems?.cart[0]?.cart_id}
+        />
       </section>
     </div>
   );

@@ -4,7 +4,7 @@ export const calculateCartPrice = (cartItems: CartItem[]) => {
   return cartItems.reduce(
     (acc: number, currentCartItem: CartItem) =>
       acc +
-      Number(currentCartItem.quantity) * Number(currentCartItem.products.price),
+      Number(currentCartItem.quantity) * Number(currentCartItem.product.price),
     0
   );
 };

@@ -13,7 +13,7 @@ export type CartItem = {
   cart_item_id: string;
   createdAt: string;
   product_id: string;
-  products: Product;
+  product: Product;
   quantity: string;
   total_amount: string;
   updatedAt: string;
@@ -79,10 +79,6 @@ export type UserData = {
   accessToken: string;
 };
 
-export interface CartItemData {
-  cart: CartType[];
-}
-
 export type Address = {
   address_id: string;
   country: string;
@@ -114,3 +110,15 @@ export type AddressFormData = {
 };
 
 export type AddressModes = "create" | "edit";
+
+export interface PaymentParams {
+  cart_id: string;
+  address_id: string;
+  shipping_name: string;
+  shipping_phone: string;
+  shipping_email: string;
+  payment_method: PaymentMethod;
+}
+
+export type PaymentStatus = "idle" | "loading" | "success" | "error";
+export type PaymentMethod = "card" | "cash";

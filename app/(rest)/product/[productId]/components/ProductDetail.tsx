@@ -1,63 +1,61 @@
 "use client";
 
-import React from "react";
-import ImageGallery from "./ImageGallery";
-import CardCTA from "./CTA/Card";
-import ProductInfo from "./ProductInfo";
-import { useQuery } from "@tanstack/react-query";
 import { getProduct } from "@/actions/getProduct";
-import { Spinner } from "@nextui-org/react";
+import useGetCart from "@/hooks/useGetCart";
 import { cloudinaryImage } from "@/utils/cloudinaryImage";
 import { formatPrice } from "@/utils/formatPrice";
+import { Spinner } from "@nextui-org/react";
+import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import { getCartItems } from "@/actions/getCartItems";
-import Cookies from "js-cookie";
+import React from "react";
+import CardCTA from "./CTA/Card";
+import ImageGallery from "./ImageGallery";
+import ProductInfo from "./ProductInfo";
 
 type ProductDetailProps = {
   id: string;
 };
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
-  const { data, isLoading, error, isError } = useQuery({
+  const {
+    data: product,
+    isLoading: isProductLoading,
+    isError: isProductError,
+    error: productError,
+  } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
   const {
-    data: cartItems,
-    isInitialLoading: isCartItemsLoading,
-    isError: cartItemsError,
-  } = useQuery({
-    queryKey: ["cartItems"],
-    queryFn: getCartItems,
-    enabled: Cookies.get("accessToken") ? true : false,
-    refetchOnWindowFocus: false,
-    onError: (err) => {
-      console.error("Error fetching cart items", err);
-    },
-  });
+    data: cart,
+    isInitialLoading: isCartLoading,
+    isError: isCartError,
+    error: cartError,
+  } = useGetCart();
 
-  if (!data) {
+  if (!product) {
     notFound();
   }
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[500px] ">
-        <Spinner color="primary" />
-      </div>
-    );
+  // if (isProductLoading || isCartLoading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-[500px] ">
+  //       <Spinner color="primary" />
+  //     </div>
+  //   );
+  // }
+  // Need to handle error
+  if (isProductError || isCartError) {
+    return <div>Error: {JSON.stringify(productError || cartError)}</div>;
   }
-  if (isError) {
-    return <div>Error: {JSON.stringify(error)}</div>;
-  }
-
+  let userCart = cart?.cart_items || [];
   let cartItemsIds: Record<string, string> = {};
-  if (!isError && cartItems && cartItems.cart.length) {
-    cartItems.cart[0].cart_items.map((item) => {
+  if (!isCartError && !!cart) {
+    userCart.map((item) => {
       cartItemsIds[item.product_id] = item.quantity.toString();
     });
   }
 
-  const { name, description, price, image_url, product_id } = data;
+  const { name, description, price, image_url, product_id } = product;
   const productImage = cloudinaryImage({
     imageUrl: image_url,
     height: 500,
@@ -82,10 +80,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       </section>
       <section className="hidden lg:block">
         <CardCTA
-          cartQty={cartItemsIds[data.product_id] || "0"}
-          productId={data.product_id}
-          price={data.price}
-          cartId={cartItems?.cart[0]?.cart_id}
+          cartQty={cartItemsIds[product_id] || "0"}
+          productId={product_id}
+          price={price}
+          cartId={cart?.cart_id}
         />
       </section>
     </div>

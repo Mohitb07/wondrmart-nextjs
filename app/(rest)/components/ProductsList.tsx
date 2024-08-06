@@ -1,13 +1,12 @@
 "use client";
 
-import { getCartItems } from "@/actions/getCartItems";
 import { getAllProducts } from "@/actions/getProducts";
 import { getProductsCount } from "@/actions/getProductsCount";
 import Container from "@/common/Container";
+import useGetCart from "@/hooks/useGetCart";
 import NotFoundSVG from "@/public/not-found.svg";
 import { Pagination } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
-import Cookies from "js-cookie";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProductCard from "./ProductCard";
@@ -22,7 +21,7 @@ export default function ProductsList() {
   const page = searchParams.get("page");
   const {
     data,
-    error,
+    error: productListError,
     isPreviousData,
     isError: isProductListError,
     isFetching,
@@ -33,38 +32,37 @@ export default function ProductsList() {
     keepPreviousData: false, // whether to show previous data while fetching new data or show the skeleton
     refetchOnWindowFocus: false,
   });
-
-  // console.log("isLoading", isFetching, isInitialLoading, isRefetching);
-
-  const { data: productsCount, isLoading: isCountLoading } = useQuery({
+  const {
+    data: productsCount,
+    isLoading: isCountLoading,
+    isError: isProductCountError,
+    error: productCountError,
+  } = useQuery({
     queryKey: ["productsCount", query || ""],
     queryFn: () => getProductsCount(query || ""),
     refetchOnWindowFocus: false,
   });
-
   const {
-    data: cartItems,
+    data: cart,
     isInitialLoading: isCartItemsLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["cartItems"],
-    queryFn: getCartItems,
-    enabled: Cookies.get("accessToken") ? true : false,
-    refetchOnWindowFocus: false,
-    onError: (err) => {
-      console.error("Error fetching cart items", err);
-    },
-  });
+    isError: isCartError,
+    error: cartError,
+  } = useGetCart();
   const isProductListFound = data && data.length > 0;
 
   // Need to handle error
-  if (isProductListError) {
-    return <div>Error: {JSON.stringify(error)}</div>;
+  if (isProductListError || isProductCountError || isCartError) {
+    return (
+      <div>
+        Error:{" "}
+        {JSON.stringify(productListError || productCountError || cartError)}
+      </div>
+    );
   }
-
+  let userCart = cart?.cart_items || [];
   let cartItemsIds: Record<string, string> = {};
-  if (!isError && cartItems && cartItems.cart.length) {
-    cartItems.cart[0].cart_items.map((item) => {
+  if (!isCartError && !!cart) {
+    userCart.map((item) => {
       cartItemsIds[item.product_id] = item.quantity.toString();
     });
   }
@@ -97,7 +95,7 @@ export default function ProductsList() {
             price={product.price}
             productId={product.product_id}
             cartQty={cartItemsIds[product.product_id] || "0"}
-            cartId={cartItems?.cart[0]?.cart_id}
+            cartId={cart?.cart_id}
           />
         ))}
       </div>

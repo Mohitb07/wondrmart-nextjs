@@ -1,9 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import useUpdateQuantity from "@/hooks/useUpdateQty";
-import useRemoveCartItem from "@/hooks/useDeleteCartItem";
 import { getCartItems } from "@/actions/getCartItems";
+import useRemoveCartItem from "@/hooks/useDeleteCartItem";
+import useGetAddresses from "@/hooks/useGetAddresses";
+import usePayment from "@/hooks/usePayment";
+import useUpdateQuantity from "@/hooks/useUpdateQty";
+import { Address, PaymentMethod, User } from "@/types";
+import { calculateCartPrice } from "@/utils/cartPrice";
+import { formatPrice } from "@/utils/formatPrice";
 import {
   Button,
   Card,
@@ -15,29 +19,37 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Image,
   Radio,
   RadioGroup,
   Spinner,
   cn,
 } from "@nextui-org/react";
-import useGetUser from "@/hooks/useGetUser";
-import { calculateCartPrice } from "@/utils/cartPrice";
-import CartItem from "../../cart/components/CartItem";
-import { formatPrice } from "@/utils/formatPrice";
-import axios from "axios";
-import { redirect } from "next/navigation";
-import Cookies from "js-cookie";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Address } from "@/types";
-import useGetAddresses from "@/hooks/useGetAddresses";
-import { axiosInstance } from "@/api";
+import CartItem from "../../cart/components/CartItem";
+import useGetUser from "@/hooks/useGetUser";
+import useGetCart from "@/hooks/useGetCart";
+import Link from "next/link";
 
 export default function Checkout() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["cartItems"],
-    queryFn: getCartItems,
-  });
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = useGetUser();
+  const {
+    data: cart,
+    isInitialLoading: isCartLoading,
+    isError,
+    error,
+  } = useGetCart();
+  const {
+    paymentStatus,
+    paymentMethod,
+    handlePayment,
+    handlePaymentStatus,
+    handlePaymentMethod,
+  } = usePayment();
   const { mutate: updateQuantityHandler } = useUpdateQuantity();
   const { mutate: removeCartItemHandler } = useRemoveCartItem();
   const {
@@ -47,11 +59,7 @@ export default function Checkout() {
   } = useGetAddresses();
   const [selectedAddress, setSelectedAddress] = useState<Address>();
 
-  const onSelectionChange = async (item: Address) => {
-    setSelectedAddress(item);
-  };
-
-  if (isLoading || isAddressesLoading) {
+  if (isCartLoading || isAddressesLoading || isUserLoading) {
     return (
       <div>
         <div className="flex items-center justify-center h-[500px] ">
@@ -61,12 +69,12 @@ export default function Checkout() {
     );
   }
 
-  if (isError || isAddressesError) {
+  if (isError || isAddressesError || isUserError) {
     return <div>Error: {JSON.stringify(isError || isAddressesError)}</div>;
   }
 
-  const cartItems = data?.cart[0]?.cart_items || [];
-  let totalCartSum = calculateCartPrice(cartItems);
+  const userCart = cart?.cart_items || [];
+  let totalCartSum = calculateCartPrice(userCart);
   let formattedPrice = formatPrice(totalCartSum);
 
   const currentAddress =
@@ -78,17 +86,42 @@ export default function Checkout() {
   );
 
   const handlePlaceOrder = async () => {
+    console.log('cart is ', cart)
+    if (!currentAddress) {
+      console.error("No address found");
+      return;
+    }
+    if (!cart?.cart_items) {
+      console.error("No cart found");
+      return;
+    }
     try {
-      const res = await axiosInstance.post("/initiate_payment", {
-        amount: totalCartSum,
-        firstname: "Mohit",
-        email: "bmohit980@gmail.com",
-        phone: "123123",
-        productinfo: "Info",
-      });
-      window.location.href = res.data;
+      handlePaymentStatus("loading");
+      const params = {
+        cart_id: cart.cart_id,
+        address_id: currentAddress.address_id,
+        shipping_name: currentAddress.full_name,
+        shipping_phone: currentAddress.phone,
+        shipping_email: user.email,
+        payment_method: paymentMethod,
+      };
+      console.log("params", params);
+      const res = await handlePayment(params);
+      console.log("res getting", res);
+      window.location.href = res.redirectUrl;
     } catch (error) {
-      console.log("error", error);
+      console.log("Something went wrong", error);
+      handlePaymentStatus("error");
+    }
+  };
+
+  const onSelectionChange = (item: Address) => setSelectedAddress(item);
+
+  const onPaymentMethodChange = (method: string) => {
+    if (method === "cash" || method === "card") {
+      handlePaymentMethod(method as PaymentMethod);
+    } else {
+      console.error("Invalid payment method:", method);
     }
   };
 
@@ -101,16 +134,16 @@ export default function Checkout() {
         <CardBody className="py-2 max-h-unit-7xl">
           <div className="overflow-y-scroll scrollbar-hide">
             <div className="flex flex-col gap-2">
-              {cartItems.map((item) => (
+              {userCart.map((item) => (
                 <CartItem
                   onUpdateQuantity={updateQuantityHandler}
                   onRemoveCartItem={removeCartItemHandler}
                   key={item.cart_item_id}
-                  image_url={item.products.image_url}
+                  image_url={item.product.image_url}
                   product_id={item.product_id}
                   quantity={item.quantity}
-                  title={item.products.name}
-                  unit_amount={item.products.price}
+                  title={item.product.name}
+                  unit_amount={item.product.price}
                   total_amount={item.total_amount}
                   cart_id={item.cart_id}
                   cart_item_id={item.cart_item_id}
@@ -133,39 +166,52 @@ export default function Checkout() {
             <p className="text-2xl font-bold">Shipping Address</p>
           </CardHeader>
           <CardBody className="overflow-visible py-2 max-h-unit-7xl">
-            <div className="flex justify-between px-1">
-              <div>
-                <p>{currentAddress.full_name}</p>
-                <p className="text-neutral-400">
-                  {`${currentAddress.flat_no}, ${currentAddress.street}, ${currentAddress.state}`}
-                </p>
-              </div>
-              <div>
-                <Dropdown
-                  showArrow
-                  onChange={(value) => console.log("selected, value", value)}
+            {!!!currentAddress ? (
+              <div className="flex justify-between px-1">
+                <p className="text-neutral-400">No address found</p>
+                <Button
+                  as={Link}
+                  href={`/user/${user.customer_id}/addresses`}
+                  variant="bordered"
                 >
-                  <DropdownTrigger>
-                    <Button variant="bordered">Change</Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    variant="faded"
-                    aria-label="change address dropdown"
-                    items={addressesList}
-                  >
-                    {addressesList.map((address) => (
-                      <DropdownItem
-                        key={`${address.full_name}, ${address.flat_no}, ${address.street}, ${address.state}`}
-                        description={`${address.flat_no}, ${address.street}, ${address.state}`}
-                        onClick={() => onSelectionChange(address)}
-                      >
-                        {address.full_name}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
+                  Add Address
+                </Button>
               </div>
-            </div>
+            ) : (
+              <div className="flex justify-between px-1">
+                <div>
+                  <p>{currentAddress.full_name}</p>
+                  <p className="text-neutral-400">
+                    {`${currentAddress.flat_no}, ${currentAddress.street}, ${currentAddress.state}`}
+                  </p>
+                </div>
+                <div>
+                  <Dropdown
+                    showArrow
+                    onChange={(value) => console.log("selected, value", value)}
+                  >
+                    <DropdownTrigger>
+                      <Button variant="bordered">Change</Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      variant="faded"
+                      aria-label="change address dropdown"
+                      items={addressesList}
+                    >
+                      {addressesList.map((address) => (
+                        <DropdownItem
+                          key={`${address.full_name}, ${address.flat_no}, ${address.street}, ${address.state}`}
+                          description={`${address.flat_no}, ${address.street}, ${address.state}`}
+                          onClick={() => onSelectionChange(address)}
+                        >
+                          {address.full_name}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </div>
+            )}
           </CardBody>
         </Card>
         <div className="flex flex-1 my-5">
@@ -174,6 +220,7 @@ export default function Checkout() {
             size="md"
             className="ml-auto px-5"
             onClick={handlePlaceOrder}
+            isLoading={paymentStatus === "loading"}
           >
             Place Order
           </Button>
@@ -185,37 +232,19 @@ export default function Checkout() {
         </CardHeader>
 
         <CardBody className="overflow-visible py-2 max-h-unit-7xl">
-          {/* <div className="flex items-center gap-4 pt-10">
-            <Card shadow="sm" isPressable className="w-full">
-              <CardBody className="overflow-visible p-0">
-                <div className="px-20 py-4 flex justify-center items-center flex-col border border-gray-800 rounded-lg w-full gap-3">
-                  <CreditCardIcon />
-                  <span>Card</span>
-                </div>
-              </CardBody>
-            </Card>
-            <Card shadow="sm" isPressable className="w-full">
-              <CardBody className="overflow-visible p-0">
-                <div className="px-20 py-4 flex justify-center items-center flex-col border border-gray-800 rounded-lg w-full gap-3">
-                  <DollarSignIcon />
-                  <span>Cash on delivery</span>
-                </div>
-              </CardBody>
-            </Card>
-          </div> */}
-
-          <RadioGroup className="pt-10">
+          <RadioGroup
+            className="pt-10"
+            value={paymentMethod}
+            onValueChange={onPaymentMethodChange}
+          >
             <div className="flex gap-5">
+              <CustomRadio value="cash">
+                <DollarSignIcon />
+                <span>Cash</span>
+              </CustomRadio>
               <CustomRadio value="card">
                 <CreditCardIcon />
                 <span>Card</span>
-              </CustomRadio>
-              <CustomRadio
-                //   description="Unlimited items. $10 per month."
-                value="cash"
-              >
-                <DollarSignIcon />
-                <span>Cash</span>
               </CustomRadio>
             </div>
           </RadioGroup>
@@ -225,7 +254,7 @@ export default function Checkout() {
   );
 }
 
-export const CustomRadio = (props) => {
+export const CustomRadio = (props: any) => {
   const { children, ...otherProps } = props;
 
   return (
@@ -244,7 +273,7 @@ export const CustomRadio = (props) => {
   );
 };
 
-function CreditCardIcon(props) {
+function CreditCardIcon(props: any) {
   return (
     <svg
       {...props}
@@ -264,7 +293,7 @@ function CreditCardIcon(props) {
   );
 }
 
-function DollarSignIcon(props) {
+function DollarSignIcon(props: any) {
   return (
     <svg
       {...props}

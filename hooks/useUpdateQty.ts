@@ -3,11 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CartType } from "../types";
 import { addQuantity } from "@/actions/updateQty";
 
-type CartItemData =
-  | {
-      cart: CartType[];
-    }
-  | undefined;
+type CartItemData = CartType | undefined;
 
 const useUpdateQuantity = () => {
   const queryClient = useQueryClient();
@@ -26,11 +22,12 @@ const useUpdateQuantity = () => {
         "cartItems",
       ]);
       const clonned = structuredClone(previousCartItems);
+      console.log("clonned", clonned);
       if (clonned) {
-        for (let i = 0; i < clonned.cart[0].cart_items.length; i++) {
-          if (clonned.cart[0].cart_items[i].product_id === data.product_id) {
-            clonned.cart[0].cart_items[i].quantity = data.quantity;
-            clonned.cart[0].cart_items[i].total_amount = (
+        for (let i = 0; i < clonned.cart_items.length; i++) {
+          if (clonned.cart_items[i].product_id === data.product_id) {
+            clonned.cart_items[i].quantity = data.quantity;
+            clonned.cart_items[i].total_amount = (
               Number(data.quantity) * Number(data.unit_amount)
             ).toString();
           }

@@ -26,13 +26,30 @@ export default function ProductsList() {
     isError: isProductListError,
     isLoading,
     isRefetching,
+    status,
+    fetchStatus,
+    isFetched,
+    isFetchedAfterMount,
+    isInitialLoading,
+    isFetching,
+    isStale,
   } = useQuery({
     queryKey: ["products", query || "", page || "1"],
     queryFn: () => getAllProducts(query || "", page || "1"),
     keepPreviousData: false, // whether to show previous data while fetching new data or show the skeleton
     refetchOnWindowFocus: false,
   });
-  console.log(data, isLoading, isRefetching);
+  console.log("isRefetching", isRefetching);
+  console.log("isFetching", isFetching);
+  console.log("isStale", isStale);
+  console.log("isInitialLoading", isInitialLoading);
+  console.log("isFetched", isFetched);
+  console.log("isFetchedAfterMount", isFetchedAfterMount);
+  console.log("fetchStatus", fetchStatus);
+  console.log("status", status);
+  console.log("isLoading", isLoading);
+  console.log('-------------------------------')
+
   const {
     data: productsCount,
     isLoading: isCountLoading,
@@ -92,7 +109,7 @@ export default function ProductsList() {
             image_url={product.image_url}
             isInCartLoading={isCartItemsLoading}
             // isLoading={!!!data && !isProductListError && isRefetching}
-            isLoading={isRefetching}
+            isLoading={fetchStatus === 'fetching'}
             name={product.name}
             price={product.price}
             productId={product.product_id}

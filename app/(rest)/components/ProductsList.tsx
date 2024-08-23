@@ -24,7 +24,7 @@ export default function ProductsList() {
     error: productListError,
     isPreviousData,
     isError: isProductListError,
-    isFetching,
+    isLoading,
     isRefetching,
   } = useQuery({
     queryKey: ["products", query || "", page || "1"],
@@ -32,6 +32,7 @@ export default function ProductsList() {
     keepPreviousData: false, // whether to show previous data while fetching new data or show the skeleton
     refetchOnWindowFocus: false,
   });
+  console.log(data, isLoading, isRefetching);
   const {
     data: productsCount,
     isLoading: isCountLoading,
@@ -90,7 +91,7 @@ export default function ProductsList() {
             id={product.product_id}
             image_url={product.image_url}
             isInCartLoading={isCartItemsLoading}
-            isLoading={isFetching || isRefetching}
+            isLoading={isLoading || isRefetching}
             name={product.name}
             price={product.price}
             productId={product.product_id}

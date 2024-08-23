@@ -91,7 +91,8 @@ export default function ProductsList() {
             id={product.product_id}
             image_url={product.image_url}
             isInCartLoading={isCartItemsLoading}
-            isLoading={isLoading || isRefetching}
+            // isLoading={!!!data && !isProductListError && isRefetching}
+            isLoading={isRefetching}
             name={product.name}
             price={product.price}
             productId={product.product_id}

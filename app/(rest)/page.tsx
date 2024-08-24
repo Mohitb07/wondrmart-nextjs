@@ -17,10 +17,10 @@ type HomeProps = {
 export default async function Home({ searchParams }: HomeProps) {
   const { q, page } = searchParams;
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["products", q || "", page || "1"],
-    queryFn: () => getAllProducts(q || "", page || "1"),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ["products"],
+  //   queryFn: () => getAllProducts(q || "", page || "1"),
+  // });
   await queryClient.prefetchQuery({
     queryKey: ["productsCount", q || ""],
     queryFn: () => getProductsCount(q || ""),

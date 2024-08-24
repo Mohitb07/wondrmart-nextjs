@@ -5,7 +5,7 @@ import { getProductsCount } from "@/actions/getProductsCount";
 import Container from "@/common/Container";
 import useGetCart from "@/hooks/useGetCart";
 import NotFoundSVG from "@/public/not-found.svg";
-import { Pagination } from "@nextui-org/react";
+import { Pagination, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -17,17 +17,19 @@ export default function ProductsList() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const query = searchParams.get("q");
-  const page = searchParams.get("page");
+  const query = searchParams.get("q") || "";
+  const page = searchParams.get("page") || "1";
+
   const {
     data,
+    isLoading,
     error: productListError,
     isPreviousData,
     isError: isProductListError,
   } = useQuery({
-    queryKey: ["products", query || "", page || "1"],
-    queryFn: () => getAllProducts(query || "", page || "1"),
-    keepPreviousData: false, // whether to show previous data while fetching new data or show the skeleton
+    queryKey: ["products", query, page],
+    queryFn: () => getAllProducts(query, page),
+    keepPreviousData: true, // whether to show previous data while fetching new data or show the skeleton
     refetchOnWindowFocus: false,
   });
 
@@ -83,23 +85,30 @@ export default function ProductsList() {
           isPreviousData && "opacity-60"
         } md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-16 lg:gap-16 md:p-2 xl:grid-cols-6 xl:gap-5 xl:gap-x-10 md:justify-items-center`}
       >
-        {data?.map((product) => (
-          <ProductCard
-            key={product.product_id}
-            id={product.product_id}
-            image_url={product.image_url}
-            isInCartLoading={isCartItemsLoading}
-            // isLoading={!!!data && !isProductListError && isRefetching}
-            isLoading={false}
-            name={product.name}
-            price={product.price}
-            productId={product.product_id}
-            cartQty={cartItemsIds[product.product_id] || "0"}
-            cartId={cart?.cart_id}
-          />
-        ))}
+        {!isLoading &&
+          data &&
+          data.map((product) => (
+            <ProductCard
+              key={product.product_id}
+              id={product.product_id}
+              image_url={product.image_url}
+              isInCartLoading={isCartItemsLoading}
+              // isLoading={!!!data && !isProductListError && isRefetching}
+              isLoading={false}
+              name={product.name}
+              price={product.price}
+              productId={product.product_id}
+              cartQty={cartItemsIds[product.product_id] || "0"}
+              cartId={cart?.cart_id}
+            />
+          ))}
       </div>
-      {!isProductListFound && (
+      {isLoading && (
+        <div className="flex justify-center items-center h-[500px]">
+          <Spinner label="Loading..." color="primary" />
+        </div>
+      )}
+      {!isProductListFound && !isLoading && (
         <div className="flex justify-center items-center h-[500px] flex-col">
           <Image
             src={NotFoundSVG}
@@ -124,7 +133,7 @@ export default function ProductsList() {
               <Pagination
                 showControls
                 total={totalPages}
-                initialPage={1}
+                initialPage={parseInt(page || "1")}
                 onChange={onPageChange}
               />
             )}

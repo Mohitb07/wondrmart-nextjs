@@ -1,7 +1,14 @@
 "use client";
 
 import { REGIONS_COUNTRIES } from "@/constants";
-import { Button, Checkbox, Input, Select, SelectItem } from "@nextui-org/react";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Select,
+  SelectItem,
+  Spinner,
+} from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { isPinCodeValid, isMobileNumberValid } from "@/utils/addressFilters";
 import { useFormik } from "formik";
@@ -105,9 +112,13 @@ const Body: React.FC<BodyProps> = ({
   const handleDefaultAddress = (value: boolean) => {
     formik.setFieldValue("isDefault", value);
   };
-
+  // Fix: Always showing the loading state
   if (isAddressLoading)
-    return <div className="text-3xl text-center">Loading...</div>;
+    return (
+      <div className="text-3xl text-center">
+        <Spinner label="Loading..." color="primary" />
+      </div>
+    );
 
   return (
     <>

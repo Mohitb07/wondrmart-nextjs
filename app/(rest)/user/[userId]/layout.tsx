@@ -21,6 +21,10 @@ export default function UserLayout({
     pathname.includes("addresses") &&
     (pathname.split("/").pop() === "create" ||
       pathname.split("/").pop() === "edit");
+  const isOrderDetailPage =
+    pathname.includes("orders") &&
+    pathname.split("/").pop() !== "orders" &&
+    pathname.split("/").pop()?.length !== 0;
 
   const formattedTitle =
     (pathname.split("/").pop() || "")[0].toUpperCase() +
@@ -30,6 +34,8 @@ export default function UserLayout({
     pageTitle = `${user?.username}'s Account`;
   } else if (isAddressMode) {
     pageTitle = `${formattedTitle} Address`;
+  } else if (isOrderDetailPage) {
+    pageTitle = `Order Detail`;
   } else {
     pageTitle = `Your ${formattedTitle}`;
   }
@@ -39,7 +45,7 @@ export default function UserLayout({
     const href = `/${paths.slice(0, index + 2).join("/")}`;
     const text = paths
       .filter((path) => path !== params.userId)
-      .map((item) => item[0].toUpperCase() + item.substring(1))[index];
+      .map((item) => (isOrderDetailPage && index === 2) ? item : item[0].toUpperCase() + item.substring(1))[index];
     return { href, text };
   });
 
@@ -52,13 +58,11 @@ export default function UserLayout({
           <h1 className="text-4xl font-bold">{pageTitle}</h1>
         </Skeleton>
         <Breadcrumbs size="lg">
-          {filteredBreadCrumbList.map((breadcrumb, index) => {
-            return (
-              <BreadcrumbItem key={index} href={breadcrumb.href}>
-                {breadcrumb.text}
-              </BreadcrumbItem>
-            );
-          })}
+          {filteredBreadCrumbList.map((breadcrumb, index) => (
+            <BreadcrumbItem key={index} href={breadcrumb.href}>
+              {breadcrumb.text}
+            </BreadcrumbItem>
+          ))}
         </Breadcrumbs>
         {children}
       </main>

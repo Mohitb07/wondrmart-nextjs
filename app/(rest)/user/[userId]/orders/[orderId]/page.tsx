@@ -27,7 +27,8 @@ export default function OrderDetail({ params }: OrderDetailProps) {
         </div>
       </div>
       <div className="mt-5 space-y-5">
-        <OrderCard orderId="313" isOrderDetail />
+        {/* NEED TO IMPLEMENT THIS */}
+        {/* <OrderCard orderId="313" isOrderDetail />
         <OrderCard orderId="313312" isOrderDetail />
         <OrderCard orderId="31351" isOrderDetail />
         <OrderCard orderId="31351" isOrderDetail />
@@ -35,7 +36,7 @@ export default function OrderDetail({ params }: OrderDetailProps) {
         <OrderCard orderId="31351" isOrderDetail />
         <OrderCard orderId="31351" isOrderDetail />
         <OrderCard orderId="31351" isOrderDetail />
-        <OrderCard orderId="31351" isOrderDetail />
+        <OrderCard orderId="31351" isOrderDetail /> */}
       </div>
     </div>
   );

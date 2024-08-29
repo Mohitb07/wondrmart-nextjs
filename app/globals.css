@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --primary: #BEF264;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,6 +27,20 @@ body {
     )
     rgb(var(--background-start-rgb));
   height: 100vh;
+}
+
+html::-webkit-scrollbar {
+  width: 6px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: #000;
+  border-radius: 100px;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 100px;
 }
 
 .card {

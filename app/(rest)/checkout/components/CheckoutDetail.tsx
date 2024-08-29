@@ -49,6 +49,7 @@ export default function Checkout() {
     handlePayment,
     handlePaymentStatus,
     handlePaymentMethod,
+    handleCashPayment,
   } = usePayment();
   const { mutate: updateQuantityHandler } = useUpdateQuantity();
   const { mutate: removeCartItemHandler } = useRemoveCartItem();
@@ -85,14 +86,47 @@ export default function Checkout() {
     (address) => address.address_id !== currentAddress.address_id
   );
 
-  const handlePlaceOrder = async () => {
-    console.log('cart is ', cart)
+  const handleCashTransaction = async () => {
+    if (paymentMethod !== "cash") {
+      console.error("Invalid payment method");
+      return;
+    }
     if (!currentAddress) {
       console.error("No address found");
       return;
     }
     if (!cart?.cart_items) {
       console.error("No cart found");
+      return;
+    }
+
+    try {
+      handlePaymentStatus("loading");
+      const params = {
+        cart_id: cart.cart_id,
+        address_id: currentAddress.address_id,
+        payment_method: paymentMethod,
+      };
+      const res = await handleCashPayment(params);
+      console.log("res getting", res);
+      window.location.href = `/${res.sendTo}`
+    } catch (error) {
+      console.log("Something went wrong", error);
+      handlePaymentStatus("error");
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!currentAddress) {
+      console.error("No address found");
+      return;
+    }
+    if (!cart?.cart_items) {
+      console.error("No cart found");
+      return;
+    }
+    if (paymentMethod === "cash") {
+      handleCashTransaction();
       return;
     }
     try {
@@ -105,9 +139,7 @@ export default function Checkout() {
         shipping_email: user.email,
         payment_method: paymentMethod,
       };
-      console.log("params", params);
       const res = await handlePayment(params);
-      console.log("res getting", res);
       window.location.href = res.redirectUrl;
     } catch (error) {
       console.log("Something went wrong", error);

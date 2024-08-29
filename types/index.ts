@@ -32,7 +32,7 @@ export type OrderItem = {
   order_id: string;
   order_item_id: string;
   product_id: string;
-  products: Product;
+  product: Product;
   quantity: string;
   total_amount: string;
   createdAt: string;
@@ -40,12 +40,12 @@ export type OrderItem = {
 };
 
 export type Order = {
-  address: string;
+  address: Address;
   customer_id: string;
   order_id: string;
   order_items: OrderItem[];
   status: "pending" | "shipped";
-  total_amount: string;
+  order_amount: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -64,14 +64,13 @@ export type SignInFormData = {
 };
 
 export type User = {
+  username: string;
   address: string;
-  createdAt: string;
   customer_id: string;
   email: string;
   password: string;
-  phone: string;
   updatedAt: string;
-  username: string;
+  createdAt: string;
 };
 
 export type UserData = {
@@ -93,7 +92,7 @@ export type Address = {
   customer_id: string;
   createdAt: string;
   updatedAt: string;
-  customers: string;
+  customer: User;
 };
 
 export type AddressFormData = {
@@ -117,6 +116,12 @@ export interface PaymentParams {
   shipping_name: string;
   shipping_phone: string;
   shipping_email: string;
+  payment_method: PaymentMethod;
+}
+
+export interface CashPaymentParams {
+  cart_id: string;
+  address_id: string;
   payment_method: PaymentMethod;
 }
 

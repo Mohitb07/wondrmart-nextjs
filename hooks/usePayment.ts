@@ -1,5 +1,10 @@
-import { payment } from "@/actions/payment";
-import { PaymentMethod, PaymentParams, PaymentStatus } from "@/types";
+import { payment, cashPayment } from "@/actions/payment";
+import {
+  PaymentMethod,
+  PaymentParams,
+  PaymentStatus,
+  CashPaymentParams,
+} from "@/types";
 import { useState } from "react";
 
 const usePayment = () => {
@@ -19,6 +24,15 @@ const usePayment = () => {
     }
   };
 
+  const handleCashPayment = async (paymentData: CashPaymentParams) => {
+    try {
+      const res = await cashPayment(paymentData);
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const handlePaymentStatus = (status: PaymentStatus) => {
     setPaymentStatus(status);
   };
@@ -26,6 +40,7 @@ const usePayment = () => {
   return {
     paymentMethod,
     handlePaymentMethod,
+    handleCashPayment,
     paymentStatus,
     handlePayment,
     handlePaymentStatus,

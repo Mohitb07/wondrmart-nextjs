@@ -1,3 +1,4 @@
+import { getUserOrders } from "@/actions/getOrders";
 import OrderCard from "./components/OrderCard";
 
 export const metadata = {
@@ -5,13 +6,27 @@ export const metadata = {
   description: "Track, return, or buy things again",
 };
 
-export default function OrdersPage() {
+export default async function OrdersPage({
+  params,
+}: {
+  params: { userId: string };
+}) {
+  const { userId } = params;
+  const orders = await getUserOrders(userId) || [];
+
   return (
     <div className="space-y-3">
-      <OrderCard orderId="123"/>
-      <OrderCard orderId="421"/>
-      <OrderCard orderId="414"/>
-      <OrderCard orderId="622"/>
+      {orders.map((order) => (
+        <OrderCard
+          key={order.order_id}
+          orderId={order.order_id}
+          orderAmount={order.order_amount}
+          orderDate={order.createdAt}
+          productImage={order.order_items[0].product.image_url}
+          productName={order.order_items[0].product.name}
+          username={order.address.customer.username}
+        />
+      ))}
     </div>
   );
 }

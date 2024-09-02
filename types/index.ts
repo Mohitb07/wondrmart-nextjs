@@ -44,7 +44,7 @@ export type Order = {
   customer_id: string;
   order_id: string;
   order_items: OrderItem[];
-  status: "pending" | "shipped";
+  status: "pending" | "shipped" | "delivered" | "cancelled" | "processing";
   order_amount: string;
   createdAt: string;
   updatedAt: string;

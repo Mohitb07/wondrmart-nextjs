@@ -4,28 +4,30 @@ import { formatPrice } from "@/utils/formatPrice";
 import { Card, CardBody, Divider } from "@nextui-org/react";
 import React from "react";
 
-export const DISCOUNT_VALUE = 500;
+export const DISCOUNT_VALUE = 0;
 
 type OrderSummaryProps = {
   textSize?: "sm" | "base" | "lg";
   amountSize?: "sm" | "base" | "lg";
-  totalAmount: number;
+  totalAmount: string;
+  quantity: number;
 };
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
   textSize = "base",
   amountSize = "lg",
   totalAmount = 0,
+  quantity = 0,
 }) => {
-  const formattedAmount = formatPrice(totalAmount);
-  const formattedTotalAmount = formatPrice(totalAmount - DISCOUNT_VALUE);
+  const formattedAmount = formatPrice(Number(totalAmount));
+  const formattedTotalAmount = formatPrice(Number(totalAmount) - DISCOUNT_VALUE);
   return (
-    <Card className="w-full md:min-w-[300px] min-h-[240px] border-2 border-transparent">
+    <Card className="w-full md:min-w-[300px] border border-transparent h-full">
       <CardBody>
-        <div className="space-y-3 leading-6">
+        <div className="space-y-4">
           <div className={`flex flex-col gap-3 text-${textSize}`}>
             <div className="flex justify-between">
-              <span>Price (3 items)</span>
+              <span>Price ({quantity} items)</span>
               <span>{formattedAmount}</span>
             </div>
             <div className="flex justify-between">

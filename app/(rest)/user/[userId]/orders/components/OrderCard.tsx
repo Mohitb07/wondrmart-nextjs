@@ -49,10 +49,10 @@ const OrderCard: React.FC<OrderCardProps> = ({
 
   return (
     <Card
-      className="shadow-2xl shadow-gray-900 w-full md:border border-gray-800"
+      className="shadow-2xl shadow-gray-900 w-full border border-gray-800 py-2 md:py-0"
       isBlurred
     >
-      <CardHeader className="hidden md:block">
+      <CardHeader className="block">
         <div className="flex items-center justify-between w-full text-slate-400">
           <div className="flex items-center justify-center text-xs gap-10 text-left">
             <div>
@@ -75,9 +75,9 @@ const OrderCard: React.FC<OrderCardProps> = ({
           </div>
         </div>
       </CardHeader>
-      <Divider className="hidden md:block" />
+      <Divider className="my-1" />
       <CardBody className="p-1 md:p-3">
-        <div className="flex items-center justify-around md:justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
             <AdvancedImage
               cldImg={productShowCaseImage}
@@ -87,9 +87,9 @@ const OrderCard: React.FC<OrderCardProps> = ({
               <h1 className="text-base font-bold line-clamp-2">
                 {productName}
               </h1>
-              <p className="text-slate-400 text-xs block md:hidden">
+              {/* <p className="text-slate-400 text-xs block md:hidden">
                 Ordered on {orderPlacedOn}
-              </p>
+              </p> */}
             </div>
           </div>
           {!isOrderDetail && (

@@ -17,14 +17,17 @@ export default async function AddressPage({
   const addresses = (await getAddresses(userId)) || [];
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      <StyledCard isFooterVisible className="h-[262px]">
+      <StyledCard
+        isFooterVisible
+        className="h-[220px] md:h-[262px] relative"
+      >
         <Link
           href="/user/[userId]/addresses/[mode]"
           as={`/user/${userId}/addresses/create`}
         >
-          <div className="flex flex-col justify-center items-center gap-2 text-4xl p-10">
+          <div className="flex flex-col justify-center items-center gap-2 text-4xl p-10 top-0 left-0 right-0 bottom-0 absolute">
             <FaPlus />
-            <span className="text-xl">Add address</span>
+            <span className="text-lg md:text-xl">Add address</span>
           </div>
         </Link>
       </StyledCard>

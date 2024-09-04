@@ -42,7 +42,7 @@ const CartDetail = () => {
   }
 
   const userCart = cart?.cart_items || [];
-  let totalCartSum = calculateCartPrice(userCart);
+  let totalCartSum = calculateCartPrice(userCart).toString();
   return (
     <>
       <h1 className="text-2xl ml-2 md:ml-0 md:text-3xl font-bold my-2">
@@ -91,7 +91,10 @@ const CartDetail = () => {
             </div>
             <div className="space-y-2">
               <h2 className="text-xl font-semibold">Price Details</h2>
-              <OrderSummary totalAmount={totalCartSum} />
+              <OrderSummary
+                totalAmount={totalCartSum}
+                quantity={userCart.length}
+              />
             </div>
             <Button
               as={Link}

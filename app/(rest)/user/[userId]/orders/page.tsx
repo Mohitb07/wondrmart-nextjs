@@ -6,13 +6,15 @@ export const metadata = {
   description: "Track, return, or buy things again",
 };
 
-export default async function OrdersPage({
-  params,
-}: {
-  params: { userId: string };
-}) {
+type OrdersPageProps = {
+  params: {
+    userId: string;
+  };
+};
+
+export default async function OrdersPage({ params }: OrdersPageProps) {
   const { userId } = params;
-  const orders = await getUserOrders(userId) || [];
+  const orders = (await getUserOrders(userId)) || [];
 
   return (
     <div className="space-y-3">

@@ -10,7 +10,7 @@ type OrderVerificationRootProps = {
   params: { orderId: string };
 };
 
-export default async function OrderVerificationRoot({
+export default function OrderVerificationRoot({
   params,
 }: OrderVerificationRootProps) {
   const { orderId } = params;
@@ -32,7 +32,7 @@ export default async function OrderVerificationRoot({
       }
     };
     fetchOrderStatus();
-  }, []);
+  }, [orderId]);
 
   return (
     <>

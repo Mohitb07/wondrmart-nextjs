@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export type Product = {
   createdAt: string;
   description: string;
@@ -124,6 +126,13 @@ export interface CashPaymentParams {
   address_id: string;
   payment_method: PaymentMethod;
 }
+
+export type CustomError = AxiosError<
+  {
+    errors: { message: string }[];
+  },
+  any
+>;
 
 export type PaymentStatus = "idle" | "loading" | "success" | "error";
 export type PaymentMethod = "card" | "cash";

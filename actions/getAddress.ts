@@ -19,7 +19,6 @@ export const getAddress = async (id: string): Promise<Address> => {
       if (error.response?.status === 401) {
         redirect("/login");
       }
-      throw error;
     }
     throw error;
   }

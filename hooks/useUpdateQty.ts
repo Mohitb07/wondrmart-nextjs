@@ -9,12 +9,7 @@ const useUpdateQuantity = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>
-      addQuantity(
-        data.product_id,
-        data.unit_amount,
-        data.quantity,
-        data.cart_id
-      ),
+      addQuantity(data.product_id, data.quantity, data.cart_id),
     onMutate: async (data: any) => {
       console.log("data getting", data);
       await queryClient.cancelQueries({ queryKey: ["cartItems"] });

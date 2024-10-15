@@ -9,7 +9,7 @@ import {
   SelectItem,
   Spinner,
 } from "@nextui-org/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { isPinCodeValid, isMobileNumberValid } from "@/utils/addressFilters";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -112,10 +112,10 @@ const Body: React.FC<BodyProps> = ({
   const handleDefaultAddress = (value: boolean) => {
     formik.setFieldValue("isDefault", value);
   };
-  // Fix: Always showing the loading state
+
   if (isAddressLoading)
     return (
-      <div className="text-3xl text-center">
+      <div className="flex items-center justify-center text-3xl text-center h-[500px]">
         <Spinner label="Loading..." color="primary" />
       </div>
     );

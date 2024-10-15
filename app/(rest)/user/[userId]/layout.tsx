@@ -4,7 +4,6 @@ import Container from "@/common/Container";
 import useGetUser from "@/hooks/useGetUser";
 import { BreadcrumbItem, Breadcrumbs, Skeleton } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
-import NextTopLoader from "nextjs-toploader";
 
 export default function UserLayout({
   children,

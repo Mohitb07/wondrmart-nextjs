@@ -16,14 +16,12 @@ export const getUserOrders = async (userId: string): Promise<Order[]> => {
         },
       }
     );
-    console.log("res", res.data);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
         redirect("/login");
       }
-      throw error;
     }
     throw error;
   }

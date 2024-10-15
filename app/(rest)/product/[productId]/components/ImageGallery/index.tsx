@@ -3,7 +3,6 @@
 import {
   AdvancedImage,
   lazyload,
-  placeholder,
   responsive
 } from "@cloudinary/react";
 import { CloudinaryImage } from "@cloudinary/url-gen/index";
@@ -15,21 +14,12 @@ type ImageGalleryProps = {
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ src }) => {
   return (
-    // <Image
-    //   className="rounded-lg"
-    //   src={src}
-    //   alt="product image"
-    //   width={500}
-    //   height={500}
-    //   layout="responsive"
-    //   priority
-    // />
     <AdvancedImage
       cldImg={src}
       plugins={[
         lazyload(),
         responsive(),
-        placeholder({ mode: "blur" }),
+        // placeholder({ mode: "blur" }),
       ]}
     />
   );

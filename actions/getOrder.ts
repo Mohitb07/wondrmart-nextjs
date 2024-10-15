@@ -1,9 +1,12 @@
-import { Address, Order } from "@/types";
+import { Order } from "@/types";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const getUserOrder = async (userId: string, orderId: string): Promise<Order> => {
+export const getUserOrder = async (
+  userId: string,
+  orderId: string
+): Promise<Order> => {
   const store = cookies();
   const token = store.get("accessToken")?.value;
   try {
@@ -16,14 +19,12 @@ export const getUserOrder = async (userId: string, orderId: string): Promise<Ord
         },
       }
     );
-    console.log("res", res.data);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
         redirect("/login");
       }
-      throw error;
     }
     throw error;
   }

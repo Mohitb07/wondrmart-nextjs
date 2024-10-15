@@ -1,8 +1,5 @@
 import Container from "@/common/Container";
 import CartDetail from "./components/CartDetail";
-import getQueryClient from "../components/getQueryClient";
-import { getCartItems } from "@/actions/getCartItems";
-import { Hydrate, dehydrate } from "@tanstack/react-query";
 
 export const metadata = {
   title: "Cart",
@@ -10,20 +7,12 @@ export const metadata = {
 };
 
 const Cart = () => {
-  const queryClient = getQueryClient();
-  queryClient.prefetchQuery({
-    queryKey: ["cartItems"],
-    queryFn: getCartItems,
-  });
-  const dehydrateState = dehydrate(queryClient);
   return (
-    <Hydrate state={dehydrateState}>
-      <Container>
-        <div className="px-2 py-5 md:py-10 sm:px-6 lg:px-8">
-          <CartDetail />
-        </div>
-      </Container>
-    </Hydrate>
+    <Container>
+      <div className="px-2 py-5 md:py-10 sm:px-6 lg:px-8">
+        <CartDetail />
+      </div>
+    </Container>
   );
 };
 export default Cart;

@@ -7,8 +7,6 @@ export async function POST(request: Request) {
     username: formData.get("username") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
-    address: formData.get("address") as string,
-    phone: formData.get("phone") as string,
   };
 
   try {
@@ -31,22 +29,25 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error.response?.status === 409) {
+      if (error.response?.status === 400) {
         return new Response(JSON.stringify(error.response.data), {
           headers: {
             "Content-Type": "application/json",
           },
-          status: 409,
+          status: 400,
         });
       }
     }
 
     console.error("An error occurred:", error);
-    return new Response(JSON.stringify({ message: "Something went wrong" }), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 400,
-    });
+    return new Response(
+      JSON.stringify({ errors: [{ message: "Something went wrong" }] }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 500,
+      }
+    );
   }
 }

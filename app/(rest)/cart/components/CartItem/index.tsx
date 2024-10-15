@@ -1,19 +1,17 @@
 "use client";
 
+import { RemoveCartItemMutationData } from "@/hooks/useDeleteCartItem";
 import { cloudinaryImage } from "@/utils/cloudinaryImage";
 import { formatPrice } from "@/utils/formatPrice";
 import {
   AdvancedImage,
   lazyload,
-  placeholder,
-  responsive,
+  responsive
 } from "@cloudinary/react";
-import { Button, Card, Divider } from "@nextui-org/react";
-import Image from "next/image";
+import { Button, Card } from "@nextui-org/react";
+import Link from "next/link";
 import React from "react";
 import { MdDeleteOutline } from "react-icons/md";
-import ImageGallery from "../../../product/[productId]/components/ImageGallery";
-import { RemoveCartItemMutationData } from "@/hooks/useDeleteCartItem";
 
 type UpdateQuantityData = {
   product_id: string;
@@ -114,10 +112,11 @@ const CartItem: React.FC<CartItemProps> = ({
           </div>
           <div className="flex flex-1 flex-col py-2 gap-3">
             <div className="flex justify-between">
-              <h1 className="text-sm md:text-lg line-clamp-3">
-                {title.length > 150 ? title.slice(0, 20) + "..." : title}
-                {/* {title} */}
-              </h1>
+              <Link href={`/product/${product_id}`}>
+                <h1 className="text-sm md:text-lg line-clamp-3">
+                  {title.length > 150 ? title.slice(0, 20) + "..." : title}
+                </h1>
+              </Link>
               <span
                 onClick={onRemoveCartItemHandler}
                 className="cursor-pointer"

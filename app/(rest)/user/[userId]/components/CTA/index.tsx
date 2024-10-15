@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardBody } from "@nextui-org/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -21,12 +22,12 @@ const AccountCTA: React.FC<AccountCTAProps> = ({
 }) => {
   const router = useRouter();
 
-  const navigationHandler = () => {
-    router.push(`/user/${userId}/${navigateTo}`);
-  };
+  // const navigationHandler = () => {
+  //   router.push(`/user/${userId}/${navigateTo}`);
+  // };
 
   return (
-    <Card isPressable onClick={navigationHandler}>
+    <Card as={Link} isPressable href={`/user/${userId}/${navigateTo}`}>
       <CardBody>
         <div className="flex flex-col items-center gap-3 md:flex-row">
           <div>{Logo}</div>

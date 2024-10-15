@@ -129,7 +129,7 @@ export interface CashPaymentParams {
 
 export type CustomError = AxiosError<
   {
-    errors: { message: string }[];
+    errors: { message: string; property?: string }[];
   },
   any
 >;

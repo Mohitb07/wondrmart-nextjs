@@ -4,9 +4,9 @@ import { ReactQueryProvider } from "@/providers/ReactQuery";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import CustomNotification from "@/common/Notification";
 import "../globals.css";
-import { Toaster } from "react-hot-toast";
-import BarProvider from "@/providers/ProgressBarProvider";
+import TopLoaderProvider from "@/providers/TopBarLoader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,18 +23,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <BarProvider>
+        <TopLoaderProvider>
           <ReactQueryProvider>
             <UIProvider>
               <Navbar />
               {children}
-              <Toaster
-                position="bottom-center"
-                reverseOrder={false}
-              />
+              <CustomNotification />
             </UIProvider>
           </ReactQueryProvider>
-        </BarProvider>
+        </TopLoaderProvider>
       </body>
     </html>
   );

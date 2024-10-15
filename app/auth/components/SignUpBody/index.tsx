@@ -6,7 +6,7 @@ import { EyeFilledIcon, EyeSlashFilledIcon } from "@/SVG";
 import NextLink from "next/link";
 import useRegister from "@/hooks/useRegister";
 import { useFormik } from "formik";
-import { SignUpFormData } from "@/types";
+import { CustomError, SignUpFormData } from "@/types";
 import * as yup from "yup";
 
 export const registerValidationSchema = yup.object({
@@ -24,6 +24,28 @@ export const registerValidationSchema = yup.object({
     .oneOf([yup.ref("password")], "Password must match")
     .required("Password must be 8 characters long or more"),
 });
+
+type SignUpFields = "username" | "email" | "password";
+type SignUpFieldsErrors = { message: string; property: SignUpFields }[];
+
+const hasErrorForProperties = (
+  errors: CustomError,
+  properties: SignUpFields[]
+) => {
+  return properties.some((property) =>
+    errors.response?.data.errors.find((err) => err.property === property)
+  );
+};
+
+const getErrorMessageForProperty = (
+  errors: CustomError,
+  property: SignUpFields
+) => {
+  const error = errors.response?.data.errors.find(
+    (err) => err.property === property
+  );
+  return error ? error.message : null;
+};
 
 export default function SignUpBody() {
   const { mutate, isLoading, isError, error } = useRegister();
@@ -43,26 +65,35 @@ export default function SignUpBody() {
       password: "",
       confirmPassword: "",
     },
+    validateOnChange: true,
+    validateOnBlur: true,
     validationSchema: registerValidationSchema,
     onSubmit: async (values) => mutate(values),
   });
 
+  const updateErrors = (errors: SignUpFieldsErrors, field: string) => {
+    return errors.filter((err) => err.property !== field);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     formik.handleChange(e);
-    if (isError) {
-      const errorMessage = error.response?.data.errors[0].message;
-      // if (errorMessage && errorMessage[e.target.name]) {
-      //   error.response!.data.message[e.target.name] = "";
-      // }
-      if (errorMessage) {
-        error.response!.data.errors.map((err) => {
-          if (err.property === e.target.name) {
-            err.message = "";
-          }
-        });
+
+    if (isError && error.response) {
+      let errors = error.response.data.errors;
+      if (errors) {
+        // Update the errors array by removing the specific field's error
+        errors = updateErrors(errors, e.target.name);
+        error.response.data.errors = errors;
+
+        // Clear Formik's validation error state for the specific field
+        formik.setFieldError(e.target.name, "");
+
+        console.log("Updated errors:", errors);
       }
     }
   };
+
+  console.log('formik error', formik.errors, formik.touched)
 
   return (
     <>
@@ -74,12 +105,7 @@ export default function SignUpBody() {
       >
         <Input
           isInvalid={
-            (isError &&
-              Boolean(
-                error.response?.data.errors.filter(
-                  (err) => err.property === "username"
-                )[0].message
-              )) ||
+            (isError && hasErrorForProperties(error, ["username"])) ||
             (formik.touched.username && Boolean(formik.errors.username))
           }
           isRequired
@@ -91,10 +117,7 @@ export default function SignUpBody() {
           label="Username"
           placeholder="Enter your username"
           errorMessage={
-            (isError &&
-              error.response?.data.errors.map(
-                (err) => err.property === "username" && err.message
-              )) ||
+            (isError && getErrorMessageForProperty(error, "username")) ||
             (formik.touched.username && formik.errors.username)
           }
           onError={() => {
@@ -104,12 +127,7 @@ export default function SignUpBody() {
         <Input
           isRequired
           isInvalid={
-            (isError &&
-              Boolean(
-                error.response?.data.errors.filter(
-                  (err) => err.property === "email"
-                )[0].message
-              )) ||
+            (isError && hasErrorForProperties(error, ["email"])) ||
             (formik.touched.email && Boolean(formik.errors.email))
           }
           onChange={handleChange}
@@ -119,10 +137,7 @@ export default function SignUpBody() {
           label="Email"
           placeholder="Enter your email"
           errorMessage={
-            (isError &&
-              error.response?.data.errors.map(
-                (err) => err.property === "email" && err.message
-              )) ||
+            (isError && getErrorMessageForProperty(error, "email")) ||
             (formik.touched.email && formik.errors.email)
           }
           onError={() => {
@@ -132,12 +147,7 @@ export default function SignUpBody() {
         <Input
           isRequired
           isInvalid={
-            (isError &&
-              Boolean(
-                error.response?.data.errors.filter(
-                  (err) => err.property === "password"
-                )[0].message
-              )) ||
+            (isError && hasErrorForProperties(error, ["password"])) ||
             (formik.touched.password && Boolean(formik.errors.password))
           }
           onChange={formik.handleChange}
@@ -146,10 +156,7 @@ export default function SignUpBody() {
           variant="bordered"
           placeholder="Enter your password"
           errorMessage={
-            (isError &&
-              error.response?.data.errors.map(
-                (err) => err.property === "password" && err.message
-              )) ||
+            (isError && getErrorMessageForProperty(error, "password")) ||
             (formik.touched.password && formik.errors.password)
           }
           endContent={
@@ -169,7 +176,7 @@ export default function SignUpBody() {
         />
         <Input
           isInvalid={
-            formik.touched.confirmPassword && Boolean(formik.errors.password)
+            formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)
           }
           onChange={formik.handleChange}
           isRequired

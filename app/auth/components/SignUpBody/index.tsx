@@ -50,9 +50,16 @@ export default function SignUpBody() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     formik.handleChange(e);
     if (isError) {
-      const errorMessage = error.response?.data.message;
-      if (errorMessage && errorMessage[e.target.name]) {
-        error.response!.data.message[e.target.name] = "";
+      const errorMessage = error.response?.data.errors[0].message;
+      // if (errorMessage && errorMessage[e.target.name]) {
+      //   error.response!.data.message[e.target.name] = "";
+      // }
+      if (errorMessage) {
+        error.response!.data.errors.map((err) => {
+          if (err.property === e.target.name) {
+            err.message = "";
+          }
+        });
       }
     }
   };
@@ -67,7 +74,12 @@ export default function SignUpBody() {
       >
         <Input
           isInvalid={
-            (isError && Boolean(error.response?.data.message.username)) ||
+            (isError &&
+              Boolean(
+                error.response?.data.errors.filter(
+                  (err) => err.property === "username"
+                )[0].message
+              )) ||
             (formik.touched.username && Boolean(formik.errors.username))
           }
           isRequired
@@ -79,7 +91,10 @@ export default function SignUpBody() {
           label="Username"
           placeholder="Enter your username"
           errorMessage={
-            (isError && error.response?.data.message.username) ||
+            (isError &&
+              error.response?.data.errors.map(
+                (err) => err.property === "username" && err.message
+              )) ||
             (formik.touched.username && formik.errors.username)
           }
           onError={() => {
@@ -89,7 +104,12 @@ export default function SignUpBody() {
         <Input
           isRequired
           isInvalid={
-            (isError && Boolean(error.response?.data.message.email)) ||
+            (isError &&
+              Boolean(
+                error.response?.data.errors.filter(
+                  (err) => err.property === "email"
+                )[0].message
+              )) ||
             (formik.touched.email && Boolean(formik.errors.email))
           }
           onChange={handleChange}
@@ -99,7 +119,10 @@ export default function SignUpBody() {
           label="Email"
           placeholder="Enter your email"
           errorMessage={
-            (isError && error.response?.data.message.email) ||
+            (isError &&
+              error.response?.data.errors.map(
+                (err) => err.property === "email" && err.message
+              )) ||
             (formik.touched.email && formik.errors.email)
           }
           onError={() => {
@@ -109,7 +132,12 @@ export default function SignUpBody() {
         <Input
           isRequired
           isInvalid={
-            (isError && Boolean(error.response?.data.message.password)) ||
+            (isError &&
+              Boolean(
+                error.response?.data.errors.filter(
+                  (err) => err.property === "password"
+                )[0].message
+              )) ||
             (formik.touched.password && Boolean(formik.errors.password))
           }
           onChange={formik.handleChange}
@@ -118,7 +146,10 @@ export default function SignUpBody() {
           variant="bordered"
           placeholder="Enter your password"
           errorMessage={
-            (isError && error.response?.data.message.password) ||
+            (isError &&
+              error.response?.data.errors.map(
+                (err) => err.property === "password" && err.message
+              )) ||
             (formik.touched.password && formik.errors.password)
           }
           endContent={

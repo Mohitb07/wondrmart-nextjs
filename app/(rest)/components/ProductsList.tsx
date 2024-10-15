@@ -1,21 +1,19 @@
 "use client";
 
-import { getAllProducts } from "@/actions/getProducts";
-import { getProductsCount } from "@/actions/getProductsCount";
 import Container from "@/common/Container";
 import useGetCart from "@/hooks/useGetCart";
+import useGetProducts from "@/hooks/useGetProducts";
+import useGetProductsCount from "@/hooks/useGetProductsCount";
 import NotFoundSVG from "@/public/not-found.svg";
 import { Pagination, Spinner } from "@nextui-org/react";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "./ProductCard";
+import { Suspense } from "react";
 
 const LIMIT = 10;
 
 export default function ProductsList() {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
   const page = searchParams.get("page") || "1";
@@ -23,43 +21,24 @@ export default function ProductsList() {
   const {
     data,
     isLoading,
+    isError: isProductListError,
     error: productListError,
     isPreviousData,
-    isError: isProductListError,
-  } = useQuery({
-    queryKey: ["products", query, page],
-    queryFn: () => getAllProducts(query, page),
-    keepPreviousData: true, // whether to show previous data while fetching new data or show the skeleton
-    refetchOnWindowFocus: false,
-  });
+    onPageChange,
+  } = useGetProducts(query, page);
 
-  const {
-    data: productsCount,
-    isLoading: isCountLoading,
-    isError: isProductCountError,
-    error: productCountError,
-  } = useQuery({
-    queryKey: ["productsCount", query || ""],
-    queryFn: () => getProductsCount(query || ""),
-    refetchOnWindowFocus: false,
-  });
+  const { data: productsCount, isLoading: isCountLoading } =
+    useGetProductsCount(query);
+
   const {
     data: cart,
     isInitialLoading: isCartItemsLoading,
     isError: isCartError,
-    error: cartError,
   } = useGetCart();
   const isProductListFound = data && data.length > 0;
 
-  // Need to handle error
-  if (isProductListError || isProductCountError || isCartError) {
-    return (
-      <div>
-        Error:{" "}
-        {JSON.stringify(productListError || productCountError || cartError)}
-      </div>
-    );
-  }
+  if (isProductListError) throw productListError;
+
   let userCart = cart?.cart_items || [];
   let cartItemsIds: Record<string, string> = {};
   if (!isCartError && !!cart) {
@@ -72,37 +51,33 @@ export default function ProductsList() {
     totalPages = Math.ceil(productsCount.count / LIMIT);
   }
 
-  const onPageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", page.toString());
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
   return (
     <Container>
-      <div
-        className={`grid grid-cols-2 ${
-          isPreviousData && "opacity-60"
-        } md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-16 lg:gap-16 md:p-2 xl:grid-cols-6 xl:gap-5 xl:gap-x-10 md:justify-items-center`}
-      >
-        {!isLoading &&
-          data &&
-          data.map((product) => (
-            <ProductCard
-              key={product.product_id}
-              id={product.product_id}
-              image_url={product.image_url}
-              isInCartLoading={isCartItemsLoading}
-              // isLoading={!!!data && !isProductListError && isRefetching}
-              isLoading={false}
-              name={product.name}
-              price={product.price}
-              productId={product.product_id}
-              cartQty={cartItemsIds[product.product_id] || "0"}
-              cartId={cart?.cart_id}
-            />
-          ))}
-      </div>
+      <Suspense>
+        <div
+          className={`grid grid-cols-2 ${
+            isPreviousData && "opacity-60"
+          } md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-16 lg:gap-16 md:p-2 xl:grid-cols-6 xl:gap-5 xl:gap-x-10 md:justify-items-center`}
+        >
+          {!isLoading &&
+            data &&
+            data.map((product) => (
+              <ProductCard
+                key={product.product_id}
+                id={product.product_id}
+                image_url={product.image_url}
+                isInCartLoading={isCartItemsLoading}
+                // isLoading={!!!data && !isProductListError && isRefetching}
+                isLoading={false}
+                name={product.name}
+                price={product.price}
+                productId={product.product_id}
+                cartQty={cartItemsIds[product.product_id] || "0"}
+                cartId={cart?.cart_id}
+              />
+            ))}
+        </div>
+      </Suspense>
       {isLoading && (
         <div className="flex justify-center items-center h-[500px]">
           <Spinner label="Loading..." color="primary" />

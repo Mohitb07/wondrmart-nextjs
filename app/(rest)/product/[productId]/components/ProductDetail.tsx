@@ -17,7 +17,7 @@ type ProductDetailProps = {
 };
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
-  const {
+   const {
     data: product,
     isLoading: isProductLoading,
     isError: isProductError,
@@ -26,6 +26,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
+  
   const {
     data: cart,
     isInitialLoading: isCartLoading,
@@ -43,10 +44,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   //     </div>
   //   );
   // }
-  // Need to handle error
-  if (isProductError || isCartError) {
-    return <div>Error: {JSON.stringify(productError || cartError)}</div>;
-  }
+
+  if (isProductError) throw productError;
+
   let userCart = cart?.cart_items || [];
   let cartItemsIds: Record<string, string> = {};
   if (!isCartError && !!cart) {

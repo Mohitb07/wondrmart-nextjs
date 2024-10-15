@@ -23,7 +23,7 @@ export const loginValidationSchema = yup.object({
 export default function SignInBody() {
   const [isVisible, setIsVisible] = useState(false);
   const { isLoading: isLoggingIn, mutate, isError, error } = useLogin();
-  
+
   const formik = useFormik<SignInFormData>({
     initialValues: {
       email: "",
@@ -38,7 +38,7 @@ export default function SignInBody() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     formik.handleChange(e);
     if (isError) {
-      error.response!.data.message = "";
+      error.response!.data.errors[0].message = "";
     }
   };
 
@@ -53,7 +53,7 @@ export default function SignInBody() {
         <Input
           isRequired
           isInvalid={
-            (isError && Boolean(error.response?.data.message)) ||
+            (isError && Boolean(error.response?.data.errors[0].message)) ||
             (formik.touched.email && Boolean(formik.errors.email))
           }
           value={formik.values.email}
@@ -63,14 +63,14 @@ export default function SignInBody() {
           name="email"
           placeholder="Enter your email"
           errorMessage={
-            (isError && error.response?.data.message) ||
+            (isError && error.response?.data.errors[0].message) ||
             (formik.touched.email && formik.errors.email)
           }
         />
         <Input
           isRequired
           isInvalid={
-            (isError && Boolean(error.response?.data.message)) ||
+            (isError && Boolean(error.response?.data.errors[0].message)) ||
             (formik.touched.password && Boolean(formik.errors.password))
           }
           value={formik.values.password}
@@ -80,7 +80,7 @@ export default function SignInBody() {
           name="password"
           placeholder="Enter your password"
           errorMessage={
-            (isError && error.response?.data.message) ||
+            (isError && error.response?.data.errors[0].message) ||
             (formik.touched.password && formik.errors.password)
           }
           endContent={

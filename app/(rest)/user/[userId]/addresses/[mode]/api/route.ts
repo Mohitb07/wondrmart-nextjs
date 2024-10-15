@@ -138,15 +138,29 @@ export async function GET(request: Request) {
           },
           status: 401,
         });
+      } else if (error.response?.status === 404) {
+        return new Response(
+          JSON.stringify({
+            errors: [{ message: error.response.data.errors[0].message }],
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            status: 404,
+          }
+        );
       }
     }
 
-    console.error("An error occurred:", error);
-    return new Response(JSON.stringify({ message: "Something went wrong" }), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 400,
-    });
+    return new Response(
+      JSON.stringify({ errors: [{ message: "Unable to fetch an address" }] }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 500,
+      }
+    );
   }
 }

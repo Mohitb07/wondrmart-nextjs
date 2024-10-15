@@ -47,11 +47,14 @@ export async function POST(request: Request) {
       }
     }
 
-    return new Response(JSON.stringify({ message: "Something went wrong" }), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 400,
-    });
+    return new Response(
+      JSON.stringify({ errors: [{ message: "Something went wrong" }] }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 400,
+      }
+    );
   }
 }

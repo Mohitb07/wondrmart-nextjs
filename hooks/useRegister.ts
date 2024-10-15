@@ -6,9 +6,7 @@ import { SignUpFormData, UserData } from "@/types";
 
 type Error = AxiosError<
   {
-    message: {
-      [key in keyof SignUpFormData]: string;
-    };
+    errors: { message: string; property: "username" | "email" | "password" }[];
   },
   any
 >;

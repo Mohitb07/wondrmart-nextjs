@@ -6,7 +6,7 @@ import { SignInFormData, UserData } from "../types";
 
 type Error = AxiosError<
   {
-    message: string;
+    errors: { message: string }[];
   },
   any
 >;

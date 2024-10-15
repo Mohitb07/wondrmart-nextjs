@@ -15,6 +15,7 @@ import useRemoveCartItem from "@/hooks/useDeleteCartItem";
 import Image from "next/image";
 import Link from "next/link";
 import useGetCart from "@/hooks/useGetCart";
+import { redirect } from "next/navigation";
 
 const CartDetail = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
@@ -27,6 +28,10 @@ const CartDetail = () => {
   const { mutate: updateQuantityHandler } = useUpdateQuantity();
   const { mutate: removeCartItemHandler } = useRemoveCartItem();
 
+  if(!user) {
+    redirect('/login');
+  }
+  
   if (isCartLoading || isUserLoading) {
     return (
       <div>
@@ -38,7 +43,7 @@ const CartDetail = () => {
   }
 
   if (isError) {
-    return <div>Error: {JSON.stringify(error)}</div>;
+    throw error;
   }
 
   const userCart = cart?.cart_items || [];

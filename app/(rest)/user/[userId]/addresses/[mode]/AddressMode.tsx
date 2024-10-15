@@ -5,7 +5,8 @@ import { AddressModes } from "@/types";
 import Body from "./components/Body";
 import useUpdateAddress from "@/hooks/useUpdateAddress";
 import useGetAddress from "@/hooks/useGetAddress";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
+import { notFound } from "next/navigation";
 
 type AddressModeProps = {
   mode: AddressModes;
@@ -22,14 +23,8 @@ const AddressMode = ({ mode }: AddressModeProps) => {
     data,
     isInitialLoading: isAddressLoading,
     isError,
+    error,
   } = useGetAddress(mode);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (mode === "edit") {
-      handleAddress(params.get("id") || "");
-    }
-  }, [addressId, handleAddress, mode]);
 
   const onSubmit =
     mode === "create"
@@ -44,6 +39,21 @@ const AddressMode = ({ mode }: AddressModeProps) => {
       : mode === "edit"
       ? isUpdateAddressProcessing
       : false;
+
+  if (isError) {
+    if (error.response?.status === 404) {
+      notFound();
+    } else {
+      throw error;
+    }
+  }
+
+  useLayoutEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (mode === "edit") {
+      handleAddress(params.get("id") || "");
+    }
+  }, [addressId, handleAddress, mode]);
 
   return (
     <div className="flex justify-center items-center min-w-[20rem] md:min-w-[60rem] w-full">

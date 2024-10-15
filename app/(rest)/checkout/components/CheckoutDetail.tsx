@@ -1,11 +1,12 @@
 "use client";
 
-import { getCartItems } from "@/actions/getCartItems";
 import useRemoveCartItem from "@/hooks/useDeleteCartItem";
 import useGetAddresses from "@/hooks/useGetAddresses";
+import useGetCart from "@/hooks/useGetCart";
+import useGetUser from "@/hooks/useGetUser";
 import usePayment from "@/hooks/usePayment";
 import useUpdateQuantity from "@/hooks/useUpdateQty";
-import { Address, PaymentMethod, User } from "@/types";
+import { Address, PaymentMethod } from "@/types";
 import { calculateCartPrice } from "@/utils/cartPrice";
 import { formatPrice } from "@/utils/formatPrice";
 import {
@@ -24,23 +25,17 @@ import {
   Spinner,
   cn,
 } from "@nextui-org/react";
-import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import CartItem from "../../cart/components/CartItem";
-import useGetUser from "@/hooks/useGetUser";
-import useGetCart from "@/hooks/useGetCart";
-import Link from "next/link";
 
 export default function Checkout() {
-  const {
-    data: user,
-    isLoading: isUserLoading,
-    isError: isUserError,
-  } = useGetUser();
+  const { data: user, isLoading: isUserLoading } = useGetUser();
   const {
     data: cart,
     isInitialLoading: isCartLoading,
-    isError,
+    isError: isCartError,
     error,
   } = useGetCart();
   const {
@@ -60,6 +55,10 @@ export default function Checkout() {
   } = useGetAddresses();
   const [selectedAddress, setSelectedAddress] = useState<Address>();
 
+  if (!isUserLoading && !user) {
+    redirect("/login");
+  }
+
   if (isCartLoading || isAddressesLoading || isUserLoading) {
     return (
       <div>
@@ -70,8 +69,8 @@ export default function Checkout() {
     );
   }
 
-  if (isError || isAddressesError || isUserError) {
-    return <div>Error: {JSON.stringify(isError || isAddressesError)}</div>;
+  if (isCartError || isAddressesError) {
+    throw error;
   }
 
   const userCart = cart?.cart_items || [];
@@ -109,7 +108,7 @@ export default function Checkout() {
       };
       const res = await handleCashPayment(params);
       console.log("res getting", res);
-      window.location.href = `/${res.sendTo}`
+      window.location.href = `/${res.sendTo}`;
     } catch (error) {
       console.log("Something went wrong", error);
       handlePaymentStatus("error");

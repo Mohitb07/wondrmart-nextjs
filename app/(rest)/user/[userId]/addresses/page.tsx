@@ -2,6 +2,7 @@ import { getAddresses } from "@/actions/getAddresses";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 import StyledCard from "./components/Card";
+import { Address } from "@/types";
 
 export const metadata = {
   title: "Your Addresses",
@@ -14,13 +15,17 @@ export default async function AddressPage({
   params: { userId: string };
 }) {
   const { userId } = params;
-  const addresses = (await getAddresses(userId)) || [];
+  
+  let addresses: Address[] = [];
+  try {
+    addresses = await getAddresses(userId);
+  } catch (error) {
+    throw error;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      <StyledCard
-        isFooterVisible
-        className="h-[220px] md:h-[262px] relative"
-      >
+      <StyledCard isFooterVisible className="h-[220px] md:h-[262px] relative">
         <Link
           href="/user/[userId]/addresses/[mode]"
           as={`/user/${userId}/addresses/create`}

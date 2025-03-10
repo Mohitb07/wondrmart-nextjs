@@ -17,7 +17,7 @@ const config: Config = {
       },
       maxWidth: {
         "8xl": "95rem",
-      }
+      },
     },
   },
   darkMode: "class",
@@ -27,16 +27,24 @@ const config: Config = {
         dark: {
           colors: {
             primary: {
-              DEFAULT: "#BEF264",
-              foreground: "#000000",
+              DEFAULT: "#fff",
+              foreground: "#000",
             },
-            focus: "#BEF264",
+            focus: "#FEA117",
+          },
+        },
+        light: {
+          colors: {
+            primary: {
+              DEFAULT: "#FEA117",
+              foreground: "#fff",
+            },
+            focus: "#FEA117",
           },
         },
       },
-      
     }),
-    require('tailwind-scrollbar-hide')
+    require("tailwind-scrollbar-hide"),
   ],
 };
 export default config;

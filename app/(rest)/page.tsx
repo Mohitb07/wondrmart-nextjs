@@ -2,12 +2,10 @@ import Container from "@/common/Container";
 import Search from "@/common/Search";
 import { dehydrate, Hydrate } from "@tanstack/react-query";
 
-import { getAllProducts } from "@/actions/getProducts";
 import { getProductsCount } from "@/actions/getProductsCount";
 import getQueryClient from "./components/getQueryClient";
 import ProductsList from "./components/ProductsList";
 import Banner from "./components/Banner";
-import Theme from "@/common/Theme";
 
 type HomeProps = {
   searchParams: {

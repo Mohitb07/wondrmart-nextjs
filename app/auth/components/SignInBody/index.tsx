@@ -86,6 +86,7 @@ export default function SignInBody() {
           endContent={
             <button
               className="focus:outline-none"
+              aria-label="Toggle password visibility"
               type="button"
               onClick={toggleVisibility}
             >
@@ -107,7 +108,7 @@ export default function SignInBody() {
         >
           Sign In
         </Button>
-        <span className="flex items-center gap-2 justify-center text-slate-600 max-sm:text-sm">
+        <span className="flex items-center gap-2 justify-center text-slate-400 max-sm:text-sm">
           Don&apos;t have an account?{" "}
           <Link href="/auth/signup" as={NextLink} className="max-sm:text-sm">
             Sign Up

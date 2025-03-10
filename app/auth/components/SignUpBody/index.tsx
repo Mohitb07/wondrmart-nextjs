@@ -93,7 +93,7 @@ export default function SignUpBody() {
     }
   };
 
-  console.log('formik error', formik.errors, formik.touched)
+  console.log("formik error", formik.errors, formik.touched);
 
   return (
     <>
@@ -161,6 +161,7 @@ export default function SignUpBody() {
           }
           endContent={
             <button
+              aria-label="Toggle password visibility"
               className="focus:outline-none"
               type="button"
               onClick={togglePasswordVisibility}
@@ -176,7 +177,8 @@ export default function SignUpBody() {
         />
         <Input
           isInvalid={
-            formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)
+            formik.touched.confirmPassword &&
+            Boolean(formik.errors.confirmPassword)
           }
           onChange={formik.handleChange}
           isRequired
@@ -189,6 +191,7 @@ export default function SignUpBody() {
           }
           endContent={
             <button
+              aria-label="Toggle password visibility"
               className="focus:outline-none"
               type="button"
               onClick={toggleConfirmPasswordVisibility}
@@ -212,7 +215,7 @@ export default function SignUpBody() {
           Sign Up
         </Button>
       </form>
-      <span className="flex items-center gap-2 justify-center text-slate-600 max-sm:text-sm">
+      <span className="flex items-center gap-2 justify-center text-slate-400 max-sm:text-sm">
         Already have an account?{" "}
         <Link href="/auth/signin" as={NextLink} className="max-sm:text-sm">
           Sign In

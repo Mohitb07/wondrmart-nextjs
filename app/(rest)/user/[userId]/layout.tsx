@@ -2,7 +2,12 @@
 
 import Container from "@/common/Container";
 import useGetUser from "@/hooks/useGetUser";
-import { BreadcrumbItem, Breadcrumbs, Skeleton } from "@nextui-org/react";
+import {
+  breadcrumbItem,
+  BreadcrumbItem,
+  Breadcrumbs,
+  Skeleton,
+} from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 
 export default function UserLayout({
@@ -44,7 +49,11 @@ export default function UserLayout({
     const href = `/${paths.slice(0, index + 2).join("/")}`;
     const text = paths
       .filter((path) => path !== params.userId)
-      .map((item) => (isOrderDetailPage && index === 2) ? item : item[0].toUpperCase() + item.substring(1))[index];
+      .map((item) =>
+        isOrderDetailPage && index === 2
+          ? item
+          : item[0].toUpperCase() + item.substring(1)
+      )[index];
     return { href, text };
   });
 
@@ -56,13 +65,15 @@ export default function UserLayout({
         <Skeleton isLoaded={!isLoading} className="inline-block rounded-lg">
           <h1 className="text-4xl font-bold">{pageTitle}</h1>
         </Skeleton>
-        <Breadcrumbs size="lg">
-          {filteredBreadCrumbList.map((breadcrumb, index) => (
-            <BreadcrumbItem key={index} href={breadcrumb.href}>
-              {breadcrumb.text}
-            </BreadcrumbItem>
-          ))}
-        </Breadcrumbs>
+        {filteredBreadCrumbList.length > 1 && (
+          <Breadcrumbs size="lg">
+            {filteredBreadCrumbList.map((breadcrumb, index) => (
+              <BreadcrumbItem key={index} href={breadcrumb.href}>
+                {breadcrumb.text}
+              </BreadcrumbItem>
+            ))}
+          </Breadcrumbs>
+        )}
         {children}
       </main>
     </Container>

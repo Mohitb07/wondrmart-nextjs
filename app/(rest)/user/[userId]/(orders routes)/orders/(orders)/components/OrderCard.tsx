@@ -51,73 +51,73 @@ const OrderCard: React.FC<OrderCardProps> = ({
   };
 
   return (
-    
-      <Card
-        className="shadow-2xl shadow-gray-900 w-full border border-gray-800 py-2 md:py-0"
-        isBlurred
-      >
-        <CardHeader className="block">
-          <div className="flex items-center justify-between w-full text-slate-400">
-            <div className="flex items-center justify-between md:justify-center w-full md:w-auto text-xs gap-10 text-left">
-              <div>
-                <h1 className="uppercase">Order Placed</h1>
-                <h1>{orderPlacedOn}</h1>
-              </div>
-              <div>
-                <h1 className="uppercase">Total</h1>
-                <h1>{totalAmount}</h1>
-              </div>
-              {!isOrderDetail && (
-                <div>
-                  <h1 className="uppercase">Ship To</h1>
-                  <h1>{username}</h1>
-                </div>
-              )}
+    <Card
+      className="shadow-2xl shadow-gray-900 w-full border border-gray-800 py-2 md:py-0"
+      isBlurred
+    >
+      <CardHeader className="block">
+        <div className="flex items-center justify-between w-full text-slate-400">
+          <div className="flex items-center justify-between md:justify-center w-full md:w-auto text-xs gap-10 text-left">
+            <div>
+              <h1 className="uppercase">Order Placed</h1>
+              <h1>{orderPlacedOn}</h1>
             </div>
-            <div className="text-left text-xs hidden md:block">
-              <h1 className="uppercase">Order #{orderId}</h1>
+            <div>
+              <h1 className="uppercase">Total</h1>
+              <h1>{totalAmount}</h1>
             </div>
+            {!isOrderDetail && (
+              <div>
+                <h1 className="uppercase">Ship To</h1>
+                <h1>{username}</h1>
+              </div>
+            )}
           </div>
-        </CardHeader>
-        <Divider className="my-1" />
-        <CardBody className="p-1 md:p-3">
+          <div className="text-left text-xs hidden md:block">
+            <h1 className="uppercase">Order #{orderId}</h1>
+          </div>
+        </div>
+      </CardHeader>
+      <Divider className="my-1" />
+      <CardBody className="p-1 md:p-3">
+        <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
-            <div className="flex items-center justify-between">
-              <AdvancedImage
-                cldImg={productShowCaseImage}
-                // plugins={[placeholder({ mode: "blur" })]}
-              />
-              <div className="p-4 text-left space-y-2">
-                <Link href={`/product/${productId}`}>
-                  <h1 className="text-sm md:text-base font-bold line-clamp-2">
-                    {productName}
-                  </h1>
-                </Link>
-                {/* <p className="text-slate-400 text-xs block md:hidden">
+            <AdvancedImage
+              cldImg={productShowCaseImage}
+              // plugins={[placeholder({ mode: "blur" })]}
+            />
+            <div className="p-4 text-left space-y-2">
+              <Link href={`/product/${productId}`}>
+                <h1 className="text-sm md:text-base font-bold line-clamp-2">
+                  {productName}
+                </h1>
+              </Link>
+              {/* <p className="text-slate-400 text-xs block md:hidden">
                 Ordered on {orderPlacedOn}
                 </p> */}
-              </div>
             </div>
-            {!isOrderDetail && (
-              <div className="md:hidden mr-2">
-                <FaChevronRight className="text-slate-400" />
-              </div>
-            )}
-            {!isOrderDetail && (
-              <div className="md:block hidden">
-                <Button
-                  variant="solid"
-                  color="primary"
-                  onClick={handleNavigate}
-                >
-                  Order Detail
-                </Button>
-              </div>
-            )}
           </div>
-        </CardBody>
-      </Card>
-  
+          {!isOrderDetail && (
+            <div className="md:hidden mr-2">
+              <FaChevronRight className="text-slate-400" />
+            </div>
+          )}
+          {!isOrderDetail && (
+            <div className="md:block hidden">
+              <Button
+                as={Link}
+                variant="solid"
+                color="primary"
+                // onClick={handleNavigate}
+                href={`${pathname}/${orderId}`}
+              >
+                Order Detail
+              </Button>
+            </div>
+          )}
+        </div>
+      </CardBody>
+    </Card>
   );
 };
 export default OrderCard;

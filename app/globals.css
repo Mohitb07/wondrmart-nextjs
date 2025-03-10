@@ -2,31 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  --primary: #BEF264;
+  --primary: hsl(3.2,66.9%,49.8%);
+  --text: #000;
+  --color-bg: hsl(3.2,66.9%,99%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --primary: hsl(3.2,66.9%,49.8%);
+    --text: #ccc5b9;
+    --color-bg: #000;
   }
 }
 
 html,
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  height: 100vh;
+  isolation: isolate;
+  color: var(--text);
+  background-color: var(--color-bg);
+  scroll-behavior: smooth;
+  min-height: 100%;
 }
 
 html::-webkit-scrollbar {
@@ -39,7 +41,7 @@ html::-webkit-scrollbar-track {
 }
 
 html::-webkit-scrollbar-thumb {
-  background-color: var(--primary);
+  background-color: var(--text);
   border-radius: 100px;
 }
 
@@ -48,4 +50,64 @@ html::-webkit-scrollbar-thumb {
   min-width: 0; /* this is the key */
   flex-basis: 50%;
   /* other styles for the card */
+}
+
+.wrapper {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    hsla(0, 0%, 0%, 0) 0%,
+    hsla(0, 0%, 0%, 0.012) 8.1%,
+    hsla(0, 0%, 0%, 0.045) 15.5%,
+    hsla(0, 0%, 0%, 0.096) 22.5%,
+    hsla(0, 0%, 0%, 0.161) 29%,
+    hsla(0, 0%, 0%, 0.239) 35.3%,
+    hsla(0, 0%, 0%, 0.324) 41.2%,
+    hsla(0, 0%, 0%, 0.414) 47.1%,
+    hsla(0, 0%, 0%, 0.506) 52.9%,
+    hsla(0, 0%, 0%, 0.596) 58.8%,
+    hsla(0, 0%, 0%, 0.681) 64.7%,
+    hsla(0, 0%, 0%, 0.759) 71%,
+    hsla(0, 0%, 0%, 0.824) 77.5%,
+    hsla(0, 0%, 0%, 0.875) 84.5%,
+    hsla(0, 0%, 0%, 0.908) 91.9%,
+    hsla(0, 0%, 0%, 0.92) 100%
+  );
+}
+
+@media screen and (max-width: 550px) {
+  .wrapper {
+    height: 400px;
+  }
+}
+
+.banner-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.banner-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  object-position: center 10%;
+  position: relative;
+  z-index: -1;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.search-container {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -60%);
 }

@@ -6,6 +6,8 @@ import { getAllProducts } from "@/actions/getProducts";
 import { getProductsCount } from "@/actions/getProductsCount";
 import getQueryClient from "./components/getQueryClient";
 import ProductsList from "./components/ProductsList";
+import Banner from "./components/Banner";
+import Theme from "@/common/Theme";
 
 type HomeProps = {
   searchParams: {
@@ -29,13 +31,20 @@ export default async function Home({ searchParams }: HomeProps) {
 
   return (
     <Hydrate state={dehydrateState}>
-      <Container>
-        <main className="p-6 space-y-5">
-          <h1 className="text-4xl font-bold">Products</h1>
+      <div className="wrapper">
+        <Banner />
+        <Container styles="search-container">
           <Search />
-          <ProductsList />
-        </main>
-      </Container>
+        </Container>
+      </div>
+      <div>
+        <Container>
+          <main className="p-6 space-y-5 py-12">
+            <h1 className="text-4xl font-bold">Top Deals</h1>
+            <ProductsList />
+          </main>
+        </Container>
+      </div>
     </Hydrate>
   );
 }

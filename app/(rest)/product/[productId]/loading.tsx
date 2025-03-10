@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10 p-6 mx-auto w-full max-w-8xl">
       <div className="flex items-center justify-center">
-        <Skeleton className="h-[350px] w-[350px] rounded-md" />
+        <Skeleton className="h-[400px] w-[350px] rounded-md" />
       </div>
       <div className="space-y-3 flex-1 lg:col-span-2">
         <Skeleton className="h-20 w-full rounded-md" />

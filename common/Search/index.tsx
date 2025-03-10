@@ -14,7 +14,7 @@ const Search = () => {
     SEARCH_FIELD_CUSTOM_PLACEHOLDERS[0]
   );
   const [isChanging, setIsChanging] = useState(false);
-  const [search, setSearch] = useState(""); // search query [TODO: implement search functionality]
+  const [search, setSearch] = useState(searchParams.get("q") || "");
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
@@ -52,13 +52,13 @@ const Search = () => {
   };
 
   return (
-    <div className="flex items-center justify-center my-3 md:my-0">
+    <div className="flex items-center justify-center my-3 md:my-0 relative">
       <div
         role="searchbox"
         tabIndex={0}
-        className={`flex items-center bg-zinc-800 rounded-md px-3 w-full mx-3 md:mx-0 md:w-2/3 transition-all duration-300 ease-in-out ${
+        className={`flex items-center bg-zinc-900 rounded-md px-3 w-full mx-3 md:mx-0 md:w-2/3 transition-all duration-300 ease-in-out ${
           isFocused
-            ? "ring-2 ring-zinc-500 ring-offset-2 ring-offset-zinc-800"
+            ? "ring-2 ring-zinc-500 ring-offset-2 ring-offset-zinc-900"
             : ""
         }`}
       >
@@ -76,7 +76,7 @@ const Search = () => {
                 ? "placeholder:-translate-y-10 placeholder:opacity-10 placeholder:transition-all placeholder:duration-1000 placeholder:ease-in-out"
                 : "placeholder:translate-y-0 placeholder:opacity-100 placeholder:transition-all placeholder:duration-1000 placeholder:ease-in-out"
             }
-            bg-zinc-800 outline-none p-3
+            bg-zinc-900 outline-none p-3
             `}
         />
       </div>

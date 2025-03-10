@@ -27,7 +27,7 @@ const ProductDetailPage: React.FC<ProductDetailProps> = async ({ params }) => {
   return (
     <Hydrate state={dehydrateState}>
       <Container>
-        <main className="p-6 space-y-5">
+        <main className="p-6 space-y-5 min-h-full">
           {/* <h1 className="text-4xl font-bold">Products Detail</h1> */}
           <ProductDetail id={productId}/>
         </main>

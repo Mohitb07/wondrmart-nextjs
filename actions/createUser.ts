@@ -13,7 +13,6 @@ export const createUser = async (body: SignUpFormData): Promise<UserData> => {
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("create user error", error.response);
       throw error;
     }
     throw error;

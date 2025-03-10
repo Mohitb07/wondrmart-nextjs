@@ -17,7 +17,7 @@ type ProductDetailProps = {
 };
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
-   const {
+  const {
     data: product,
     isLoading: isProductLoading,
     isError: isProductError,
@@ -26,7 +26,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
-  
+
   const {
     data: cart,
     isInitialLoading: isCartLoading,
@@ -67,8 +67,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10">
       {/* white overlay background applied to hide the empty space because of the grid */}
       {/* <section className="shadow-gray-300 shadow-2xl bg-white rounded-lg"> */}
-      <div className="flex justify-center items-center md:block">
-        <ImageGallery src={productImage} />
+      <div className="flex items-center justify-center h-[400px] bg-white rounded-lg overflow-hidden">
+        <div className="">
+          <ImageGallery src={productImage} />
+        </div>
       </div>
       {/* </section> */}
       <section className="space-y-3 flex-1 lg:col-span-2">

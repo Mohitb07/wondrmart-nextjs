@@ -35,7 +35,7 @@ export default function StyledNavbar() {
 
   const menuItems = [
     {
-      name: "Products",
+      name: "Top Deals",
       href: "/",
     },
     {
@@ -61,7 +61,7 @@ export default function StyledNavbar() {
         />
         <NavbarBrand>
           <AcmeLogo />
-          <Link href="/" className="font-bold text-inherit">
+          <Link href="/" className="font-bold">
             wondrMart
           </Link>
         </NavbarBrand>
@@ -126,7 +126,11 @@ export default function StyledNavbar() {
                 </Link>
               </DropdownItem>
               <DropdownItem key="orders">
-                <Link className="w-full" color="foreground" href={`/user/${user.customer_id}/orders`}>
+                <Link
+                  className="w-full"
+                  color="foreground"
+                  href={`/user/${user.customer_id}/orders`}
+                >
                   Orders
                 </Link>
               </DropdownItem>

@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 import ProductCard from "./ProductCard";
 import { Suspense } from "react";
 
-const LIMIT = 10;
+const LIMIT = 12;
 
 export default function ProductsList() {
   const searchParams = useSearchParams();

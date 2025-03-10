@@ -14,11 +14,9 @@ export const signInUser = async (body: SignInFormData): Promise<UserData> => {
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("sign in user error", error.response);
       throw error;
     }
     throw error;

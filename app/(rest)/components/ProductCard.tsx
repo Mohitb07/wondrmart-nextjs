@@ -38,7 +38,6 @@ const ProductCard = ({
   isLoading,
   cartId,
 }: ProductProps) => {
-  console.log("isLoading", isLoading);
   const { mutate, isLoading: isAdding } = useAddToCart();
   const { mutate: updateQuantity } = useUpdateQuantity();
   const formattedPrice = formatPrice(Number(price));
@@ -90,10 +89,11 @@ const ProductCard = ({
   return (
     <Skeleton
       isLoaded={!isLoading}
-      className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
+      className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2 bg-[var(--color-bg)]"
     >
       <div
         data-testid="product-card"
+        className="text-[var(--text)]"
         // className="max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
         // className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
       >
@@ -113,7 +113,7 @@ const ProductCard = ({
           </Link>
           <div className="flex items-center justify-between mt-[1rem] flex-wrap">
             <div>
-              <h2 className="text-sm">{formattedPrice}</h2>
+              <h2 className="text-sm font-semibold">{formattedPrice}</h2>
             </div>
             <div>
               <div className="flex items-center justify-end text-[1rem] max-sm:text-sm gap-2 w-[6rem]">

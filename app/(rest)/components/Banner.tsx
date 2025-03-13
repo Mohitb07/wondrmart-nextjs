@@ -26,9 +26,7 @@ const Banner = () => {
 
   return (
     <div className="banner-container">
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      {isLoading ? null : (
         <img
           src={banner}
           alt="recently launched product banner"

@@ -10,7 +10,7 @@ import React from "react";
 import { FaChevronRight } from "react-icons/fa6";
 
 type OrderCardProps = {
-  orderId: string;
+  orderId?: string;
   isOrderDetail?: boolean;
   orderDate: string;
   orderAmount: string;
@@ -52,7 +52,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
 
   return (
     <Card
-      className="shadow-2xl shadow-gray-900 w-full border border-gray-800 py-2 md:py-0"
+      className="shadow-2xl shadow-gray-900 w-full border border-gray-800 md:py-0"
       isBlurred
     >
       <CardHeader className="block">
@@ -79,22 +79,24 @@ const OrderCard: React.FC<OrderCardProps> = ({
         </div>
       </CardHeader>
       <Divider className="my-1" />
-      <CardBody className="p-1 md:p-3">
+      <CardBody className="p-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center justify-between">
-            <AdvancedImage
-              cldImg={productShowCaseImage}
-              // plugins={[placeholder({ mode: "blur" })]}
-            />
-            <div className="p-4 text-left space-y-2">
-              <Link href={`/product/${productId}`}>
-                <h1 className="text-sm md:text-base font-bold line-clamp-2">
+          <div className="flex items-center">
+            <div className="flex justify-center min-w-[125px] bg-white rounded-md overflow-hidden">
+              <AdvancedImage cldImg={productShowCaseImage} />
+            </div>
+            <div className="ml-4 text-left max-w-[70ch]">
+              {isOrderDetail ? (
+                <p className="text-sm md:text-base font-bold line-clamp-2">
                   {productName}
-                </h1>
-              </Link>
-              {/* <p className="text-slate-400 text-xs block md:hidden">
-                Ordered on {orderPlacedOn}
-                </p> */}
+                </p>
+              ) : (
+                <Link href={`${pathname}/${orderId}`}>
+                  <p className="text-sm md:text-base font-bold line-clamp-2">
+                    {productName}
+                  </p>
+                </Link>
+              )}
             </div>
           </div>
           {!isOrderDetail && (

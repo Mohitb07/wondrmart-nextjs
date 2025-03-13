@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 
 import {
   Avatar,
@@ -18,17 +18,17 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
   Skeleton,
-  Spinner,
 } from "@nextui-org/react";
 import NextLink from "next/link";
 
 import useGetUser from "@/hooks/useGetUser";
 import { useLogOut } from "@/hooks/useLogout";
 import { usePathname } from "next/navigation";
-import { AcmeLogo } from "./Logo";
+import CartCount from "./components/CartCount";
+import { BrandLogo } from "./Logo";
 
 export default function StyledNavbar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logOut } = useLogOut();
   const { data: user, status } = useGetUser();
   const pathname = usePathname();
@@ -60,7 +60,7 @@ export default function StyledNavbar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <AcmeLogo />
+          <BrandLogo />
           <Link href="/" className="font-bold">
             wondrMart
           </Link>
@@ -88,6 +88,7 @@ export default function StyledNavbar() {
         </NavbarContent>
       ) : status === "success" ? (
         <NavbarContent as="div" justify="end">
+          <CartCount />
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -97,7 +98,7 @@ export default function StyledNavbar() {
                 color="primary"
                 name={user.username}
                 size="sm"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                src={user.avatar}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">

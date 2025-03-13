@@ -70,6 +70,7 @@ export type User = {
   address: string;
   customer_id: string;
   email: string;
+  avatar: string;
   password: string;
   updatedAt: string;
   createdAt: string;

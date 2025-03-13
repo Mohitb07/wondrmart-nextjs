@@ -41,7 +41,7 @@ export default function OrderVerificationRoot({
           <>
             <BsFillCartCheckFill className="text-6xl lg:text-7xl text-primary" />
             <h1 className="text-xl">Order Placed</h1>
-            <p className="text-center text-xs text-slate-600 lg:text-sm">
+            <p className="text-center text-xs text-slate-400 lg:text-sm">
               You will receive an email confirmation shortly.
             </p>
           </>

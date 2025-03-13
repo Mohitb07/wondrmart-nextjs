@@ -3,6 +3,7 @@
 import Container from "@/common/Container";
 import useGetUser from "@/hooks/useGetUser";
 import {
+  Avatar,
   breadcrumbItem,
   BreadcrumbItem,
   Breadcrumbs,
@@ -61,10 +62,29 @@ export default function UserLayout({
 
   return (
     <Container>
-      <main className="p-6 space-y-5">
-        <Skeleton isLoaded={!isLoading} className="inline-block rounded-lg">
-          <h1 className="text-4xl font-bold">{pageTitle}</h1>
-        </Skeleton>
+      <main className="p-3 space-y-5">
+        <div className="flex items-center flex-col md:flex-row space-y-3 md:space-y-0">
+          <Skeleton
+            isLoaded={!isLoading}
+            className="inline-block rounded-full p-1"
+          >
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform h-[120px] w-[120px] md:float-left"
+              color="primary"
+              name="User"
+              size="lg"
+              src={user?.avatar}
+            />
+          </Skeleton>
+          <Skeleton
+            isLoaded={!isLoading}
+            className="inline-block rounded-lg ml-4"
+          >
+            <h1 className="text-4xl font-bold leading-normal">{pageTitle}</h1>
+          </Skeleton>
+        </div>
         {filteredBreadCrumbList.length > 1 && (
           <Breadcrumbs size="lg">
             {filteredBreadCrumbList.map((breadcrumb, index) => (

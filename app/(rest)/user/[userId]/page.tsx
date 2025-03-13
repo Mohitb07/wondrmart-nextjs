@@ -17,9 +17,6 @@ const User = ({ params }: { params: { userId: string } }) => {
   const { userId } = params;
 
   return (
-    // <Container>
-    //   <main className="p-6 space-y-5">
-    //     <h1 className="text-4xl font-bold">Your Account</h1>
     <>
       <div className="grid lg:grid-cols-3 grid-cols-2 gap-5 lg:gap-10">
         <AccountCTA
@@ -48,8 +45,6 @@ const User = ({ params }: { params: { userId: string } }) => {
         <RecommendedProducts userId={userId} />
       </div>
     </>
-    //   </main>
-    // </Container>
   );
 };
 export default User;

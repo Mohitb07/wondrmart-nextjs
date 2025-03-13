@@ -50,7 +50,7 @@ const CartDetail = () => {
   let totalCartSum = calculateCartPrice(userCart).toString();
   return (
     <>
-      <h1 className="text-2xl ml-2 md:ml-0 md:text-3xl font-bold my-2">
+      <h1 className="text-2xl md:ml-0 md:text-3xl font-bold my-2">
         {user?.username}&apos;s Cart
       </h1>
       {userCart.length === 0 ? (
@@ -89,7 +89,7 @@ const CartDetail = () => {
             </div>
           </div>
           {/* right section */}
-          <div className="space-y-5 p-2">
+          <div className="space-y-5">
             <div className="space-y-2">
               <h2 className="text-xl font-semibold">Coupons</h2>
               <CouponInput />

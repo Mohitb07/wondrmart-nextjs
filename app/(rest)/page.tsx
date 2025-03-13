@@ -37,7 +37,7 @@ export default async function Home({ searchParams }: HomeProps) {
       </div>
       <div>
         <Container>
-          <main className="p-6 space-y-5 py-12">
+          <main className="p-3 space-y-5 py-12">
             <h1 className="text-4xl font-bold">Top Deals</h1>
             <ProductsList />
           </main>

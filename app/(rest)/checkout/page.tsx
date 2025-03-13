@@ -4,7 +4,7 @@ import Checkout from "./components/CheckoutDetail";
 export default function CheckoutPage() {
   return (
     <Container>
-      <main className="p-6 space-y-5">
+      <main className="p-3 space-y-5">
         <Checkout />
       </main>
     </Container>

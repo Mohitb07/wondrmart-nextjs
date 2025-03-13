@@ -69,7 +69,6 @@ export default async function OrderDetail({ params }: OrderDetailProps) {
           {orderItems.map((orderItem) => (
             <OrderCard
               key={orderItem.order_item_id}
-              orderId="313"
               isOrderDetail
               orderAmount={orderItem.total_amount}
               orderDate={orderItem.createdAt}

@@ -9,7 +9,7 @@ export const metadata = {
 const Cart = () => {
   return (
     <Container>
-      <div className="px-2 py-5 md:py-10 sm:px-6 lg:px-8">
+      <div className="p-3 md:py-10">
         <CartDetail />
       </div>
     </Container>

@@ -57,10 +57,10 @@ export default function ProductsList() {
         <div
           className={`grid grid-cols-2 ${
             isPreviousData && "opacity-60"
-          } md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-16 lg:gap-16 md:p-2 xl:grid-cols-6 xl:gap-5 xl:gap-x-10 md:justify-items-center`}
+          } md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-16 lg:gap-16 md:p-2 xl:grid-cols-6 xl:gap-5 xl:gap-x-10 md:justify-items-center`}
         >
           {!isLoading &&
-            data &&
+            !!data &&
             data.map((product) => (
               <ProductCard
                 key={product.product_id}

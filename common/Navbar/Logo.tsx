@@ -4,8 +4,13 @@ import React from "react";
 import Logo from "@/public/logo.png";
 import Image from "next/image";
 
-export const AcmeLogo = () => (
+export const BrandLogo = () => (
   <div className="flex items-center">
-    <Image className="" src={Logo} alt="wondrMart Logo" width={30} height={30} />
+    <Image 
+     src={Logo} 
+     alt="return to home page" 
+     width={30} 
+     height={30} 
+     />
   </div>
 );

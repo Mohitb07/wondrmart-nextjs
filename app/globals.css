@@ -111,3 +111,7 @@ html::-webkit-scrollbar-thumb {
   left: 50%;
   transform: translate(-50%, -60%);
 }
+
+header {
+  padding-inline: 0.75rem !important;
+}

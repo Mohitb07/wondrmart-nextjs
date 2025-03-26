@@ -5,85 +5,70 @@ import useGetCart from "@/hooks/useGetCart";
 import useGetProducts from "@/hooks/useGetProducts";
 import useGetProductsCount from "@/hooks/useGetProductsCount";
 import NotFoundSVG from "@/public/not-found.svg";
-import { Pagination, Spinner } from "@nextui-org/react";
+import { CartItem } from "@/types";
+import { Pagination, Skeleton, Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "./ProductCard";
-import { Suspense } from "react";
 
 const LIMIT = 12;
 
 export default function ProductsList() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
+  const sortby = searchParams.get("sort") || "newest";
   const page = searchParams.get("page") || "1";
+  console.log("render", query, sortby, page);
 
   const {
-    data,
-    isLoading,
-    isError: isProductListError,
-    error: productListError,
+    data: products,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+    error: productsError,
     isPreviousData,
     onPageChange,
-  } = useGetProducts(query, page);
+  } = useGetProducts(query, page, sortby);
 
   const { data: productsCount, isLoading: isCountLoading } =
     useGetProductsCount(query);
 
   const {
     data: cart,
-    isInitialLoading: isCartItemsLoading,
+    isInitialLoading: isCartLoading,
     isError: isCartError,
   } = useGetCart();
-  const isProductListFound = data && data.length > 0;
 
-  if (isProductListError) throw productListError;
+  if (isProductsError) throw productsError;
 
-  let userCart = cart?.cart_items || [];
-  let cartItemsIds: Record<string, string> = {};
-  if (!isCartError && !!cart) {
-    userCart.map((item) => {
-      cartItemsIds[item.product_id] = item.quantity.toString();
-    });
-  }
-  let totalPages = 0;
-  if (!!productsCount && productsCount.count) {
-    totalPages = Math.ceil(productsCount.count / LIMIT);
-  }
+  const cartItems = mapCartItems(cart?.cart_items || []);
+  const totalPages = calculateTotalPages(productsCount?.count || 0);
 
   return (
     <Container>
-      <Suspense>
-        <div
-          className={`grid grid-cols-2 ${
-            isPreviousData && "opacity-60"
-          } md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-16 lg:gap-16 md:p-2 xl:grid-cols-6 xl:gap-5 xl:gap-x-10 md:justify-items-center`}
-        >
-          {!isLoading &&
-            !!data &&
-            data.map((product) => (
-              <ProductCard
-                key={product.product_id}
-                id={product.product_id}
-                image_url={product.image_url}
-                isInCartLoading={isCartItemsLoading}
-                // isLoading={!!!data && !isProductListError && isRefetching}
-                isLoading={false}
-                name={product.name}
-                price={product.price}
-                productId={product.product_id}
-                cartQty={cartItemsIds[product.product_id] || "0"}
-                cartId={cart?.cart_id}
-              />
-            ))}
-        </div>
-      </Suspense>
-      {isLoading && (
+      <div className={`${isPreviousData && "opacity-60"} products-grid`}>
+        {!isProductsLoading &&
+          products?.map((product) => (
+            <ProductCard
+              key={product.product_id}
+              id={product.product_id}
+              image_url={product.image_url}
+              isInCartLoading={isCartLoading}
+              isLoading={false}
+              name={product.name}
+              price={product.price}
+              productId={product.product_id}
+              cartQty={cartItems[product.product_id] || "0"}
+              cartId={cart?.cart_id}
+            />
+          ))}
+      </div>
+
+      {isProductsLoading && (
         <div className="flex justify-center items-center h-[500px]">
           <Spinner label="Loading..." color="primary" />
         </div>
       )}
-      {!isProductListFound && !isLoading && (
+      {!products?.length && !isProductsLoading && (
         <div className="flex justify-center items-center h-[500px] flex-col">
           <Image
             src={NotFoundSVG}
@@ -94,25 +79,35 @@ export default function ProductsList() {
             alt="404"
             priority
           />
-          {query ? (
-            <h2 className="text-2xl">No product found for {query}</h2>
-          ) : (
-            <h2 className="text-2xl">No products found</h2>
-          )}
+          <h2 className="text-2xl">
+            {query ? `No product found for ${query}` : "No products found"}
+          </h2>
         </div>
       )}
       <div className="flex justify-center items-center my-4">
-        {isCountLoading
-          ? null
-          : isProductListFound && (
-              <Pagination
-                showControls
-                total={totalPages}
-                initialPage={parseInt(page || "1")}
-                onChange={onPageChange}
-              />
-            )}
+        {!!products && products.length > 0 && (
+          <Skeleton isLoaded={!isProductsLoading && !isCountLoading}>
+            <Pagination
+              isCompact
+              showControls
+              total={totalPages}
+              initialPage={parseInt(page)}
+              onChange={onPageChange}
+            />
+          </Skeleton>
+        )}
       </div>
     </Container>
   );
+}
+
+function mapCartItems(cartItems: CartItem[]) {
+  return cartItems.reduce((acc, item) => {
+    acc[item.product_id] = item.quantity.toString();
+    return acc;
+  }, {} as Record<string, string>);
+}
+
+function calculateTotalPages(count: number) {
+  return Math.ceil(count / LIMIT);
 }

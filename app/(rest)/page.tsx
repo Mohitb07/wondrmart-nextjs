@@ -1,11 +1,11 @@
 import Container from "@/common/Container";
 import Search from "@/common/Search";
 import { dehydrate, Hydrate } from "@tanstack/react-query";
-
 import { getProductsCount } from "@/actions/getProductsCount";
 import getQueryClient from "./components/getQueryClient";
 import ProductsList from "./components/ProductsList";
 import Banner from "./components/Banner";
+import SortProducts from "./components/Sort";
 
 type HomeProps = {
   searchParams: {
@@ -15,20 +15,18 @@ type HomeProps = {
 };
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { q, page } = searchParams;
+  const { q = "" } = searchParams;
   const queryClient = getQueryClient();
-  // await queryClient.prefetchQuery({
-  //   queryKey: ["products"],
-  //   queryFn: () => getAllProducts(q || "", page || "1"),
-  // });
+
   await queryClient.prefetchQuery({
-    queryKey: ["productsCount", q || ""],
-    queryFn: () => getProductsCount(q || ""),
+    queryKey: ["productsCount", q],
+    queryFn: () => getProductsCount(q),
   });
-  const dehydrateState = dehydrate(queryClient);
+
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Hydrate state={dehydrateState}>
+    <Hydrate state={dehydratedState}>
       <div className="wrapper">
         <Banner />
         <Container styles="search-container">
@@ -38,7 +36,10 @@ export default async function Home({ searchParams }: HomeProps) {
       <div>
         <Container>
           <main className="p-3 space-y-5 py-12">
-            <h1 className="text-4xl font-bold">Top Deals</h1>
+            <div className="flex items-baseline">
+              <h1 className="text-4xl font-bold mr-auto">Top Deals</h1>
+              <SortProducts />
+            </div>
             <ProductsList />
           </main>
         </Container>

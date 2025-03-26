@@ -98,7 +98,7 @@ const ProductCard = ({
         // className="card max-h-[25rem] max-w-[13rem] md:w-[13rem] rounded-md border border-slate-700 overflow-hidden flex flex-col max-sm:pb-2"
       >
         <Link href={`/product/${id}`}>
-          <div className="overflow-hidden h-[12rem] flex justify-center items-center bg-white">
+          <div className="overflow-hidden min-w-[5rem] h-[12rem] flex justify-center items-center bg-white">
             <AdvancedImage
               cldImg={productImage}
               // plugins={[placeholder({ mode: "blur" })]}
@@ -112,8 +112,8 @@ const ProductCard = ({
             </div>
           </Link>
           <div className="flex items-center justify-between mt-[1rem] flex-wrap">
-            <div>
-              <h2 className="text-sm font-semibold">{formattedPrice}</h2>
+            <div className="">
+              <h2 className="text-xs font-semibold">{formattedPrice}</h2>
             </div>
             <div>
               <div className="flex items-center justify-end text-[1rem] max-sm:text-sm gap-2 w-[6rem]">

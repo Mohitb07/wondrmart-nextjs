@@ -8,15 +8,15 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --primary: hsl(3.2,66.9%,49.8%);
+  --primary: hsl(3.2, 66.9%, 49.8%);
   --text: #000;
-  --color-bg: hsl(3.2,66.9%,99%);
+  --color-bg: hsl(3.2, 66.9%, 99%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --primary: hsl(3.2,66.9%,49.8%);
+    --primary: hsl(3.2, 66.9%, 49.8%);
     --text: #ccc5b9;
     --color-bg: #000;
   }
@@ -114,4 +114,26 @@ html::-webkit-scrollbar-thumb {
 
 header {
   padding-inline: 0.75rem !important;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  place-items: center;
+}
+
+@media screen and (max-width: 550px) {
+  .products-grid {
+    grid-template-columns: 1fr 1fr;
+    place-items: revert;
+    gap: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 300px){
+  .products-grid {
+    grid-template-columns: 1fr;
+    place-items: center;
+  }
 }

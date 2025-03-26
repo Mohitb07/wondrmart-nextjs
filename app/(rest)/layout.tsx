@@ -8,7 +8,7 @@ import CustomNotification from "@/common/Notification";
 import "../globals.css";
 import TopLoaderProvider from "@/providers/TopBarLoader";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "wondrMart",

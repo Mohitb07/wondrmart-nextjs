@@ -5,14 +5,14 @@ import { getAllProducts } from "@/actions/getProducts";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CustomError, Product } from "../types";
 
-const useGetProducts = (queryKey: string, page: string) => {
+const useGetProducts = (queryKey: string, page: string, sortby: string) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const query = useQuery<Product[], CustomError>({
-    queryKey: ["products", queryKey, page],
-    queryFn: () => getAllProducts(queryKey, page),
+    queryKey: ["products", queryKey, page, sortby],
+    queryFn: () => getAllProducts(queryKey, page, sortby),
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });

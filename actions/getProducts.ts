@@ -4,12 +4,14 @@ import axios from "axios";
 
 export const getAllProducts = async (
   filters: string,
-  page: string
+  page: string,
+  sortby: string,
 ): Promise<Product[]> => {
   try {
     const res = await axios.post(BASE_URL + "/products", {
       query: filters,
       page,
+      sortby,
     });
     return res.data;
   } catch (error) {

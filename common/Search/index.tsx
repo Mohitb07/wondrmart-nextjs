@@ -35,21 +35,38 @@ const Search = () => {
   }, []);
 
   const updateSearchUrl = (query: string) => {
+    // Create a new URLSearchParams instance from the current browser URL
+    const params = new URLSearchParams(window.location.search);
+
+    // Add or remove the "q" query parameter
     if (!query.length) {
-      return router.push(`${pathname}`);
+      params.delete("q");
+    } else {
+      params.set("q", query);
     }
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("q", query);
+
+    // Update the URL while retaining all other existing query parameters
     router.push(`${pathname}?${params.toString()}`);
   };
 
   const debouncedSearch = useCallback(debounce(updateSearchUrl, 500), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearch(query);
-    debouncedSearch(query);
+    setSearch(e.target.value);
+    debouncedSearch(e.target.value);
   };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   if (!e.target.value) {
+  //     params.delete("q");
+  //     router.push(`${pathname}?${params.toString()}`);
+  //     setSearch("");
+  //     return;
+  //   }
+  //   params.set("q", e.target.value);
+  //   router.push(`${pathname}?${params.toString()}`);
+  //   setSearch(e.target.value);
+  // };
 
   return (
     <div className="flex items-center justify-center my-3 md:my-0 relative">

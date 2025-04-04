@@ -24,7 +24,7 @@ const useGetUser = () => {
         });
       }
     },
-    retry: 2,
+    retry: 1,
     refetchOnWindowFocus: false,
   });
 };

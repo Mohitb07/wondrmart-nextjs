@@ -1,42 +1,39 @@
 "use client";
 
-import { Select, Selection, SelectItem } from "@nextui-org/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Select, SelectItem } from "@nextui-org/react";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const sortList = [
-  { key: "price", label: "Price" },
-  { key: "discount", label: "Discount" },
-  { key: "rating", label: "Rating" },
+  { key: "price", label: "Price: Low To High" },
   { key: "newest", label: "Newest" },
   { key: "oldest", label: "Oldest" },
   { key: "name", label: "Name" },
 ];
 
-export default function SortProducts() {
-  const params = new URLSearchParams(window.location.search);
-
-  const [value, setValue] = useState(params.get("sort") || "newest");
+export default function SortProducts({ sortby }: { sortby: string }) {
+  const [value, setValue] = useState(sortby || "newest");
   const router = useRouter();
   const pathname = usePathname();
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newParams = new URLSearchParams(window.location.search);
     const value = e.target.value;
+
     if (!value) {
       newParams.delete("sort");
-      router.push(`${pathname}?${newParams.toString()}`);
+      router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
       setValue(value);
-      return;
+    } else {
+      newParams.set("sort", value);
+      router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+      setValue(value);
     }
-    newParams.set("sort", value);
-    router.push(`${pathname}?${newParams.toString()}`);
-    setValue(value);
   };
 
   return (
     <Select
-      className="max-w-[8rem]"
+      className="max-w-[14rem]"
       size="sm"
       label="Sort by:"
       labelPlacement="inside"

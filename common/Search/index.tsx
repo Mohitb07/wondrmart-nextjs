@@ -46,7 +46,7 @@ const Search = () => {
     }
 
     // Update the URL while retaining all other existing query parameters
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const debouncedSearch = useCallback(debounce(updateSearchUrl, 500), []);

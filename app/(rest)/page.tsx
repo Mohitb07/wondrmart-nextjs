@@ -11,11 +11,12 @@ type HomeProps = {
   searchParams: {
     q: string;
     page: string;
+    sort: string;
   };
 };
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { q = "" } = searchParams;
+  const { q = "", page, sort } = searchParams;
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
@@ -38,7 +39,7 @@ export default async function Home({ searchParams }: HomeProps) {
           <main className="p-3 space-y-5 py-12">
             <div className="flex items-baseline">
               <h1 className="text-4xl font-bold mr-auto">Top Deals</h1>
-              <SortProducts />
+              <SortProducts sortby={sort} />
             </div>
             <ProductsList />
           </main>

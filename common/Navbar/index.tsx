@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Avatar,
@@ -23,15 +23,32 @@ import NextLink from "next/link";
 
 import useGetUser from "@/hooks/useGetUser";
 import { useLogOut } from "@/hooks/useLogout";
+import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import CartCount from "./components/CartCount";
 import { BrandLogo } from "./Logo";
 
 export default function StyledNavbar() {
+  const token = Cookies.get("accessToken");
+  const isLoggedIn = !!token;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const { logOut } = useLogOut();
-  const { data: user, status } = useGetUser();
+  const {
+    data: user,
+    status,
+    isLoading,
+    isError,
+    isPaused,
+    isFetching,
+  } = useGetUser();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setShowLoader(false);
+    }
+  }, [isLoggedIn]);
 
   const menuItems = [
     {
@@ -47,6 +64,98 @@ export default function StyledNavbar() {
       href: "/topseller",
     },
   ];
+
+  let content = null;
+
+  if (isLoading && showLoader) {
+    content = <Skeleton className="flex rounded-full w-10 h-10" />;
+  } else if (status === "success") {
+    content = (
+      <>
+        <CartCount />
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              color="primary"
+              name={user.username}
+              size="sm"
+              src={user.avatar}
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem
+              key="profile-data"
+              className="h-14 gap-2"
+              textValue="Profile Data"
+            >
+              <p className="font-semibold">Signed in as</p>
+              <p className="font-semibold">{user.email}</p>
+            </DropdownItem>
+            <DropdownItem key="profile">
+              <Link
+                as={NextLink}
+                className="w-full"
+                color="foreground"
+                href={`/user/${user.customer_id}`}
+              >
+                Profile
+              </Link>
+            </DropdownItem>
+            <DropdownItem key="cart">
+              <Link
+                as={NextLink}
+                className="w-full"
+                color="foreground"
+                href="/cart"
+              >
+                Cart
+              </Link>
+            </DropdownItem>
+            <DropdownItem key="orders">
+              <Link
+                className="w-full"
+                color="foreground"
+                href={`/user/${user.customer_id}/orders`}
+              >
+                Orders
+              </Link>
+            </DropdownItem>
+            <DropdownItem
+              className="w-full"
+              onClick={logOut}
+              key="logout"
+              color="danger"
+            >
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </>
+    );
+  } else {
+    content = (
+      <>
+        <NavbarItem className="hidden lg:flex">
+          <Link as={NextLink} href="/auth/signin">
+            Login
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Button
+            as={NextLink}
+            color="primary"
+            href="/auth/signup"
+            variant="shadow"
+          >
+            Sign Up
+          </Button>
+        </NavbarItem>
+      </>
+    );
+  }
 
   return (
     <Navbar
@@ -82,89 +191,8 @@ export default function StyledNavbar() {
           </NavbarItem>
         ))}
       </NavbarContent>
-      {status === "loading" ? (
-        <NavbarContent justify="end">
-          <Skeleton className="flex rounded-full w-10 h-10" />
-        </NavbarContent>
-      ) : status === "success" ? (
-        <NavbarContent as="div" justify="end">
-          <CartCount />
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="primary"
-                name={user.username}
-                size="sm"
-                src={user.avatar}
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{user.email}</p>
-              </DropdownItem>
-              <DropdownItem key="profile">
-                <Link
-                  as={NextLink}
-                  className="w-full"
-                  color="foreground"
-                  href={`/user/${user.customer_id}`}
-                >
-                  Profile
-                </Link>
-              </DropdownItem>
-              <DropdownItem key="cart">
-                <Link
-                  as={NextLink}
-                  className="w-full"
-                  color="foreground"
-                  href="/cart"
-                >
-                  Cart
-                </Link>
-              </DropdownItem>
-              <DropdownItem key="orders">
-                <Link
-                  className="w-full"
-                  color="foreground"
-                  href={`/user/${user.customer_id}/orders`}
-                >
-                  Orders
-                </Link>
-              </DropdownItem>
-              <DropdownItem
-                className="w-full"
-                onClick={logOut}
-                key="logout"
-                color="danger"
-              >
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarContent>
-      ) : (
-        <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
-            <Link as={NextLink} href="/auth/signin">
-              Login
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Button
-              as={NextLink}
-              color="primary"
-              href="/auth/signup"
-              variant="shadow"
-            >
-              Sign Up
-            </Button>
-          </NavbarItem>
-        </NavbarContent>
-      )}
+      <NavbarContent as="div" justify="end"></NavbarContent>
+      {content}
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>

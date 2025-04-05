@@ -29,6 +29,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import CartItem from "../../cart/components/CartItem";
+import toast from "react-hot-toast";
 
 export default function Checkout() {
   const { data: user, isLoading: isUserLoading } = useGetUser();
@@ -118,6 +119,7 @@ export default function Checkout() {
   const handlePlaceOrder = async () => {
     if (!currentAddress) {
       console.error("No address found");
+      toast.error("Please select an address");
       return;
     }
     if (!cart?.cart_items) {

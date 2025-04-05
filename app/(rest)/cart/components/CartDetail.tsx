@@ -1,21 +1,17 @@
 "use client";
 
-import { getCartItems } from "@/actions/getCartItems";
+import useRemoveCartItem from "@/hooks/useDeleteCartItem";
+import useGetCart from "@/hooks/useGetCart";
+import useGetUser from "@/hooks/useGetUser";
 import useUpdateQuantity from "@/hooks/useUpdateQty";
+import NotFoundSVG from "@/public/not-found.svg";
 import { calculateCartPrice } from "@/utils/cartPrice";
 import { Button, Spinner } from "@nextui-org/react";
-import { useQuery } from "@tanstack/react-query";
-import NotFoundSVG from "@/public/not-found.svg";
-import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import CartItem from "./CartItem";
 import CouponInput from "./Coupon";
 import OrderSummary from "./Summary";
-import useGetUser from "@/hooks/useGetUser";
-import useRemoveCartItem from "@/hooks/useDeleteCartItem";
-import Image from "next/image";
-import Link from "next/link";
-import useGetCart from "@/hooks/useGetCart";
-import { redirect } from "next/navigation";
 
 const CartDetail = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
@@ -28,10 +24,6 @@ const CartDetail = () => {
   const { mutate: updateQuantityHandler } = useUpdateQuantity();
   const { mutate: removeCartItemHandler } = useRemoveCartItem();
 
-  if(!user) {
-    redirect('/login');
-  }
-  
   if (isCartLoading || isUserLoading) {
     return (
       <div>

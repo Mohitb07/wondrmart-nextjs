@@ -101,7 +101,7 @@ const CartItem: React.FC<CartItemProps> = ({
         className="w-full shadow-2xl shadow-gray-900 border border-gray-800"
         isBlurred
       >
-        <div className="flex gap-3 items-center px-2">
+        <div className="flex gap-3 items-center px-2 py-2">
           <div className="flex items-center justify-center h-24 w-24 md:h-28 md:w-28 bg-white rounded-md overflow-hidden">
             <div className="">
               <AdvancedImage

@@ -3,7 +3,7 @@
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { useEffect } from "react";
-import errorSVG from "@/public/astronaut.svg";
+import errorSVG from "@/public/error.svg";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
 export default function Error({

@@ -36,9 +36,9 @@ export default async function Home({ searchParams }: HomeProps) {
       </div>
       <div>
         <Container>
-          <main className="p-3 space-y-5 py-12">
+          <main className="p-3 space-y-5 py-8">
             <div className="flex items-baseline">
-              <h1 className="text-4xl font-bold mr-auto">Top Deals</h1>
+              <h1 className="text-3xl lg:text-4xl font-bold mr-auto">Top Deals</h1>
               <SortProducts sortby={sort} />
             </div>
             <ProductsList />

@@ -5,10 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const sortList = [
-  { key: "price", label: "Price: Low To High" },
   { key: "newest", label: "Newest" },
-  { key: "oldest", label: "Oldest" },
+  { key: "price", label: "Price: Low To High" },
+  { key: "price-desc", label: "Price: High To Low" },
   { key: "name", label: "Name" },
+  { key: "oldest", label: "Oldest" },
 ];
 
 export default function SortProducts({ sortby }: { sortby: string }) {
@@ -33,7 +34,7 @@ export default function SortProducts({ sortby }: { sortby: string }) {
 
   return (
     <Select
-      className="max-w-[14rem]"
+      className="max-w-[10rem] lg:max-w-[14rem]"
       size="sm"
       label="Sort by:"
       labelPlacement="inside"

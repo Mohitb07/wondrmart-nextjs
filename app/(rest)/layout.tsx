@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import CustomNotification from "@/common/Notification";
-import "../globals.css";
 import TopLoaderProvider from "@/providers/TopBarLoader";
-
+import "../globals.css";
+import { cookies } from "next/headers";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
@@ -20,13 +20,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const store = cookies();
+  const token = store.get("accessToken")?.value || "";
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
         <TopLoaderProvider>
           <ReactQueryProvider>
             <UIProvider>
-              <Navbar />
+              <Navbar token={token} />
               {children}
               <CustomNotification />
             </UIProvider>

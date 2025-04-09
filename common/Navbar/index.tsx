@@ -23,32 +23,16 @@ import NextLink from "next/link";
 
 import useGetUser from "@/hooks/useGetUser";
 import { useLogOut } from "@/hooks/useLogout";
-import Cookies from "js-cookie";
+
 import { usePathname } from "next/navigation";
 import CartCount from "./components/CartCount";
 import { BrandLogo } from "./Logo";
 
-export default function StyledNavbar() {
-  const token = Cookies.get("accessToken");
-  const isLoggedIn = !!token;
+export default function StyledNavbar({ token }: { token: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLoader, setShowLoader] = useState(true);
   const { logOut } = useLogOut();
-  const {
-    data: user,
-    status,
-    isLoading,
-    isError,
-    isPaused,
-    isFetching,
-  } = useGetUser();
+  const { data: user, status, isLoading } = useGetUser();
   const pathname = usePathname();
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      setShowLoader(false);
-    }
-  }, [isLoggedIn]);
 
   const menuItems = [
     {
@@ -66,8 +50,7 @@ export default function StyledNavbar() {
   ];
 
   let content = null;
-
-  if (isLoading && showLoader) {
+  if (isLoading && !!token) {
     content = <Skeleton className="flex rounded-full w-10 h-10" />;
   } else if (status === "success") {
     content = (
@@ -193,12 +176,15 @@ export default function StyledNavbar() {
       </NavbarContent>
       <NavbarContent as="div" justify="end"></NavbarContent>
       {content}
-      <NavbarMenu>
+      <NavbarMenu className="flex justify-center gap-10">
         {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item.name}-${index}`}>
+          <NavbarMenuItem
+            key={`${item.name}-${index}`}
+            className="w-full text-center"
+          >
             <Link
               color={pathname === item.href ? "primary" : "foreground"}
-              className="w-full"
+              className="p-8 w-full flex justify-center"
               href={item.href}
               size="lg"
             >

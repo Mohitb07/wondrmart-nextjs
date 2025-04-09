@@ -6,11 +6,13 @@ import Image from "next/image";
 
 export const BrandLogo = () => (
   <div className="flex items-center">
-    <Image 
-     src={Logo} 
-     alt="return to home page" 
-     width={30} 
-     height={30} 
-     />
+    <Image
+      src={Logo}
+      alt="return to home page"
+      width={30}
+      height={30}
+      className="max-w-[30px] max-h-[30px]"
+      priority={true}
+    />
   </div>
 );

@@ -1,14 +1,14 @@
 "use client";
 
+import Banner1 from "@/public/images/iphone-banner-1.jpg";
+import Banner2 from "@/public/images/iphone-banner-2.webp";
+import Image, { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
 
-const banners = [
-  "https://www.apple.com/newsroom/images/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/geo/tile/Apple-iPhone-16e-hero-GEO-250219-lp.jpg.landing-big_2x.jpg",
-  "https://switch.com.ph/cdn/shop/files/NPI-iPhone-16e-Check-Back-Web-Banner-Desktop.jpg?v=1740749494&width=3600",
-];
+const banners = [Banner1, Banner2];
 
 const Banner = () => {
-  const [banner, setBanner] = useState("");
+  const [banner, setBanner] = useState<StaticImageData | null>(null); // Use null instead of undefined
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,13 +26,19 @@ const Banner = () => {
 
   return (
     <div className="banner-container">
-      {isLoading ? null : (
-        <img
-          src={banner}
-          alt="recently launched product banner"
-          className="banner-image"
-        />
-      )}
+      {isLoading
+        ? null
+        : banner && ( // Ensure banner is not null before rendering Image
+            <Image
+              src={banner}
+              width={0}
+              height={0}
+              decoding="async"
+              priority={true}
+              alt="recently launched product banner"
+              className="banner-image"
+            />
+          )}
     </div>
   );
 };

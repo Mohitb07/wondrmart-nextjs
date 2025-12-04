@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { debounce } from "@/utils/debounce";
+import { debounce } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SEARCH_FIELD_CUSTOM_PLACEHOLDERS } from "@/constants";
 

@@ -4,6 +4,7 @@ import { addToCart } from "@/actions/addToCart";
 import { CartType } from "@/types";
 import useGetUser from "./useGetUser";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const useAddToCart = () => {
   const { data: user } = useGetUser();
@@ -11,48 +12,64 @@ const useAddToCart = () => {
   return useMutation({
     mutationFn: (data: any) => addToCart(data.id),
     onMutate: async (data: any) => {
+      // if (!Cookies.get("accessToken")) return;
       await queryClient.cancelQueries({ queryKey: ["cartItems"] });
       const previousCartItems: CartType | null =
         queryClient.getQueryData(["cartItems"]) || null;
       console.log("previousCartItems", previousCartItems);
       let newCart;
-      try {
-        if (!!previousCartItems?.cart_items) {
-          console.log("inside if");
-          let clonned;
-          clonned = structuredClone(previousCartItems);
-          newCart = {
-            cart_id: clonned.cart_id,
-            status: clonned.status,
-            customer_id: clonned.customer_id,
-            cart_items: [
-              ...clonned.cart_items,
-              {
-                quantity: 1,
-                product_id: data.id,
-                total_amount: data.price,
-              },
-            ],
-          };
-        } else {
-          console.log("inside if else");
-          newCart = {
-            cart_id: "",
-            status: "active",
-            customer_id: user?.customer_id,
-            cart_items: [
-              {
-                quantity: 1,
-                product_id: data.id,
-                total_amount: data.price,
-              },
-            ],
-          };
-        }
-      } catch (error) {
-        console.error("Error cloning cart items:", error);
-        return { previousCartItems };
-      }
+      // try {
+      //   if (!!previousCartItems?.cart_items) {
+      //     console.log("inside if");
+      //     let clonned;
+      //     clonned = structuredClone(previousCartItems);
+      //     newCart = {
+      //       cart_id: clonned.cart_id,
+      //       status: clonned.status,
+      //       customer_id: clonned.customer_id,
+      //       cart_items: [
+      //         ...clonned.cart_items,
+      //         {
+      //           quantity: 1,
+      //           product_id: data.id,
+      //           total_amount: data.price,
+      //         },
+      //       ],
+      //     };
+      //   } else {
+      //     console.log("inside if else");
+      //     newCart = {
+      //       cart_id: "",
+      //       status: "active",
+      //       customer_id: user?.customer_id,
+      //       cart_items: [
+      //         {
+      //           quantity: 1,
+      //           product_id: data.id,
+      //           total_amount: data.price,
+      //         },
+      //       ],
+      //     };
+      //   }
+      // } catch (error) {
+      //   console.error("Error cloning cart items:", error);
+      //   return { previousCartItems };
+      // }
+      let clonned = structuredClone(previousCartItems) as CartType;
+      newCart = {
+        cart_id: clonned.cart_id,
+        status: clonned.status,
+        customer_id: clonned.customer_id,
+        cart_items: [
+          ...(clonned.cart_items || []),
+          {
+            quantity: 1,
+            product_id: data.id,
+            total_amount: data.price,
+          },
+        ],
+      };
+      console.log("newCart", newCart);
       queryClient.setQueryData(["cartItems"], newCart);
       return { previousCartItems };
     },

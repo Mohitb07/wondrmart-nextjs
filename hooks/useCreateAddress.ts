@@ -1,14 +1,22 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { createAddress } from "@/actions/createAddress";
-import { AddressFormData } from "@/types";
+import { Address, AddressFormData } from "@/types";
 import { usePathname } from "next/navigation";
+import { AxiosError } from "axios";
+
+export type CreateAddressError = AxiosError<
+  {
+    errors: { message: string; property: string }[];
+  },
+  any
+>;
 
 const useCreateAddress = () => {
   const pathname = usePathname();
   const paths = pathname.split("/").slice(0, -1);
   const url = paths.join("/");
-  return useMutation({
+  return useMutation<Address, CreateAddressError, AddressFormData>({
     mutationFn: (data: AddressFormData) => {
       return createAddress({
         apartment: data.apartment,

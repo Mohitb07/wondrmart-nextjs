@@ -12,7 +12,7 @@ const useAddToCart = () => {
   return useMutation({
     mutationFn: (data: any) => addToCart(data.id),
     onMutate: async (data: any) => {
-      // if (!Cookies.get("accessToken")) return;
+      if (!Cookies.get("accessToken")) return;
       await queryClient.cancelQueries({ queryKey: ["cartItems"] });
       const previousCartItems: CartType | null =
         queryClient.getQueryData(["cartItems"]) || null;

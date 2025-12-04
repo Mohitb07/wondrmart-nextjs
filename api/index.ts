@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { QueryClient } from "@tanstack/react-query";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,

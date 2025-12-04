@@ -16,18 +16,12 @@ export function middleware(request: Request) {
   const isSignUpPage = pathname.startsWith("/auth/signup");
   const cookie = request.headers.get("Cookie")?.split("=")[1];
 
-  if (isSignInPage && Boolean(cookie)) {
+  if ((isSignInPage || isSignUpPage) && Boolean(cookie)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (isSignUpPage && Boolean(cookie)) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  if (isAuthRequired) {
-    if (!cookie) {
-      return NextResponse.redirect(new URL("/auth/signin", request.url));
-    }
+  if (isAuthRequired && !cookie) {
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
   return NextResponse.next();

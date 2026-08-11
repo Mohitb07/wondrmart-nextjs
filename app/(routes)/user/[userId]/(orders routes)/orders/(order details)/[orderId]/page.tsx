@@ -25,11 +25,12 @@ export default async function OrderDetail({ params }: OrderDetailProps) {
   let orderDetail = {} as Order;
   try {
     orderDetail = (await getUserOrder(userId, orderId)) || {};
-  } catch (error) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        notFound();
-      }
+  } catch (error: any) {
+    if (isAxiosError(error) && error.response?.status === 404) {
+      notFound();
+    }
+    if (error?.message?.includes("404")) {
+      notFound();
     }
     throw error;
   }

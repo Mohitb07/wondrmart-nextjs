@@ -92,7 +92,6 @@ const Body: React.FC<BodyProps> = ({
     validationSchema: addressValidationSchema,
   });
 
-  console.log("formik.errors", formik.errors);
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     formik.handleChange(e);
   };
@@ -114,8 +113,12 @@ const Body: React.FC<BodyProps> = ({
       !isMobileNumberValid(e.target.value)
     )
       return;
-    if (e.target.name === "mobile") {
+    if (
+      (e.target.name === "mobile" && formik.touched.mobile) ||
+      (e.target.name === "pinCode" && formik.touched.pinCode)
+    ) {
       formik.setFieldError("mobile", ""); // Clear Formik's field error
+      formik.setFieldError("pinCode", ""); // Clear Formik's field error
       resetServerError(); // Reset server error when the user starts editing
     }
 
@@ -133,208 +136,213 @@ const Body: React.FC<BodyProps> = ({
       </div>
     );
 
-  console.log("isErrorCreating", isErrorCreating, createError);
+  console.log("c", createError);
 
-  const isInValid =
-    (createError &&
-      Boolean(createError?.response?.data.errors[0].property === "mobile")) ||
+  const map = new Map();
+  createError?.response &&
+    createError?.response.data.errors.forEach((err) => {
+      map.set(err.property, err.message);
+    });
+
+  const isPinCodeInvalid =
+    (map && map.has("pinCode")) ||
+    (formik.touched.pinCode && Boolean(formik.errors.pinCode));
+
+  const isMobileInvalid =
+    (map && map.has("mobile")) ||
     (formik.touched.mobile && Boolean(formik.errors.mobile));
 
   return (
-    <>
-      <form
-        className="space-y-5 md:space-y-4"
-        noValidate
-        method="post"
-        onSubmit={formik.handleSubmit}
+    <form
+      className="space-y-5 md:space-y-4"
+      noValidate
+      method="post"
+      onSubmit={formik.handleSubmit}
+    >
+      <Select
+        isRequired
+        name="country"
+        variant="bordered"
+        label="Country/Region"
+        placeholder="Select a country/region"
+        defaultSelectedKeys={[formik.values.country]}
+        // onChange={handleSelectionChange}
+        isDisabled
       >
-        <Select
-          isRequired
-          name="country"
-          variant="bordered"
-          label="Country/Region"
-          placeholder="Select a country/region"
-          defaultSelectedKeys={[formik.values.country]}
-          // onChange={handleSelectionChange}
-          isDisabled
-        >
-          {REGIONS_COUNTRIES.map((country) => (
-            <SelectItem
-              key={country.countryShortCode}
-              value={country.countryName.toLowerCase()}
-            >
-              {country.countryName}
-            </SelectItem>
-          ))}
-        </Select>
-        <Input
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.username)) ||
-            formik.touched.name && Boolean(formik.errors.name)
-          }
-          isRequired
-          variant="bordered"
-          value={formik.values.name}
-          defaultValue={full_name}
-          type="text"
-          name="name"
-          label="Full name (First and Last name)"
-          placeholder="Enter your full name"
-          onChange={handleChange}
-          errorMessage={
-            // (isError && error.response?.data.message.username) ||
-            formik.touched.name && formik.errors.name
-          }
-        />
-        <Input
-          isRequired
-          isInvalid={isInValid}
-          variant="bordered"
-          value={formik.values.mobile}
-          name="mobile"
-          label="Mobile number"
-          placeholder="Enter your phone no."
-          onChange={handleChange}
-          errorMessage={
-            (createError && createError.response?.data.errors[0].message) ||
-            (formik.touched.mobile && formik.errors.mobile)
-          }
-        />
-        <Input
-          isRequired
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.address)) ||
-            formik.touched.pinCode && Boolean(formik.errors.pinCode)
-          }
-          variant="bordered"
-          value={formik.values.pinCode}
-          type="text"
-          name="pinCode"
-          label="Pincode"
-          placeholder="6 digits PIN code"
-          onChange={handleChange}
-          errorMessage={
-            // (isError && error.response?.data.message.address) ||
-            formik.touched.pinCode && formik.errors.pinCode
-          }
-        />
-        <Input
-          isRequired
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.address)) ||
-            formik.touched.apartment && Boolean(formik.errors.apartment)
-          }
-          //   onChange={formik.handleChange}
-          variant="bordered"
-          value={formik.values.apartment}
-          type="text"
-          name="apartment"
-          label="Flat, House no., Building, Company, Apartment"
-          placeholder=" "
-          onChange={handleChange}
-          errorMessage={
-            // (isError && error.response?.data.message.address) ||
-            formik.touched.apartment && formik.errors.apartment
-          }
-        />
-        <Input
-          isRequired
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.address)) ||
-            formik.touched.area && Boolean(formik.errors.area)
-          }
-          //   onChange={formik.handleChange}
-          variant="bordered"
-          value={formik.values.area}
-          type="text"
-          name="area"
-          label="Area, Street, Sector, Village"
-          placeholder=" "
-          onChange={handleChange}
-          errorMessage={
-            // (isError && error.response?.data.message.address) ||
-            formik.touched.area && formik.errors.area
-          }
-        />
-        <Input
-          isRequired
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.address)) ||
-            formik.touched.city && Boolean(formik.errors.city)
-          }
-          variant="bordered"
-          value={formik.values.city}
-          type="text"
-          name="city"
-          label="Town/City"
-          placeholder=" "
-          onChange={handleChange}
-          errorMessage={
-            // (isError && error.response?.data.message.address) ||
-            formik.touched.city && formik.errors.city
-          }
-        />
-        <Select
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.address)) ||
-            formik.touched.state && Boolean(formik.errors.state)
-          }
-          errorMessage={
-            // (isError && error.response?.data.message.address) ||
-            formik.touched.state && formik.errors.state
-          }
-          isRequired
-          variant="bordered"
-          label="State"
-          name="state"
-          placeholder="Choose a state"
-          onChange={handleSelectionChange}
-          selectedKeys={[formik.values.state]}
-        >
-          {regions.map((region) => (
-            <SelectItem
-              key={region.shortCode || region.name}
-              value={region.name.toLowerCase()}
-            >
-              {region.name}
-            </SelectItem>
-          ))}
-        </Select>
-        <Checkbox
-          isInvalid={
-            // (isError && Boolean(error.response?.data.message.address)) ||
-            formik.touched.isDefault && Boolean(formik.errors.isDefault)
-          }
-          name="isDefault"
-          isSelected={formik.values.isDefault}
-          onValueChange={handleDefaultAddress}
-        >
-          Make this my default address
-        </Checkbox>
-        <Button
-          isLoading={isProcessing}
-          type="submit"
-          isDisabled={
-            !formik.isValid ||
-            formik.values.pinCode === "" ||
-            formik.values.mobile === "" ||
-            formik.values.name === "" ||
-            formik.values.city === "" ||
-            formik.values.apartment === "" ||
-            formik.values.area === "" ||
-            formik.values.state === "" ||
-            formik.values.country === "" ||
-            isAddressLoading ||
-            isProcessing
-          }
-          className="w-full font-bold"
-          color="primary"
-          variant="shadow"
-        >
-          {mode === "create" ? "Add" : "Edit"} Address
-        </Button>
-      </form>
-    </>
+        {REGIONS_COUNTRIES.map((country) => (
+          <SelectItem
+            key={country.countryShortCode}
+            value={country.countryName.toLowerCase()}
+          >
+            {country.countryName}
+          </SelectItem>
+        ))}
+      </Select>
+      <Input
+        isInvalid={
+          // (isError && Boolean(error.response?.data.message.username)) ||
+          formik.touched.name && Boolean(formik.errors.name)
+        }
+        isRequired
+        variant="bordered"
+        value={formik.values.name}
+        defaultValue={full_name}
+        type="text"
+        name="name"
+        label="Full name (First and Last name)"
+        placeholder="Enter your full name"
+        onChange={handleChange}
+        errorMessage={
+          // (isError && error.response?.data.message.username) ||
+          formik.touched.name && formik.errors.name
+        }
+      />
+      <Input
+        isRequired
+        isInvalid={isMobileInvalid}
+        variant="bordered"
+        value={formik.values.mobile}
+        name="mobile"
+        label="Mobile number"
+        placeholder="Enter your phone no."
+        onChange={handleChange}
+        errorMessage={
+          (map && map.has("mobile") && map.get("mobile")) ||
+          (formik.touched.mobile && formik.errors.mobile)
+        }
+      />
+      <Input
+        isRequired
+        isInvalid={isPinCodeInvalid}
+        variant="bordered"
+        value={formik.values.pinCode}
+        type="text"
+        name="pinCode"
+        label="Pincode"
+        placeholder="6 digits PIN code"
+        onChange={handleChange}
+        errorMessage={
+          // (isError && error.response?.data.message.address) ||
+          (map && map.has("pinCode") && map.get("pinCode")) ||
+          (formik.touched.pinCode && formik.errors.pinCode)
+        }
+      />
+      <Input
+        isRequired
+        isInvalid={
+          // (isError && Boolean(error.response?.data.message.address)) ||
+          formik.touched.apartment && Boolean(formik.errors.apartment)
+        }
+        //   onChange={formik.handleChange}
+        variant="bordered"
+        value={formik.values.apartment}
+        type="text"
+        name="apartment"
+        label="Flat, House no., Building, Company, Apartment"
+        placeholder=" "
+        onChange={handleChange}
+        errorMessage={
+          // (isError && error.response?.data.message.address) ||
+          formik.touched.apartment && formik.errors.apartment
+        }
+      />
+      <Input
+        isRequired
+        isInvalid={
+          // (isError && Boolean(error.response?.data.message.address)) ||
+          formik.touched.area && Boolean(formik.errors.area)
+        }
+        //   onChange={formik.handleChange}
+        variant="bordered"
+        value={formik.values.area}
+        type="text"
+        name="area"
+        label="Area, Street, Sector, Village"
+        placeholder=" "
+        onChange={handleChange}
+        errorMessage={
+          // (isError && error.response?.data.message.address) ||
+          formik.touched.area && formik.errors.area
+        }
+      />
+      <Input
+        isRequired
+        isInvalid={
+          // (isError && Boolean(error.response?.data.message.address)) ||
+          formik.touched.city && Boolean(formik.errors.city)
+        }
+        variant="bordered"
+        value={formik.values.city}
+        type="text"
+        name="city"
+        label="Town/City"
+        placeholder=" "
+        onChange={handleChange}
+        errorMessage={
+          // (isError && error.response?.data.message.address) ||
+          formik.touched.city && formik.errors.city
+        }
+      />
+      <Select
+        isInvalid={
+          // (isError && Boolean(error.response?.data.message.address)) ||
+          formik.touched.state && Boolean(formik.errors.state)
+        }
+        errorMessage={
+          // (isError && error.response?.data.message.address) ||
+          formik.touched.state && formik.errors.state
+        }
+        isRequired
+        variant="bordered"
+        label="State"
+        name="state"
+        placeholder="Choose a state"
+        onChange={handleSelectionChange}
+        selectedKeys={[formik.values.state]}
+      >
+        {regions.map((region) => (
+          <SelectItem
+            key={region.shortCode || region.name}
+            value={region.name.toLowerCase()}
+          >
+            {region.name}
+          </SelectItem>
+        ))}
+      </Select>
+      <Checkbox
+        isInvalid={
+          // (isError && Boolean(error.response?.data.message.address)) ||
+          formik.touched.isDefault && Boolean(formik.errors.isDefault)
+        }
+        name="isDefault"
+        isSelected={formik.values.isDefault}
+        onValueChange={handleDefaultAddress}
+      >
+        Make this my default address
+      </Checkbox>
+      <Button
+        isLoading={isProcessing}
+        type="submit"
+        isDisabled={
+          !formik.isValid ||
+          formik.values.pinCode === "" ||
+          formik.values.mobile === "" ||
+          formik.values.name === "" ||
+          formik.values.city === "" ||
+          formik.values.apartment === "" ||
+          formik.values.area === "" ||
+          formik.values.state === "" ||
+          formik.values.country === "" ||
+          isAddressLoading ||
+          isProcessing
+        }
+        className="w-full font-bold"
+        color="primary"
+        variant="shadow"
+      >
+        {mode === "create" ? "Add" : "Edit"} Address
+      </Button>
+    </form>
   );
 };
 export default Body;

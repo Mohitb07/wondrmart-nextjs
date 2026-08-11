@@ -1,20 +1,23 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import useRemoveCartItem from "@/hooks/useDeleteCartItem";
 import useGetCart from "@/hooks/useGetCart";
-import useGetUser from "@/hooks/useGetUser";
 import useUpdateQuantity from "@/hooks/useUpdateQty";
-import NotFoundSVG from "@/public/not-found.svg";
 import { calculateCartPrice } from "@/lib/utils";
+import NotFoundSVG from "@/public/not-found.svg";
 import { Button, Spinner } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import CartItem from "./CartItem";
 import CouponInput from "./Coupon";
 import OrderSummary from "./Summary";
 
 const CartDetail = () => {
-  const { data: user, isLoading: isUserLoading } = useGetUser();
+  const router = useRouter();
+  const { user, loading: isUserLoading } = useAuth();
   const {
     data: cart,
     isInitialLoading: isCartLoading,
@@ -23,6 +26,12 @@ const CartDetail = () => {
   } = useGetCart();
   const { mutate: updateQuantityHandler } = useUpdateQuantity();
   const { mutate: removeCartItemHandler } = useRemoveCartItem();
+
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push("/auth/signin");
+    }
+  }, [isUserLoading, user, router]);
 
   if (isCartLoading || isUserLoading) {
     return (

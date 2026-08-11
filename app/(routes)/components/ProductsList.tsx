@@ -18,7 +18,6 @@ export default function ProductsList() {
   const query = searchParams.get("q") || "";
   const sortby = searchParams.get("sort") || "newest";
   const page = searchParams.get("page") || "1";
-  console.log("render", query, sortby, page);
 
   const {
     data: products,
@@ -38,13 +37,12 @@ export default function ProductsList() {
     isError: isCartError,
   } = useGetCart();
 
+  console.log("cart", cart);
+
   if (isProductsError) throw productsError;
 
   const cartItems = mapCartItems(cart?.cart_items || []);
   const totalPages = calculateTotalPages(productsCount?.count || 0);
-
-
-  console.log('cart items', cartItems);
 
   return (
     <Container>

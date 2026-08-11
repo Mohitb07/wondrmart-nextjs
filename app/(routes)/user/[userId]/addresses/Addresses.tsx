@@ -1,0 +1,64 @@
+"use client";
+
+import Link from "next/link";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
+import StyledCard from "./components/Card";
+import useGetAddresses from "@/hooks/useGetAddresses";
+import useRemoveAddress from "@/hooks/useRemoveAddress";
+
+type Props = {
+  userId: string;
+};
+
+function Addresses({ userId }: Props) {
+  const { data: addresses, isLoading, isError, error } = useGetAddresses();
+  const {
+    mutate: removeAddress,
+    isLoading: isRemoving,
+    addressId: addressIdToRemove,
+    setAddressId: setAddressIdToRemove,
+  } = useRemoveAddress();
+
+  if (isError) throw error;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <StyledCard isFooterVisible className="h-[220px] md:h-[262px] relative">
+        <Link
+          href="/user/[userId]/addresses/[mode]"
+          as={`/user/${userId}/addresses/create`}
+        >
+          <div className="flex flex-col justify-center items-center gap-2 text-4xl p-10 top-0 left-0 right-0 bottom-0 absolute">
+            <FaPlus />
+            <span className="text-lg md:text-xl">Add address</span>
+          </div>
+        </Link>
+      </StyledCard>
+
+      {addresses.map((address) => (
+        <StyledCard
+          isRemoving={isRemoving && addressIdToRemove === address.address_id}
+          removeAddress={removeAddress}
+          setAddressIdToRemove={setAddressIdToRemove}
+          userId={userId}
+          key={address.address_id}
+          city={address.city}
+          country={address.country}
+          state={address.state}
+          area={address.street}
+          apartment={address.flat_no}
+          mobile={address.phone}
+          isDefault={address.default}
+          addressId={address.address_id}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default Addresses;

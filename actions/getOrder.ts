@@ -1,31 +1,16 @@
+import { serverFetchWithRefresh } from "@/lib/serverAuth";
 import { Order } from "@/types";
-import axios from "axios";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const getUserOrder = async (
   userId: string,
   orderId: string
 ): Promise<Order> => {
-  const store = cookies();
-  const token = store.get("accessToken")?.value;
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_CLIENT_URL}/user/${userId}/orders/${orderId}/api`,
-      {
-        withCredentials: true,
-        headers: {
-          Cookie: token,
-        },
-      }
-    );
-    return res.data;
+    const { data } = await serverFetchWithRefresh<Order>(`/order/${orderId}`);
+    return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response?.status === 401) {
-        redirect("/login");
-      }
-    }
     throw error;
   }
 };
+
+

@@ -1,10 +1,3 @@
-import { useContext } from "react";
-import { AuthUserContext } from "../providers/authUser";
+import { useAuth } from "@/context/AuthContext";
 
-export const useAuthUser = () => {
-  const context = useContext(AuthUserContext);
-  if (context === undefined) {
-    throw new Error("useAuthUser must be used within a AuthUserProvider");
-  }
-  return context;
-};
+export const useAuthUser = () => useAuth();

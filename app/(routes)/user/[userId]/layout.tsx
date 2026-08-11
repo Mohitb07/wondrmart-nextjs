@@ -1,15 +1,16 @@
 "use client";
 
 import Container from "@/common/Container";
-import useGetUser from "@/hooks/useGetUser";
+import { useAuth } from "@/context/AuthContext";
 import {
   Avatar,
-  breadcrumbItem,
   BreadcrumbItem,
   Breadcrumbs,
   Skeleton,
 } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function UserLayout({
   children,
@@ -19,7 +20,14 @@ export default function UserLayout({
   params: { userId: string };
 }) {
   const pathname = usePathname();
-  const { data: user, isLoading } = useGetUser();
+  const router = useRouter();
+  const { user, loading: isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/auth/signin");
+    }
+  }, [isLoading, user, router]);
   let pageTitle = "";
   const isAccountIndexPage = pathname.split("/").pop() === params.userId;
   const isAddressMode =
@@ -88,8 +96,8 @@ export default function UserLayout({
         {filteredBreadCrumbList.length > 1 && (
           <Breadcrumbs size="lg">
             {filteredBreadCrumbList.map((breadcrumb, index) => (
-              <BreadcrumbItem key={index} href={breadcrumb.href}>
-                {breadcrumb.text}
+              <BreadcrumbItem key={index}>
+                <Link href={breadcrumb.href}>{breadcrumb.text}</Link>
               </BreadcrumbItem>
             ))}
           </Breadcrumbs>

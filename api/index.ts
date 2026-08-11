@@ -30,6 +30,52 @@ export function getAccessToken() {
   return accessToken;
 }
 
+export function parseJwt(token: string): any {
+  try {
+    const base64Url = token.split(".")[1];
+    if (!base64Url) return null;
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+}
+
+export function isAccessTokenValid(token?: string | null): boolean {
+  if (!token) return false;
+  const payload = parseJwt(token);
+  if (!payload || typeof payload !== "object") return false;
+  if (!payload.exp) return true;
+  return payload.exp * 1000 > Date.now() + 10000;
+}
+
+export function getUserFromToken(token?: string | null): User | null {
+  if (!token) return null;
+  const payload = parseJwt(token);
+  if (!payload || typeof payload !== "object") return null;
+
+  const rawUser = (payload.user && typeof payload.user === "object") ? payload.user : payload;
+  const userId = rawUser.customer_id || rawUser.id || rawUser.sub;
+
+  if (userId || rawUser.email || rawUser.username) {
+    return {
+      ...rawUser,
+      id: rawUser.id || userId,
+      customer_id: rawUser.customer_id || userId,
+      username: rawUser.username || "",
+      email: rawUser.email || "",
+    } as User;
+  }
+
+  return null;
+}
+
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,

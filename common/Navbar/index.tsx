@@ -53,6 +53,7 @@ export default function StyledNavbar() {
     content = <Skeleton className="flex rounded-full w-10 h-10" />;
   }
   if (!!user) {
+    const userId = user.customer_id ?? user.id ?? "";
     content = (
       <>
         <CartCount />
@@ -82,7 +83,7 @@ export default function StyledNavbar() {
                 as={NextLink}
                 className="w-full"
                 color="foreground"
-                href={`/user/${user.id}`}
+                href={`/user/${userId}`}
               >
                 Profile
               </Link>
@@ -101,7 +102,7 @@ export default function StyledNavbar() {
               <Link
                 className="w-full"
                 color="foreground"
-                href={`/user/${user.id}/orders`}
+                href={`/user/${userId}/orders`}
               >
                 Orders
               </Link>

@@ -1,8 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
-import { signInUser } from "@/actions/loginUser";
-import { SignInFormData, UserData } from "../types";
+import { useAuth } from "@/context/AuthContext";
+import { SignInFormData } from "../types";
 
 type Error = AxiosError<
   {
@@ -12,19 +13,17 @@ type Error = AxiosError<
 >;
 
 const useLogin = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation<UserData, Error, SignInFormData, UserData>({
-    mutationFn: (data: SignInFormData) =>
-      signInUser({
-        email: data.email,
-        password: data.password,
-      }),
-    onSuccess: (data: UserData) => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      window.location.href = "/";
+  const { login } = useAuth();
+  const router = useRouter();
+
+  return useMutation<void, Error, SignInFormData>({
+    mutationFn: async (data) => {
+      await login(data.email, data.password);
+    },
+    onSuccess: () => {
+      router.push("/");
     },
   });
-  return mutation;
 };
 
 export default useLogin;

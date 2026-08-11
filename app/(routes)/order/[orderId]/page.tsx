@@ -5,6 +5,7 @@ import axios from "axios";
 import { notFound } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
+import { useQueryClient } from "@tanstack/react-query";
 
 type OrderVerificationRootProps = {
   params: { orderId: string };
@@ -15,12 +16,17 @@ export default function OrderVerificationRoot({
 }: OrderVerificationRootProps) {
   const { orderId } = params;
   const [status, setStatus] = useState("");
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const fetchOrderStatus = async () => {
       try {
         const orderDetail = await getOrderStatus(orderId);
         setStatus(orderDetail.status);
+        if (orderDetail.status === "processing") {
+          queryClient.invalidateQueries({ queryKey: ["cartCount"] });
+          queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+        }
       } catch (error) {
         const errorCodeList = [400, 401, 403];
         if (axios.isAxiosError(error)) {
@@ -32,7 +38,7 @@ export default function OrderVerificationRoot({
       }
     };
     fetchOrderStatus();
-  }, [orderId]);
+  }, [orderId, queryClient]);
 
   return (
     <>

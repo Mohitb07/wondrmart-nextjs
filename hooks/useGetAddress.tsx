@@ -2,10 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getAddress } from "@/actions/getAddress";
 import { useState } from "react";
-import toast from "react-hot-toast";
-import { MdErrorOutline } from "react-icons/md";
 import { Address, AddressModes, CustomError } from "../types";
-import { notFound } from "next/navigation";
 
 const useGetAddress = (mode: AddressModes) => {
   const [addressId, setAddressId] = useState<string>("");

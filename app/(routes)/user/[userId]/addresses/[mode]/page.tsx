@@ -13,6 +13,7 @@ export default function AddressModePage({
   params: { mode: AddressModes };
 }) {
   const { mode } = params;
+  console.log('params', params)
   if (mode !== "create" && mode !== "edit") {
     notFound();
   }

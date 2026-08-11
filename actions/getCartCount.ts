@@ -1,4 +1,4 @@
-import { axiosInstance } from "../api";
+import { axiosInstance } from "@/api";
 
 export const getCartCount = async (): Promise<number> => {
   try {
@@ -8,3 +8,5 @@ export const getCartCount = async (): Promise<number> => {
     throw error;
   }
 };
+
+

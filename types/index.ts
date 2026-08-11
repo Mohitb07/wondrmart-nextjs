@@ -66,14 +66,15 @@ export type SignInFormData = {
 };
 
 export type User = {
+  id?: string;
   username: string;
-  address: string;
-  customer_id: string;
+  address?: string;
+  customer_id?: string;
   email: string;
-  avatar: string;
-  password: string;
-  updatedAt: string;
-  createdAt: string;
+  avatar?: string;
+  password?: string;
+  updatedAt?: string;
+  createdAt?: string;
 };
 
 export type UserData = {

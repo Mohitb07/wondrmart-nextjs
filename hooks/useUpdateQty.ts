@@ -16,7 +16,7 @@ const useUpdateQuantity = () => {
       const previousCartItems: CartItemData = queryClient.getQueryData([
         "cartItems",
       ]);
-      const clonned = structuredClone(previousCartItems);
+      const clonned = previousCartItems ? structuredClone(previousCartItems) : null;
       console.log("clonned", clonned);
       if (clonned) {
         for (let i = 0; i < clonned.cart_items.length; i++) {

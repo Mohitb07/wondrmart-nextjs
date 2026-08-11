@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import AuthNavbar from "./components/Navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +22,12 @@ export default function AuthLayout({
     <html lang="en" className="dark">
       <body className={inter.className}>
         <ReactQueryProvider>
-          <UIProvider>
-            <AuthNavbar />
-            {children}
-          </UIProvider>
+          <AuthProvider>
+            <UIProvider>
+              <AuthNavbar />
+              {children}
+            </UIProvider>
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>

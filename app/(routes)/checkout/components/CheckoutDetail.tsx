@@ -3,8 +3,8 @@
 import useRemoveCartItem from "@/hooks/useDeleteCartItem";
 import useGetAddresses from "@/hooks/useGetAddresses";
 import useGetCart from "@/hooks/useGetCart";
-import useGetUser from "@/hooks/useGetUser";
 import usePayment from "@/hooks/usePayment";
+import { useAuth } from "@/context/AuthContext";
 import useUpdateQuantity from "@/hooks/useUpdateQty";
 import { Address, PaymentMethod } from "@/types";
 import { calculateCartPrice } from "@/lib/utils";
@@ -26,13 +26,17 @@ import {
   cn,
 } from "@nextui-org/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import CartItem from "../../cart/components/CartItem";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Checkout() {
-  const { data: user, isLoading: isUserLoading } = useGetUser();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { user, loading: isUserLoading } = useAuth();
+  const safeUser = user;
   const {
     data: cart,
     isInitialLoading: isCartLoading,
@@ -108,8 +112,10 @@ export default function Checkout() {
         payment_method: paymentMethod,
       };
       const res = await handleCashPayment(params);
+      queryClient.invalidateQueries({ queryKey: ["cartCount"] });
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       console.log("res getting", res);
-      window.location.href = `/${res.sendTo}`;
+      router.push(`/${res.sendTo}`);
     } catch (error) {
       console.log("Something went wrong", error);
       handlePaymentStatus("error");
@@ -137,7 +143,7 @@ export default function Checkout() {
         address_id: currentAddress.address_id,
         shipping_name: currentAddress.full_name,
         shipping_phone: currentAddress.phone,
-        shipping_email: user.email,
+        shipping_email: safeUser?.email ?? "",
         payment_method: paymentMethod,
       };
       const res = await handlePayment(params);
@@ -204,7 +210,7 @@ export default function Checkout() {
                 <p className="text-neutral-400">No address found</p>
                 <Button
                   as={Link}
-                  href={`/user/${user.customer_id}/addresses`}
+                  href={`/user/${safeUser?.customer_id ?? safeUser?.id ?? ""}/addresses`}
                   variant="bordered"
                 >
                   Add Address

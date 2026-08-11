@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Avatar,
@@ -21,19 +21,18 @@ import {
 } from "@nextui-org/react";
 import NextLink from "next/link";
 
-import useGetUser from "@/hooks/useGetUser";
-import { useLogOut } from "@/hooks/useLogout";
 
+import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
 import CartCount from "./components/CartCount";
 import { BrandLogo } from "./Logo";
 
-export default function StyledNavbar({ token }: { token: string }) {
+export default function StyledNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logOut } = useLogOut();
-  const { data: user, status, isLoading } = useGetUser();
+  // const { logOut } = useLogOut();
+  const { user, loading: isLoading, logout, logoutAll } = useAuth();
   const pathname = usePathname();
-
+  console.log("user is', user", user);
   const menuItems = [
     {
       name: "Top Deals",
@@ -50,9 +49,10 @@ export default function StyledNavbar({ token }: { token: string }) {
   ];
 
   let content = null;
-  if (isLoading && !!token) {
+  if (isLoading) {
     content = <Skeleton className="flex rounded-full w-10 h-10" />;
-  } else if (status === "success") {
+  }
+  if (!!user) {
     content = (
       <>
         <CartCount />
@@ -82,7 +82,7 @@ export default function StyledNavbar({ token }: { token: string }) {
                 as={NextLink}
                 className="w-full"
                 color="foreground"
-                href={`/user/${user.customer_id}`}
+                href={`/user/${user.id}`}
               >
                 Profile
               </Link>
@@ -101,24 +101,33 @@ export default function StyledNavbar({ token }: { token: string }) {
               <Link
                 className="w-full"
                 color="foreground"
-                href={`/user/${user.customer_id}/orders`}
+                href={`/user/${user.id}/orders`}
               >
                 Orders
               </Link>
             </DropdownItem>
             <DropdownItem
               className="w-full"
-              onClick={logOut}
+              onClick={logout}
               key="logout"
               color="danger"
             >
               Log Out
             </DropdownItem>
+            <DropdownItem
+              className="w-full"
+              onClick={logoutAll}
+              key="logout"
+              color="danger"
+            >
+              Log Out All Sessions
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </>
     );
-  } else {
+  }
+  if (!!!user && !isLoading) {
     content = (
       <>
         <NavbarItem className="hidden lg:flex">

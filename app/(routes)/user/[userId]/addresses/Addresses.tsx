@@ -7,6 +7,7 @@ import StyledCard from "./components/Card";
 import Loading from "./loading";
 import useGetAddresses from "@/hooks/useGetAddresses";
 import useRemoveAddress from "@/hooks/useRemoveAddress";
+import useSetDefaultAddress from "@/hooks/useSetDefaultAddress";
 
 type Props = {
   userId: string;
@@ -20,6 +21,12 @@ function Addresses({ userId }: Props) {
     addressId: addressIdToRemove,
     setAddressId: setAddressIdToRemove,
   } = useRemoveAddress();
+  const {
+    mutate: setDefaultAddress,
+    isLoading: isSettingDefault,
+    addressId: defaultAddressId,
+    setAddressId: setAddressIdToDefault,
+  } = useSetDefaultAddress();
 
   if (isError) throw error;
 
@@ -46,6 +53,11 @@ function Addresses({ userId }: Props) {
           isRemoving={isRemoving && addressIdToRemove === address.address_id}
           removeAddress={removeAddress}
           setAddressIdToRemove={setAddressIdToRemove}
+          isSettingDefault={
+            isSettingDefault && defaultAddressId === address.address_id
+          }
+          setDefaultAddress={setDefaultAddress}
+          setAddressIdToDefault={setAddressIdToDefault}
           userId={userId}
           key={address.address_id}
           city={address.city}

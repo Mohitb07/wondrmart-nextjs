@@ -16,6 +16,8 @@ import React from "react";
 type CardProps = {
   removeAddress?: (addressId: string) => void;
   setAddressIdToRemove?: (addressId: string) => void;
+  setDefaultAddress?: (addressId: string) => void;
+  setAddressIdToDefault?: (addressId: string) => void;
   userId?: string;
   isDefault?: boolean;
   children?: React.ReactNode;
@@ -32,6 +34,7 @@ type CardProps = {
   addressId?: string;
   pincode?: string;
   isRemoving?: boolean;
+  isSettingDefault?: boolean;
 };
 
 const StyledCard: React.FC<CardProps> = ({
@@ -52,7 +55,10 @@ const StyledCard: React.FC<CardProps> = ({
   addressId,
   removeAddress = () => {},
   setAddressIdToRemove = () => {},
+  setDefaultAddress = () => {},
+  setAddressIdToDefault = () => {},
   isRemoving = false,
+  isSettingDefault = false,
 }) => {
   const region = REGIONS_COUNTRIES.map((region) => {
     if (region.countryShortCode === country) {
@@ -73,6 +79,11 @@ const StyledCard: React.FC<CardProps> = ({
   const onAddressRemove = (addressId: string) => {
     setAddressIdToRemove(addressId);
     removeAddress(addressId);
+  };
+
+  const onSetDefaultAddress = (addressId: string) => {
+    setAddressIdToDefault(addressId);
+    setDefaultAddress(addressId);
   };
 
   return (
@@ -135,8 +146,8 @@ const StyledCard: React.FC<CardProps> = ({
                   variant="light"
                   size="sm"
                   className="text-gray-500"
-                  // isLoading={isRemoving}
-                  // onClick={() => onAddressRemove(addressId || "")}
+                  isLoading={isSettingDefault}
+                  onClick={() => onSetDefaultAddress(addressId || "")}
                 >
                   Set as Default
                 </Button>

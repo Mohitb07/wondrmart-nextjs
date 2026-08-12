@@ -2,7 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 import { User } from "@/types";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
+export const BASE_URL = "/api"
 const ACCESS_TOKEN_COOKIE_NAME = "accessToken";
 
 // restore persisted access token on client reloads

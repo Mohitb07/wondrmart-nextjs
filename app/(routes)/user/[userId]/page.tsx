@@ -4,6 +4,7 @@ import { HiLocationMarker } from "react-icons/hi";
 
 import RecommendedProducts from "@/common/RecommendedProducts";
 import AccountCTA from "./components/CTA";
+import AccountSecurity from "./components/AccountSecurity";
 import { getUserById } from "@/actions/getUser";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -61,6 +62,7 @@ const User = async ({ params }: { params: { userId: string } }) => {
           Logo={<FaHeart className="text-[#d24646] text-7xl" />}
         />
       </div>
+      <AccountSecurity />
       <div>
         <RecommendedProducts userId={userId} />
       </div>

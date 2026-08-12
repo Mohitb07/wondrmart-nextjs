@@ -30,7 +30,7 @@ import { BrandLogo } from "./Logo";
 export default function StyledNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const { logOut } = useLogOut();
-  const { user, loading: isLoading, logout, logoutAll } = useAuth();
+  const { user, loading: isLoading } = useAuth();
   const pathname = usePathname();
   console.log("user is', user", user);
   const menuItems = [
@@ -101,22 +101,6 @@ export default function StyledNavbar() {
               textValue="Orders"
             >
               Orders
-            </DropdownItem>
-            <DropdownItem
-              key="logout"
-              onClick={logout}
-              color="danger"
-              textValue="Log Out"
-            >
-              Log Out
-            </DropdownItem>
-            <DropdownItem
-              key="logout-all"
-              onClick={logoutAll}
-              color="danger"
-              textValue="Log Out All Sessions"
-            >
-              Log Out All Sessions
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

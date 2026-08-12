@@ -27,6 +27,9 @@ export function setAccessToken(token: string | null) {
   }
 }
 export function getAccessToken() {
+  if (!accessToken && typeof window !== "undefined") {
+    accessToken = Cookies.get(ACCESS_TOKEN_COOKIE_NAME) ?? null;
+  }
   return accessToken;
 }
 

@@ -72,54 +72,49 @@ export default function StyledNavbar() {
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem
               key="profile-data"
-              className="h-14 gap-2"
+              className="h-14 gap-2 opacity-100 cursor-default"
               textValue="Profile Data"
             >
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">{user.email}</p>
             </DropdownItem>
-            <DropdownItem key="profile">
-              <Link
-                as={NextLink}
-                className="w-full"
-                color="foreground"
-                href={`/user/${userId}`}
-              >
-                Profile
-              </Link>
-            </DropdownItem>
-            <DropdownItem key="cart">
-              <Link
-                as={NextLink}
-                className="w-full"
-                color="foreground"
-                href="/cart"
-              >
-                Cart
-              </Link>
-            </DropdownItem>
-            <DropdownItem key="orders">
-              <Link
-                className="w-full"
-                color="foreground"
-                href={`/user/${userId}/orders`}
-              >
-                Orders
-              </Link>
+            <DropdownItem
+              key="profile"
+              as={NextLink}
+              href={`/user/${userId}`}
+              textValue="Profile"
+            >
+              Profile
             </DropdownItem>
             <DropdownItem
-              className="w-full"
-              onClick={logout}
+              key="cart"
+              as={NextLink}
+              href="/cart"
+              textValue="Cart"
+            >
+              Cart
+            </DropdownItem>
+            <DropdownItem
+              key="orders"
+              as={NextLink}
+              href={`/user/${userId}/orders`}
+              textValue="Orders"
+            >
+              Orders
+            </DropdownItem>
+            <DropdownItem
               key="logout"
+              onClick={logout}
               color="danger"
+              textValue="Log Out"
             >
               Log Out
             </DropdownItem>
             <DropdownItem
-              className="w-full"
+              key="logout-all"
               onClick={logoutAll}
-              key="logout"
               color="danger"
+              textValue="Log Out All Sessions"
             >
               Log Out All Sessions
             </DropdownItem>
@@ -163,7 +158,7 @@ export default function StyledNavbar() {
         />
         <NavbarBrand>
           <BrandLogo />
-          <Link href="/" className="font-bold">
+          <Link as={NextLink} href="/" className="font-bold">
             wondrMart
           </Link>
         </NavbarBrand>
@@ -176,6 +171,7 @@ export default function StyledNavbar() {
             key={`${item.name}-${index}`}
           >
             <Link
+              as={NextLink}
               color={pathname === item.href ? "primary" : "foreground"}
               href={item.href}
             >
@@ -193,10 +189,12 @@ export default function StyledNavbar() {
             className="w-full text-center"
           >
             <Link
+              as={NextLink}
               color={pathname === item.href ? "primary" : "foreground"}
               className="p-8 w-full flex justify-center"
               href={item.href}
               size="lg"
+              onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
             </Link>

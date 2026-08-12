@@ -14,6 +14,7 @@ import {
   doRefresh,
   isAccessTokenValid,
   getUserFromToken,
+  onAuthError,
 } from "@/api";
 import { getUserByIdClient } from "@/actions/getUserClient";
 import { useQueryClient } from "@tanstack/react-query";
@@ -39,10 +40,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const qc = useQueryClient();
 
-  // bootstrap on client: if access token is present and valid, reuse it and fetch fresh user detail.
-  // Only call doRefresh() if access token is missing, expired, or user fetch fails.
   useEffect(() => {
     let mounted = true;
+
+    const unsubscribe = onAuthError(() => {
+      if (mounted) {
+        setUser(null);
+        qc.removeQueries();
+      }
+    });
+
     (async () => {
       const token = getAccessToken();
 
@@ -63,12 +70,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           } catch {
             /* fall back to doRefresh */
           }
-        } else if (tokenUser) {
-          if (!mounted) return;
-          setUser(tokenUser);
-          qc.setQueryData(["user"], tokenUser);
-          setLoading(false);
-          return;
         }
       }
 
@@ -86,6 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })();
     return () => {
       mounted = false;
+      unsubscribe();
     };
   }, [qc]);
 

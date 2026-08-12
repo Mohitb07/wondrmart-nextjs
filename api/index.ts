@@ -153,6 +153,22 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+type AuthErrorListener = () => void;
+const authErrorListeners: AuthErrorListener[] = [];
+
+export function onAuthError(listener: AuthErrorListener) {
+  authErrorListeners.push(listener);
+  return () => {
+    const idx = authErrorListeners.indexOf(listener);
+    if (idx >= 0) authErrorListeners.splice(idx, 1);
+  };
+}
+
+function emitAuthError() {
+  setAccessToken(null);
+  authErrorListeners.forEach((listener) => listener());
+}
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (err: AxiosError<any>) => {
@@ -160,25 +176,26 @@ axiosInstance.interceptors.response.use(
     // safety guards
     if (!err.response || !originalRequest) return Promise.reject(err);
     const status = err.response?.status;
-    const message = err.response?.data?.message;
     const requestUrl = originalRequest.url || "";
     const isRefreshEndPoint =
       requestUrl.endsWith("/auth/refresh") ||
       requestUrl.includes("/auth/refresh?");
-    const needRefresh = status === 401 && message === "ACCESS_TOKEN_EXPIRED";
 
-    if (needRefresh && !isRefreshEndPoint) {
-      // avoid retrying same request multiple times
+    if (status === 401 && !isRefreshEndPoint) {
       if (originalRequest._retry) {
+        emitAuthError();
         return Promise.reject(err);
       }
 
+      originalRequest._retry = true;
       const result = await doRefresh();
-      if (!result) return Promise.reject(err); // refresh failed
+      if (!result) {
+        emitAuthError();
+        return Promise.reject(err);
+      }
 
       originalRequest.headers = originalRequest.headers ?? {};
       originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
-      originalRequest._retry = true;
       return axiosInstance.request(originalRequest);
     }
 

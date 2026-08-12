@@ -340,7 +340,7 @@ const Body: React.FC<BodyProps> = ({
         color="primary"
         variant="shadow"
       >
-        {mode === "create" ? "Add" : "Edit"} Address
+        {mode === "create" ? "Add" : "Update"} Address
       </Button>
     </form>
   );

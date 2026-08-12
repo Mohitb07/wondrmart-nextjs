@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { FaPlus } from "react-icons/fa6";
 import StyledCard from "./components/Card";
+import Loading from "./loading";
 import useGetAddresses from "@/hooks/useGetAddresses";
 import useRemoveAddress from "@/hooks/useRemoveAddress";
 
@@ -23,7 +24,7 @@ function Addresses({ userId }: Props) {
   if (isError) throw error;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

@@ -6,12 +6,30 @@ import getQueryClient from "../../components/getQueryClient";
 import ProductDetail from "./components/ProductDetail";
 import type { Metadata } from "next";
 import { siteConfig, noindexRobots } from "@/lib/seo";
+import { CloudinaryImage } from "@cloudinary/url-gen";
+import { fit } from "@cloudinary/url-gen/actions/resize";
 
 type ProductDetailProps = {
   params: {
     productId: string;
   };
 };
+
+/**
+ * Converts a Cloudinary public ID (what the API stores as image_url)
+ * into a real https://res.cloudinary.com/... URL suitable for OG/Twitter
+ * meta tags and JSON-LD.  Falls back to the default OG image if the
+ * public ID is empty.
+ */
+function buildCloudinaryUrl(publicId: string, width = 800, height = 800): string {
+  if (!publicId) return `${siteConfig.url}/images/og-image.png`;
+  return new CloudinaryImage(publicId, {
+    cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
+  })
+    .resize(fit().width(width).height(height))
+    .format("jpg")
+    .toURL();
+}
 
 export async function generateMetadata({
   params,
@@ -25,6 +43,9 @@ export async function generateMetadata({
       : `Buy ${product.name} at the best price on wondrMart.`;
     const productUrl = `${siteConfig.url}/product/${productId}`;
 
+    // Build a real Cloudinary https URL from the public ID stored in image_url
+    const ogImageUrl = buildCloudinaryUrl(product.image_url, 800, 800);
+
     return {
       title,
       description,
@@ -34,23 +55,14 @@ export async function generateMetadata({
         description,
         url: productUrl,
         siteName: siteConfig.name,
-        images: product.image_url
-          ? [
-              {
-                url: product.image_url,
-                width: 800,
-                height: 800,
-                alt: product.name,
-              },
-            ]
-          : [
-              {
-                url: `${siteConfig.url}/images/og-image.png`,
-                width: 1200,
-                height: 630,
-                alt: `${product.name} | wondrMart`,
-              },
-            ],
+        images: [
+          {
+            url: ogImageUrl,
+            width: 800,
+            height: 800,
+            alt: product.name,
+          },
+        ],
         locale: "en_US",
         type: "website",
       },
@@ -58,9 +70,7 @@ export async function generateMetadata({
         card: "summary_large_image",
         title: `${product.name} | wondrMart`,
         description,
-        images: product.image_url
-          ? [product.image_url]
-          : [`${siteConfig.url}/images/og-image.png`],
+        images: [ogImageUrl],
       },
     };
   } catch {
@@ -85,13 +95,18 @@ const ProductDetailPage: React.FC<ProductDetailProps> = async ({ params }) => {
   const product = queryClient.getQueryData<Awaited<ReturnType<typeof getProduct>>>(["product", productId]);
   const productUrl = `${siteConfig.url}/product/${productId}`;
 
+  // Build a real Cloudinary URL for the JSON-LD image field too
+  const jsonLdImageUrl = product?.image_url
+    ? buildCloudinaryUrl(product.image_url, 800, 800)
+    : null;
+
   const jsonLd = product
     ? {
         "@context": "https://schema.org",
         "@type": "Product",
         name: product.name,
         description: product.description,
-        image: product.image_url,
+        image: jsonLdImageUrl,
         url: productUrl,
         offers: {
           "@type": "Offer",

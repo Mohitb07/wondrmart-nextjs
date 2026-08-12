@@ -1,5 +1,4 @@
 import { BASE_URL } from "@/api";
-import { Product } from "@/types";
 import axios from "axios";
 
 type ProductCount = {
@@ -7,10 +6,15 @@ type ProductCount = {
 };
 
 export const getProductsCount = async (
-  filters: string
+  filters: string,
 ): Promise<ProductCount> => {
   try {
-    const res = await axios.post(BASE_URL + "/products-count", {
+    const baseUrl =
+      typeof window === "undefined"
+        ? process.env.BASE_URL || process.env.NEXT_PUBLIC_BASE_URL
+        : BASE_URL;
+
+    const res = await axios.post(`${baseUrl}/products-count`, {
       query: filters,
     });
     return res.data;

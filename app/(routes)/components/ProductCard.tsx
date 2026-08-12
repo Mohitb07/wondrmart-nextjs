@@ -101,6 +101,7 @@ const ProductCard = ({
           <div className="overflow-hidden min-w-[5rem] h-[12rem] flex justify-center items-center bg-white">
             <AdvancedImage
               cldImg={productImage}
+              alt={name}
               // plugins={[placeholder({ mode: "blur" })]}
             />
           </div>

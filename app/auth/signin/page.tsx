@@ -1,8 +1,8 @@
 import SignInBody from "../components/SignInBody";
 
 export const metadata = {
-  title: "wondrMart | Log In",
-  description: "Log in to your wondrMart account",
+  title: "Sign In",
+  description: "Sign in to your wondrMart account to access your orders, wishlist, and personalised deals.",
 };
 
 export default function SignIn() {

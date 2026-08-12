@@ -1,8 +1,10 @@
 import Addresses from "./Addresses";
+import { noindexRobots } from "@/lib/seo";
 
 export const metadata = {
   title: "Your Addresses",
-  description: "Edit addresses for orders",
+  description: "Manage your saved delivery addresses on wondrMart.",
+  robots: noindexRobots,
 };
 
 export default async function AddressPage({

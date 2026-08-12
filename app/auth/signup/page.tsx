@@ -1,8 +1,8 @@
 import SignUpBody from "../components/SignUpBody";
 
 export const metadata = {
-  title: "wondrMart | Log In",
-  description: "Log in to your wondrMart account",
+  title: "Sign Up",
+  description: "Create your free wondrMart account and start shopping the best deals online.",
 };
 
 export default function SignUp() {

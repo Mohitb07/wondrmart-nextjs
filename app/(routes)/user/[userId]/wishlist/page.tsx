@@ -1,8 +1,10 @@
 import Container from "@/common/Container";
+import { noindexRobots } from "@/lib/seo";
 
 export const metadata = {
   title: "Your Wishlist",
-  description: "Edit, remove or add to cart",
+  description: "View and manage your saved wishlist items on wondrMart.",
+  robots: noindexRobots,
 };
 
 export default async function WishlistPage() {

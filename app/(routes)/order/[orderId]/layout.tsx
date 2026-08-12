@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
+import { noindexRobots } from "@/lib/seo";
 import Container from "@/common/Container";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Order Verification",
-  description: "For user order verification",
+  title: "Order Status",
+  description: "Check the status of your wondrMart order.",
+  robots: noindexRobots,
 };
 
 export default function OrderVerificationLayout({

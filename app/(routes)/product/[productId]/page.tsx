@@ -31,6 +31,18 @@ function buildCloudinaryUrl(publicId: string, width = 800, height = 800): string
     .toURL();
 }
 
+/**
+ * Strips HTML tags and normalizes whitespace to produce plain text
+ * suitable for meta tags (description, OG, Twitter) and JSON-LD.
+ */
+function stripHtml(html: string): string {
+  if (!html) return "";
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export async function generateMetadata({
   params,
 }: ProductDetailProps): Promise<Metadata> {
@@ -38,8 +50,9 @@ export async function generateMetadata({
   try {
     const product = await getProduct(productId);
     const title = product.name;
-    const description = product.description
-      ? product.description.slice(0, 155).trim() + "…"
+    const plainDescription = stripHtml(product.description);
+    const description = plainDescription
+      ? plainDescription.slice(0, 155).trim() + "…"
       : `Buy ${product.name} at the best price on wondrMart.`;
     const productUrl = `${siteConfig.url}/product/${productId}`;
 
@@ -105,7 +118,7 @@ const ProductDetailPage: React.FC<ProductDetailProps> = async ({ params }) => {
         "@context": "https://schema.org",
         "@type": "Product",
         name: product.name,
-        description: product.description,
+        description: stripHtml(product.description),
         image: jsonLdImageUrl,
         url: productUrl,
         offers: {

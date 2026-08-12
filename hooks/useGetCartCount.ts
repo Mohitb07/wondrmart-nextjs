@@ -1,23 +1,18 @@
 import { getCartCount } from "@/actions/getCartCount";
+import { useAuth } from "@/context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 type Error = AxiosError;
 
 const useGetCartCount = () => {
+  const { user } = useAuth();
+  const userId = user?.customer_id ?? user?.id;
+
   return useQuery<number, Error>({
-    queryKey: ["cartCount"],
+    queryKey: ["cartCount", userId],
     queryFn: getCartCount,
-    onError: (err: AxiosError) => {
-      //   toast({
-      //     title: "Try again",
-      //     description: "Unable to load cart",
-      //     status: "error",
-      //     position: "top-right",
-      //     isClosable: true,
-      //   });
-      console.log("Error in get cart count", err);
-    },
+    enabled: !!userId,
   });
 };
 

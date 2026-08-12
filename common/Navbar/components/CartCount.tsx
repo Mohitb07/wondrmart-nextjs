@@ -9,7 +9,7 @@ const CartCount = () => {
     <Link href="/cart">
       <div className="relative mr-4">
         <LiaShoppingBagSolid className="text-3xl" />
-        {!!count && count > 0 && (
+        {typeof count === "number" && count > 0 && (
           <div className="text-sm text-black font-semibold absolute top-0 -right-2 bg-primary rounded-full w-5 h-5 flex items-center justify-center">
             <p>{count}</p>
           </div>

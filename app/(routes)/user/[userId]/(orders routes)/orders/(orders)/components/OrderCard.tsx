@@ -32,19 +32,26 @@ const OrderCard: React.FC<OrderCardProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const orderPlacedOn = new Date(orderDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-  console.log(orderPlacedOn); // Output: Aug 28, 2024
+  let orderPlacedOn = "N/A";
+  if (orderDate) {
+    const d = new Date(orderDate);
+    if (!isNaN(d.getTime())) {
+      orderPlacedOn = d.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    }
+  }
 
-  const totalAmount = formatPrice(Number(orderAmount));
-  const productShowCaseImage = cloudinaryImage({
-    imageUrl: productImage,
-    height: 100,
-    width: 100,
-  });
+  const totalAmount = formatPrice(Number(orderAmount) || 0);
+  const productShowCaseImage = productImage
+    ? cloudinaryImage({
+        imageUrl: productImage,
+        height: 100,
+        width: 100,
+      })
+    : null;
 
   const handleNavigate = () => {
     router.push(`${pathname}/${orderId}`);
@@ -69,7 +76,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
             {!isOrderDetail && (
               <div>
                 <h1 className="uppercase">Ship To</h1>
-                <h1>{username}</h1>
+                <h1>{username || "Customer"}</h1>
               </div>
             )}
           </div>
@@ -82,8 +89,14 @@ const OrderCard: React.FC<OrderCardProps> = ({
       <CardBody className="p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="flex justify-center min-w-[125px] bg-white rounded-md overflow-hidden">
-              <AdvancedImage cldImg={productShowCaseImage} />
+            <div className="flex justify-center min-w-[125px] bg-white rounded-md overflow-hidden min-h-[100px]">
+              {productShowCaseImage ? (
+                <AdvancedImage cldImg={productShowCaseImage} />
+              ) : (
+                <div className="w-[100px] h-[100px] bg-slate-800 flex items-center justify-center text-xs text-slate-400">
+                  No Image
+                </div>
+              )}
             </div>
             <div className="ml-4 text-left max-w-[70ch]">
               {isOrderDetail ? (

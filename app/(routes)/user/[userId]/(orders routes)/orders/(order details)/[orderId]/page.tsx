@@ -43,14 +43,14 @@ export default async function OrderDetail({ params }: OrderDetailProps) {
           <div className="space-y-3 h-full">
             <h2 className="text-xl font-bold">Shipped To</h2>
             <StyledCard
-              userId={orderDetail.customer_id}
-              apartment={orderDetail.address.flat_no}
-              street={orderDetail.address.street}
-              country={orderDetail.address.country}
-              city={orderDetail.address.city}
-              state={orderDetail.address.state}
-              mobile={orderDetail.address.phone}
-              pincode={orderDetail.address.pincode}
+              userId={orderDetail?.customer_id || ""}
+              apartment={orderDetail?.address?.flat_no || ""}
+              street={orderDetail?.address?.street || ""}
+              country={orderDetail?.address?.country || ""}
+              city={orderDetail?.address?.city || ""}
+              state={orderDetail?.address?.state || ""}
+              mobile={orderDetail?.address?.phone || ""}
+              pincode={orderDetail?.address?.pincode || ""}
               isFooterVisible={false}
               isHeaderVisible={false}
             />
@@ -60,23 +60,22 @@ export default async function OrderDetail({ params }: OrderDetailProps) {
             <OrderSummary
               textSize="sm"
               amountSize="base"
-              totalAmount={orderDetail.order_amount}
-              quantity={orderDetail.order_items.length}
+              totalAmount={orderDetail?.order_amount || "0"}
+              quantity={orderItems.length}
             />
           </div>
         </div>
         <div className="mt-5 space-y-5">
-          {/* NEED TO IMPLEMENT THIS */}
           {orderItems.map((orderItem) => (
             <OrderCard
               key={orderItem.order_item_id}
               isOrderDetail
               orderAmount={orderItem.total_amount}
               orderDate={orderItem.createdAt}
-              productImage={orderItem.product.image_url}
-              productName={orderItem.product.name}
-              username={orderDetail.address.customer.username}
-              productId={orderItem.product.product_id}
+              productImage={orderItem.product?.image_url || ""}
+              productName={orderItem.product?.name || "Product"}
+              username={orderDetail?.address?.customer?.username || "Customer"}
+              productId={orderItem.product?.product_id || ""}
             />
           ))}
         </div>

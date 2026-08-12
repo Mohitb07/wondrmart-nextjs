@@ -14,6 +14,7 @@ const useGetUserOrders = (userId: string) => {
   const query = useQuery<Order[], Error>({
     queryKey: ["userOrders", userId],
     queryFn: () => getUserOrders(userId),
+    enabled: !!userId,
   });
 
   return {

@@ -11,6 +11,13 @@ let accessToken: string | null =
     ? Cookies.get(ACCESS_TOKEN_COOKIE_NAME) ?? null
     : null;
 
+function getAccessTokenCookieExpires(token: string): Date | undefined {
+  const payload = parseJwt(token);
+  if (!payload?.exp) return undefined;
+
+  return new Date(payload.exp * 1000);
+}
+
 export function setAccessToken(token: string | null) {
   accessToken = token;
 
@@ -21,6 +28,7 @@ export function setAccessToken(token: string | null) {
       path: "/",
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      expires: getAccessTokenCookieExpires(token),
     });
   } else {
     Cookies.remove(ACCESS_TOKEN_COOKIE_NAME, { path: "/" });
@@ -123,6 +131,11 @@ export function doRefresh(): Promise<RefreshResult | null> {
         accessToken: r.data?.accessToken,
         user: r.data?.user,
       };
+
+      if (!result.accessToken || !result.user) {
+        throw new Error("Invalid refresh response");
+      }
+
       setAccessToken(result.accessToken);
       notify(result);
       return result;
@@ -141,8 +154,10 @@ export function doRefresh(): Promise<RefreshResult | null> {
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    if (accessToken && config && config.headers) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const currentAccessToken = getAccessToken();
+
+    if (currentAccessToken && config && config.headers) {
+      config.headers.Authorization = `Bearer ${currentAccessToken}`;
     }
 
     return config;

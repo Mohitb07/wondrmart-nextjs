@@ -10,6 +10,24 @@ function parseSetCookieValue(setCookieStr: string) {
   return { name: name?.trim(), value: valParts.join("=") };
 }
 
+function getJwtPayload(token: string): any {
+  try {
+    const base64Url = token.split(".")[1];
+    if (!base64Url) return null;
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(Buffer.from(base64, "base64").toString("utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function getAccessTokenMaxAgeSeconds(token: string): number | undefined {
+  const payload = getJwtPayload(token);
+  if (!payload?.exp) return undefined;
+
+  return Math.max(0, Math.floor(payload.exp - Date.now() / 1000));
+}
+
 export async function serverFetchWithRefresh<T>(
   url: string,
   opts: { method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE"; body?: any } = {}
@@ -70,6 +88,7 @@ export async function serverFetchWithRefresh<T>(
       path: "/",
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      maxAge: getAccessTokenMaxAgeSeconds(newAccessToken),
     });
   } catch {
     /* Readonly cookie store context */

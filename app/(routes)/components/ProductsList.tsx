@@ -46,7 +46,13 @@ export default function ProductsList() {
 
   return (
     <Container>
+      {!!query.trim() && !isProductsLoading && !!products?.length && (
+        <p className="text-sm font-medium text-slate-400 mb-4">
+          Showing <span className="font-semibold text-white">{productsCount?.count ?? products.length}</span> {(productsCount?.count ?? products.length) === 1 ? "result" : "results"} for &quot;<span className="font-semibold text-white">{query}</span>&quot;
+        </p>
+      )}
       <div className={`${isPreviousData && "opacity-60"} products-grid`}>
+
         {!isProductsLoading &&
           products?.map((product) => (
             <ProductCard

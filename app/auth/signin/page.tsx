@@ -8,7 +8,7 @@ export const metadata = {
 export default function SignIn() {
   return (
     <div className="w-full min-h-[calc(100vh-5rem)] flex items-center justify-center">
-      <div className="px-4  py-16 sm:px-6 lg:px-8 space-y-5 min-w-[20rem] md:min-w-[30rem]">
+      <div className="px-4 py-16 sm:px-6 lg:px-8 space-y-5 min-w-[20rem] md:min-w-[30rem] w-full md:w-fit">
         <h1 className="text-4xl font-bold text-center">Sign In</h1>
         <SignInBody />
       </div>

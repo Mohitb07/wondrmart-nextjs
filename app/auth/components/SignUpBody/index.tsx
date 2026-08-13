@@ -104,6 +104,7 @@ export default function SignUpBody() {
         onSubmit={formik.handleSubmit}
       >
         <Input
+          classNames={{ input: "text-base" }}
           isInvalid={
             (isError && hasErrorForProperties(error, ["username"])) ||
             (formik.touched.username && Boolean(formik.errors.username))
@@ -126,6 +127,7 @@ export default function SignUpBody() {
         />
         <Input
           isRequired
+          classNames={{ input: "text-base" }}
           isInvalid={
             (isError && hasErrorForProperties(error, ["email"])) ||
             (formik.touched.email && Boolean(formik.errors.email))
@@ -146,6 +148,7 @@ export default function SignUpBody() {
         />
         <Input
           isRequired
+          classNames={{ input: "text-base" }}
           isInvalid={
             (isError && hasErrorForProperties(error, ["password"])) ||
             (formik.touched.password && Boolean(formik.errors.password))
@@ -176,6 +179,7 @@ export default function SignUpBody() {
           type={isPasswordVisible ? "text" : "password"}
         />
         <Input
+          classNames={{ input: "text-base" }}
           isInvalid={
             formik.touched.confirmPassword &&
             Boolean(formik.errors.confirmPassword)

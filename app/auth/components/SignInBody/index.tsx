@@ -22,7 +22,7 @@ export const loginValidationSchema = yup.object({
 
 export default function SignInBody() {
   const [isVisible, setIsVisible] = useState(false);
-  const { isLoading: isLoggingIn, mutate, isError, error } = useLogin();
+  const { isLoading: isLoggingIn, mutate, isError, error, reset } = useLogin();
 
   const formik = useFormik<SignInFormData>({
     initialValues: {
@@ -37,8 +37,8 @@ export default function SignInBody() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     formik.handleChange(e);
-     if (isError) {
-      error.response!.data.errors[0].message = "";
+    if (isError) {
+      reset();
     }
   };
 
@@ -52,6 +52,7 @@ export default function SignInBody() {
       >
         <Input
           isRequired
+          classNames={{ input: "text-base" }}
           isInvalid={
             (isError && Boolean(error?.response?.data?.errors?.[0]?.message)) ||
             (formik.touched.email && Boolean(formik.errors.email))
@@ -69,6 +70,7 @@ export default function SignInBody() {
         />
         <Input
           isRequired
+          classNames={{ input: "text-base" }}
           isInvalid={
             (isError && Boolean(error?.response?.data?.errors?.[0]?.message)) ||
             (formik.touched.password && Boolean(formik.errors.password))

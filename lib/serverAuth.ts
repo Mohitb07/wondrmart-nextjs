@@ -1,4 +1,4 @@
-// serverAuth.ts  (server-only)
+﻿// serverAuth.ts  (server-only)
 import axios from "axios";
 import { cookies } from "next/headers";
 
@@ -8,6 +8,51 @@ function parseSetCookieValue(setCookieStr: string) {
   const first = (setCookieStr.split(";")[0] || "").trim();
   const [name, ...valParts] = first.split("=");
   return { name: name?.trim(), value: valParts.join("=") };
+}
+
+// Parses a full Set-Cookie header string into structured cookie options
+function parseFullSetCookie(setCookieStr: string): {
+  name: string;
+  value: string;
+  httpOnly: boolean;
+  secure: boolean;
+  sameSite: "strict" | "lax" | "none";
+  path: string;
+  maxAge?: number;
+} {
+  const parts = setCookieStr.split(";").map((p) => p.trim());
+  const [nameVal, ...attrParts] = parts;
+  const eqIdx = (nameVal ?? "").indexOf("=");
+  const name = nameVal!.substring(0, eqIdx).trim();
+  const value = nameVal!.substring(eqIdx + 1);
+
+  let httpOnly = false;
+  let secure = false;
+  let sameSite: "strict" | "lax" | "none" = "lax";
+  let path = "/";
+  let maxAge: number | undefined;
+
+  for (const part of attrParts) {
+    const lower = part.toLowerCase();
+    if (lower === "httponly") { httpOnly = true; continue; }
+    if (lower === "secure") { secure = true; continue; }
+    if (lower.startsWith("samesite=")) {
+      const val = part.split("=")[1]?.trim().toLowerCase();
+      if (val === "none" || val === "strict" || val === "lax") sameSite = val;
+      continue;
+    }
+    if (lower.startsWith("path=")) {
+      path = part.split("=")[1]?.trim() ?? "/";
+      continue;
+    }
+    if (lower.startsWith("max-age=")) {
+      const v = parseInt(part.split("=")[1]?.trim() ?? "", 10);
+      if (!isNaN(v)) maxAge = v;
+      continue;
+    }
+  }
+
+  return { name, value, httpOnly, secure, sameSite, path, maxAge };
 }
 
 function getJwtPayload(token: string): any {
@@ -94,7 +139,9 @@ export async function serverFetchWithRefresh<T>(
     /* Readonly cookie store context */
   }
 
-  // Parse refresh cookie if backend rotated refresh_token
+  // Parse and persist the rotated refresh_token cookie from the backend response.
+  // store.set() succeeds in Server Actions and Route Handlers;
+  // it throws (and is caught) in read-only Server Component render contexts.
   const setCookieHeader = refreshRes.headers?.["set-cookie"];
   let refreshCookie: string | undefined;
   if (setCookieHeader) {
@@ -103,9 +150,23 @@ export async function serverFetchWithRefresh<T>(
       : [setCookieHeader];
 
     for (const cookieStr of cookiesToForward) {
-      const parsed = parseSetCookieValue(cookieStr);
-      if (parsed.name === "refresh_token") {
+      const { name } = parseSetCookieValue(cookieStr);
+      if (name === "refresh_token") {
         refreshCookie = cookieStr;
+
+        try {
+          const c = parseFullSetCookie(cookieStr);
+          store.set(c.name, c.value, {
+            httpOnly: c.httpOnly,
+            secure: c.secure,
+            sameSite: c.sameSite,
+            path: c.path,
+            ...(c.maxAge !== undefined ? { maxAge: c.maxAge } : {}),
+          });
+        } catch {
+          // Readonly cookie store — refreshCookie string is still returned
+          // for any caller that needs to forward it manually.
+        }
         break;
       }
     }
@@ -131,4 +192,3 @@ export async function serverFetchWithRefresh<T>(
 
   return { data: apiRes.data, refreshCookie };
 }
-

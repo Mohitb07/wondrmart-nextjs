@@ -130,7 +130,7 @@ export default function AdminSignInForm() {
           {isUnverifiedError && formik.values.email && (
             <div className="pt-1 flex items-center justify-between border-t border-rose-500/20">
               <span className="text-[11px] opacity-80">
-                Didn't get the email?
+                Didn&apos;t get the email?
               </span>
               <button
                 type="button"

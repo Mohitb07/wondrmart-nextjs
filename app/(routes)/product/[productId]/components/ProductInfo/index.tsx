@@ -1,9 +1,8 @@
 "use client";
 
 import useGetCart from "@/hooks/useGetCart";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, renderDescriptionToHtml } from "@/lib/utils";
 import { Divider } from "@nextui-org/react";
-import { sanitize } from "isomorphic-dompurify";
 import React from "react";
 import CardCTA from "../CTA/Card";
 
@@ -18,10 +17,9 @@ const ProductInfo: React.FC<ProductInfo> = ({
   productName,
   price,
   description,
-
   productId,
 }) => {
-  const formattedDescription = sanitize(description);
+  const formattedDescription = renderDescriptionToHtml(description);
   const formattedPrice = formatPrice(Number(price));
   const {
     data: cart,
@@ -45,9 +43,6 @@ const ProductInfo: React.FC<ProductInfo> = ({
       <p className="text-2xl font-semibold">{formattedPrice}</p>
       <div className="lg:hidden space-y-3">
         <Divider />
-        {/* <div className="flex items-center justify-center gap-7">
-          <ProductServices />
-        </div> */}
         <CardCTA
           cartQty={cartItemsIds[productId] || "0"}
           productId={productId}
@@ -57,28 +52,12 @@ const ProductInfo: React.FC<ProductInfo> = ({
       </div>
       <Divider />
       <h2 className="text-lg font-bold">Features</h2>
-      {/* <ul className="text-sm list-disc ml-3 leading-6">
-        <li>
-          <p>
-            Adaptive Transparency lets outside sounds in while reducing loud
-            environmental noise
-          </p>
-        </li>
-        <li>
-          <p>Active Noise Cancellation reduces unwanted background noise</p>
-        </li>
-        <li>
-          <p>
-            Personalised Spatial Audio with dynamic head tracking places sound
-            all around you
-          </p>
-        </li>
-      </ul> */}
       <div
         dangerouslySetInnerHTML={{ __html: formattedDescription }}
-        className="text-slate-400 text-base ml-4 leading-relaxed"
+        className="text-slate-400 text-base leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:my-2 [&_li]:text-slate-300 [&_strong]:text-slate-100 [&_p]:mb-2.5"
       ></div>
     </>
   );
 };
+
 export default ProductInfo;

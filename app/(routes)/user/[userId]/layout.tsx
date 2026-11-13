@@ -88,9 +88,11 @@ export default function UserLayout({
           </Skeleton>
           <Skeleton
             isLoaded={!isLoading}
-            className="inline-block rounded-lg ml-4"
+            className="inline-block rounded-lg md:ml-4"
           >
-            <h1 className="text-4xl font-bold leading-normal">{pageTitle}</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-normal text-center md:text-left">
+              {pageTitle}
+            </h1>
           </Skeleton>
         </div>
         {filteredBreadCrumbList.length > 1 && (

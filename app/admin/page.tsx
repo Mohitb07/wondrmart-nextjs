@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
   if (loading || !admin) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="inline-block px-2.5 py-0.5 mb-2 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+            <span className="inline-block px-2.5 py-0.5 mb-2 text-[10px] font-bold uppercase tracking-wider rounded bg-[#BEF264]/10 text-[#BEF264] border border-[#BEF264]/20">
               {admin.role} ACCOUNT
             </span>
             <h1 className="text-2xl font-bold tracking-tight">
@@ -90,7 +90,7 @@ export default function AdminDashboardPage() {
           <div className="flex flex-wrap gap-2.5">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors"
             >
               <FiPlus className="w-3.5 h-3.5" />
               Add Product
@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
                   : "bg-neutral-100 border-neutral-200 text-neutral-800 hover:bg-neutral-200"
               }`}
             >
-              <FiUsers className="w-3.5 h-3.5 text-amber-500" />
+              <FiUsers className="w-3.5 h-3.5 text-[#BEF264]" />
               Manage Customers
             </Link>
           </div>
@@ -133,7 +133,7 @@ export default function AdminDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-wider opacity-50">
               Total Products
             </span>
-            <div className="p-2 rounded-lg bg-amber-500/10 text-amber-500">
+            <div className="p-2 rounded-lg bg-[#BEF264]/10 text-[#BEF264]">
               <FiBox className="w-4 h-4" />
             </div>
           </div>
@@ -150,23 +150,23 @@ export default function AdminDashboardPage() {
           href="/admin/users"
           className={`p-5 rounded-xl border block transition-colors group ${
             isDark
-              ? "bg-neutral-900 border-neutral-800 hover:border-amber-500/50"
-              : "bg-white border-neutral-200 hover:border-amber-500/50 shadow-sm"
+              ? "bg-neutral-900 border-neutral-800 hover:border-[#BEF264]/50"
+              : "bg-white border-neutral-200 hover:border-[#BEF264]/50 shadow-sm"
           }`}
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider opacity-50">
               Total Customers
             </span>
-            <div className="p-2 rounded-lg bg-amber-500/10 text-amber-500 group-hover:scale-110 transition-transform">
+            <div className="p-2 rounded-lg bg-[#BEF264]/10 text-[#BEF264] group-hover:scale-110 transition-transform">
               <FiUsers className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-2xl font-bold text-amber-500">
+            <p className="text-2xl font-bold text-[#BEF264]">
               {isUsersLoading ? "..." : customersCount}
             </p>
-            <p className="text-xs opacity-40 mt-0.5 group-hover:text-amber-400 transition-colors">
+            <p className="text-xs opacity-40 mt-0.5 group-hover:text-[#BEF264] transition-colors">
               Registered storefront users →
             </p>
           </div>
@@ -221,12 +221,12 @@ export default function AdminDashboardPage() {
       >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <FiLayers className="w-4 h-4 text-amber-500" />
+            <FiLayers className="w-4 h-4 text-[#BEF264]" />
             <h2 className="text-base font-bold">Recent Products</h2>
           </div>
           <Link
             href="/admin/products"
-            className="text-xs font-bold text-amber-500 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-[#BEF264] hover:underline flex items-center gap-1"
           >
             View All <FiExternalLink className="w-3 h-3" />
           </Link>
@@ -234,7 +234,7 @@ export default function AdminDashboardPage() {
 
         {isProductsLoading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : recentProducts.length === 0 ? (
           <div className="text-center py-8 text-neutral-400 text-xs">
@@ -270,7 +270,7 @@ export default function AdminDashboardPage() {
                     </td>
 
                     <td className="py-2.5 px-2 font-semibold truncate max-w-xs">{p.name}</td>
-                    <td className="py-2.5 px-2 font-bold text-amber-500">
+                    <td className="py-2.5 px-2 font-bold text-[#BEF264]">
                       {formatPrice(Number(p.price))}
                     </td>
 

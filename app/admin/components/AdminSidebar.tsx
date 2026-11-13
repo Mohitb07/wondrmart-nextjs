@@ -35,11 +35,11 @@ export default function AdminSidebar() {
     >
       {/* Brand Header */}
       <div className="h-16 px-6 flex items-center gap-3 border-b border-inherit">
-        <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-black font-bold shadow-sm">
+        <div className="w-8 h-8 rounded-lg bg-[#BEF264] flex items-center justify-center text-black font-bold shadow-sm">
           <FiShield className="w-4 h-4" />
         </div>
         <div>
-          <h1 className="font-bold text-base tracking-tight text-amber-500">
+          <h1 className="font-bold text-base tracking-tight text-[#BEF264]">
             WONDRMART
           </h1>
           <span className="text-[10px] font-semibold tracking-wider uppercase opacity-60">
@@ -73,7 +73,7 @@ export default function AdminSidebar() {
               <Icon
                 className={`w-4 h-4 ${
                   isActive
-                    ? "text-amber-500"
+                    ? "text-[#BEF264]"
                     : ""
                 }`}
               />
@@ -112,7 +112,7 @@ export default function AdminSidebar() {
             <div className="min-w-0 pr-2">
               <p className="text-sm font-semibold truncate">{admin.username}</p>
               <p className="text-xs opacity-50 truncate">{admin.email}</p>
-              <span className="inline-block mt-1 px-2 py-0.5 text-[10px] font-bold tracking-wider rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              <span className="inline-block mt-1 px-2 py-0.5 text-[10px] font-bold tracking-wider rounded bg-[#BEF264]/10 text-[#BEF264] border border-[#BEF264]/20">
                 {admin.role}
               </span>
             </div>

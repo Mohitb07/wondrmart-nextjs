@@ -26,14 +26,14 @@ export default function AdminHeader() {
           onClick={toggleTheme}
           className={`p-2 rounded-lg border flex items-center gap-2 text-xs font-semibold transition-all ${
             isDark
-              ? "bg-neutral-900 border-neutral-800 text-amber-400 hover:bg-neutral-800"
+              ? "bg-neutral-900 border-neutral-800 text-[#BEF264] hover:bg-neutral-800"
               : "bg-neutral-100 border-neutral-200 text-neutral-800 hover:bg-neutral-200"
           }`}
           title={`Switch to ${isDark ? "Light" : "Dark"} mode`}
         >
           {isDark ? (
             <>
-              <FiSun className="w-3.5 h-3.5 text-amber-400" />
+              <FiSun className="w-3.5 h-3.5 text-[#BEF264]" />
               <span className="hidden sm:inline">Light</span>
             </>
           ) : (
@@ -53,7 +53,7 @@ export default function AdminHeader() {
                 : "bg-neutral-100 border-neutral-200 text-neutral-800"
             }`}
           >
-            <div className="w-5 h-5 rounded bg-amber-500 text-black flex items-center justify-center font-bold text-[10px]">
+            <div className="w-5 h-5 rounded bg-[#BEF264] text-black flex items-center justify-center font-bold text-[10px]">
               <FiUser className="w-3 h-3" />
             </div>
             <span className="hidden md:inline">{admin.username}</span>

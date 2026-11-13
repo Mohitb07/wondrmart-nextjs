@@ -110,7 +110,7 @@ function AdminVerifyEmailContent() {
           onClick={toggleTheme}
           className={`p-2 rounded-lg border flex items-center gap-2 text-xs font-semibold transition-all ${
             isDark
-              ? "bg-neutral-900 border-neutral-800 text-amber-400 hover:bg-neutral-800"
+              ? "bg-neutral-900 border-neutral-800 text-[#BEF264] hover:bg-neutral-800"
               : "bg-white border-neutral-200 text-neutral-800 hover:bg-neutral-100 shadow-sm"
           }`}
         >
@@ -134,7 +134,7 @@ function AdminVerifyEmailContent() {
         }`}
       >
         <div className="text-center mb-6">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-amber-500 text-black flex items-center justify-center text-xl font-bold shadow-sm">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-[#BEF264] text-black flex items-center justify-center text-xl font-bold shadow-sm">
             <FiShield className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-bold tracking-tight">
@@ -147,7 +147,7 @@ function AdminVerifyEmailContent() {
 
         {verifying ? (
           <div className="py-8 text-center space-y-4">
-            <div className="w-10 h-10 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin mx-auto" />
+            <div className="w-10 h-10 border-4 border-[#BEF264]/20 border-t-[#BEF264] rounded-full animate-spin mx-auto" />
             <p className="text-xs font-medium opacity-80">
               Verifying your administrator credentials...
             </p>
@@ -168,7 +168,7 @@ function AdminVerifyEmailContent() {
 
             <Link
               href="/admin/login"
-              className="w-full py-2.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black text-center transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black text-center transition-colors flex items-center justify-center gap-2"
             >
               Sign In to Admin Workspace
             </Link>
@@ -194,7 +194,7 @@ function AdminVerifyEmailContent() {
               isDark ? "bg-black/40 border-neutral-800" : "bg-neutral-50 border-neutral-200"
             }`}>
               <h2 className="text-xs font-bold uppercase tracking-wider opacity-80 flex items-center gap-2">
-                <FiRefreshCw className="w-3.5 h-3.5 text-amber-500" />
+                <FiRefreshCw className="w-3.5 h-3.5 text-[#BEF264]" />
                 Resend Activation Email
               </h2>
 
@@ -219,7 +219,7 @@ function AdminVerifyEmailContent() {
                     placeholder="admin@wondrmart.com"
                     value={resendEmail}
                     onChange={(e) => setResendEmail(e.target.value)}
-                    className={`w-full pl-9 pr-4 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+                    className={`w-full pl-9 pr-4 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
                       isDark
                         ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500"
                         : "bg-white border-neutral-300 text-neutral-900 placeholder-neutral-400"
@@ -230,7 +230,7 @@ function AdminVerifyEmailContent() {
                 <button
                   type="submit"
                   disabled={resending}
-                  className="w-full py-2 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors disabled:opacity-50"
+                  className="w-full py-2 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors disabled:opacity-50"
                 >
                   {resending ? "Sending New Link..." : "Send New Verification Link"}
                 </button>
@@ -262,7 +262,7 @@ export default function AdminVerifyEmailPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center p-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-amber-500 border-r-2" />
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#BEF264] border-r-2" />
         </div>
       }
     >

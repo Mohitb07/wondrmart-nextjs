@@ -94,7 +94,7 @@ export default function ProductModal({
         {/* Header */}
         <div className="px-6 py-4 border-b border-inherit flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-amber-500/10 text-amber-500">
+            <div className="p-2 rounded-lg bg-[#BEF264]/10 text-[#BEF264]">
               <FiPackage className="w-4 h-4" />
             </div>
             <h3 className="text-base font-bold">{title}</h3>
@@ -128,7 +128,7 @@ export default function ProductModal({
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              className={`w-full px-3.5 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+              className={`w-full px-3.5 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
                 isDark
                   ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500"
                   : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400"
@@ -149,7 +149,7 @@ export default function ProductModal({
               onChange={(e) =>
                 setFormData({ ...formData, price: e.target.value })
               }
-              className={`w-full px-3.5 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+              className={`w-full px-3.5 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
                 isDark
                   ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500"
                   : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400"
@@ -170,7 +170,7 @@ export default function ProductModal({
                 onChange={(e) =>
                   setFormData({ ...formData, image_url: e.target.value })
                 }
-                className={`w-full px-3.5 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+                className={`w-full px-3.5 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
                   isDark
                     ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500"
                     : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400"
@@ -218,7 +218,7 @@ export default function ProductModal({
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 rounded-lg font-semibold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-lg font-semibold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors disabled:opacity-50"
             >
               {submitting
                 ? "Saving..."

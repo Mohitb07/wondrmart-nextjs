@@ -52,7 +52,7 @@ export default function UserDetailModal({
       return "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
     }
     if (s.includes("PENDING") || s.includes("PROCESSING")) {
-      return "bg-amber-500/10 text-amber-400 border-amber-500/30";
+      return "bg-[#BEF264]/10 text-[#BEF264] border-[#BEF264]/30";
     }
     if (s.includes("SHIPPED") || s.includes("DISPATCHED")) {
       return "bg-blue-500/10 text-blue-400 border-blue-500/30";
@@ -75,7 +75,7 @@ export default function UserDetailModal({
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-inherit">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-base border border-amber-500/20">
+            <div className="w-10 h-10 rounded-xl bg-[#BEF264]/10 text-[#BEF264] flex items-center justify-center font-bold text-base border border-[#BEF264]/20">
               <FiUser className="w-5 h-5" />
             </div>
             <div>
@@ -101,7 +101,7 @@ export default function UserDetailModal({
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
-              <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
               <p className="text-xs opacity-60">Loading customer profile...</p>
             </div>
           ) : isError || !user ? (
@@ -120,7 +120,7 @@ export default function UserDetailModal({
                 }`}
               >
                 <div className="flex items-center gap-3.5">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 text-black font-extrabold text-xl flex items-center justify-center shadow-md flex-shrink-0">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#BEF264] to-[#aee64f] text-black font-extrabold text-xl flex items-center justify-center shadow-md flex-shrink-0">
                     {user.username?.charAt(0)?.toUpperCase() || "U"}
                   </div>
                   <div>
@@ -134,7 +134,7 @@ export default function UserDetailModal({
                     <div className="flex items-center gap-2 mt-1.5">
                       <button
                         onClick={handleCopyId}
-                        className="inline-flex items-center gap-1 text-[10px] font-mono opacity-50 hover:opacity-100 hover:text-amber-500 transition-colors"
+                        className="inline-flex items-center gap-1 text-[10px] font-mono opacity-50 hover:opacity-100 hover:text-[#BEF264] transition-colors"
                         title="Click to copy ID"
                       >
                         <FiCopy className="w-3 h-3" />
@@ -156,7 +156,7 @@ export default function UserDetailModal({
                     <p className="text-[10px] font-bold uppercase tracking-wider opacity-50">
                       Orders
                     </p>
-                    <p className="text-base font-bold text-amber-500 mt-0.5">
+                    <p className="text-base font-bold text-[#BEF264] mt-0.5">
                       {user._count?.orders ?? 0}
                     </p>
                   </div>
@@ -186,7 +186,7 @@ export default function UserDetailModal({
                       : "bg-neutral-50 border-neutral-200"
                   }`}
                 >
-                  <FiCalendar className="w-4 h-4 text-amber-500 opacity-80" />
+                  <FiCalendar className="w-4 h-4 text-[#BEF264] opacity-80" />
                   <div>
                     <span className="opacity-50 block text-[10px] uppercase font-semibold">
                       Member Since
@@ -213,7 +213,7 @@ export default function UserDetailModal({
                       : "bg-neutral-50 border-neutral-200"
                   }`}
                 >
-                  <FiClock className="w-4 h-4 text-amber-500 opacity-80" />
+                  <FiClock className="w-4 h-4 text-[#BEF264] opacity-80" />
                   <div>
                     <span className="opacity-50 block text-[10px] uppercase font-semibold">
                       Last Updated
@@ -237,7 +237,7 @@ export default function UserDetailModal({
               {/* Addresses Section */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <FiMapPin className="w-4 h-4 text-amber-500" />
+                  <FiMapPin className="w-4 h-4 text-[#BEF264]" />
                   <h4 className="text-xs font-bold uppercase tracking-wider">
                     Saved Addresses ({user.addresses?.length || 0})
                   </h4>
@@ -292,7 +292,7 @@ export default function UserDetailModal({
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <FiShoppingBag className="w-4 h-4 text-amber-500" />
+                    <FiShoppingBag className="w-4 h-4 text-[#BEF264]" />
                     <h4 className="text-xs font-bold uppercase tracking-wider">
                       Recent Orders ({user.orders?.length || 0})
                     </h4>
@@ -362,7 +362,7 @@ export default function UserDetailModal({
                                 {ord.status || "PENDING"}
                               </span>
                             </td>
-                            <td className="py-2.5 px-3 text-right font-bold text-amber-500">
+                            <td className="py-2.5 px-3 text-right font-bold text-[#BEF264]">
                               {formatPrice(Number(ord.order_amount) || 0)}
                             </td>
                           </tr>
@@ -380,7 +380,7 @@ export default function UserDetailModal({
         <div className="px-6 py-3.5 border-t border-inherit flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors"
+            className="px-4 py-2 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors"
           >
             Close
           </button>

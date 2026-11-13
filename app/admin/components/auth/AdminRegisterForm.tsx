@@ -202,7 +202,7 @@ export default function AdminRegisterForm({
             <button
               type="button"
               onClick={onSuccessProceedToLogin}
-              className="w-full py-2.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black text-center transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black text-center transition-colors flex items-center justify-center gap-2"
             >
               <FiArrowLeft className="w-4 h-4" />
               Proceed to Sign In
@@ -210,7 +210,7 @@ export default function AdminRegisterForm({
           ) : (
             <Link
               href="/admin/login"
-              className="w-full py-2.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black text-center transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black text-center transition-colors flex items-center justify-center gap-2"
             >
               <FiArrowLeft className="w-4 h-4" />
               Proceed to Sign In
@@ -239,7 +239,7 @@ export default function AdminRegisterForm({
               isUsernameError ? "text-rose-400 opacity-90" : "opacity-70"
             }`}
           >
-            Username <span className="text-amber-500 ml-0.5">*</span>
+            Username <span className="text-[#BEF264] ml-0.5">*</span>
           </label>
           <div className="relative">
             <FiUser
@@ -258,8 +258,8 @@ export default function AdminRegisterForm({
                 isUsernameError
                   ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                   : isDark
-                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
               }`}
             />
           </div>
@@ -277,7 +277,7 @@ export default function AdminRegisterForm({
               isEmailError ? "text-rose-400 opacity-90" : "opacity-70"
             }`}
           >
-            Email Address <span className="text-amber-500 ml-0.5">*</span>
+            Email Address <span className="text-[#BEF264] ml-0.5">*</span>
           </label>
           <div className="relative">
             <FiMail
@@ -296,8 +296,8 @@ export default function AdminRegisterForm({
                 isEmailError
                   ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                   : isDark
-                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
               }`}
             />
           </div>
@@ -315,7 +315,7 @@ export default function AdminRegisterForm({
               isPasswordError ? "text-rose-400 opacity-90" : "opacity-70"
             }`}
           >
-            Password (min 8 characters) <span className="text-amber-500 ml-0.5">*</span>
+            Password (min 8 characters) <span className="text-[#BEF264] ml-0.5">*</span>
           </label>
           <div className="relative">
             <FiLock
@@ -334,8 +334,8 @@ export default function AdminRegisterForm({
                 isPasswordError
                   ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                   : isDark
-                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
               }`}
             />
             <button
@@ -371,7 +371,7 @@ export default function AdminRegisterForm({
               isConfirmPasswordError ? "text-rose-400 opacity-90" : "opacity-70"
             }`}
           >
-            Confirm Password <span className="text-amber-500 ml-0.5">*</span>
+            Confirm Password <span className="text-[#BEF264] ml-0.5">*</span>
           </label>
           <div className="relative">
             <FiLock
@@ -390,8 +390,8 @@ export default function AdminRegisterForm({
                 isConfirmPasswordError
                   ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                   : isDark
-                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
               }`}
             />
             <button
@@ -423,14 +423,14 @@ export default function AdminRegisterForm({
         {/* Role Select */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider mb-1 opacity-70">
-            Admin Role <span className="text-amber-500 ml-0.5">*</span>
+            Admin Role <span className="text-[#BEF264] ml-0.5">*</span>
           </label>
           <select
             name="role"
             value={formik.values.role}
             onChange={handleFieldChange}
             onBlur={formik.handleBlur}
-            className={`w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+            className={`w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
               isDark
                 ? "bg-neutral-800 border-neutral-700 text-neutral-100"
                 : "bg-neutral-50 border-neutral-300 text-neutral-900"
@@ -444,7 +444,7 @@ export default function AdminRegisterForm({
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors disabled:opacity-50"
+          className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors disabled:opacity-50"
         >
           {formik.isSubmitting ? "Creating Account..." : "Create Admin Account"}
         </button>

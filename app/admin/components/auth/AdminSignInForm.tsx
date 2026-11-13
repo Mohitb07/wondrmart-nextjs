@@ -126,7 +126,7 @@ export default function AdminSignInForm() {
             <span className="font-medium leading-snug">{authError}</span>
           </div>
 
-          {/* Unverified prompt with inline resend action */}
+              {/* Unverified prompt with inline resend action */}
           {isUnverifiedError && formik.values.email && (
             <div className="pt-1 flex items-center justify-between border-t border-rose-500/20">
               <span className="text-[11px] opacity-80">
@@ -136,7 +136,7 @@ export default function AdminSignInForm() {
                 type="button"
                 disabled={resending}
                 onClick={handleResend}
-                className="text-[11px] font-bold text-amber-500 hover:text-amber-400 hover:underline flex items-center gap-1"
+                className="text-[11px] font-bold text-[#BEF264] hover:underline flex items-center gap-1"
               >
                 <FiRefreshCw
                   className={`w-3 h-3 ${resending ? "animate-spin" : ""}`}
@@ -188,8 +188,8 @@ export default function AdminSignInForm() {
                 isEmailError
                   ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                   : isDark
-                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
               }`}
             />
           </div>
@@ -212,7 +212,7 @@ export default function AdminSignInForm() {
             </label>
             <Link
               href="/admin/forgot-password"
-              className="text-[11px] font-semibold text-amber-500 hover:text-amber-400 hover:underline transition-colors"
+              className="text-[11px] font-semibold text-[#BEF264] hover:underline transition-colors"
             >
               Forgot Password?
             </Link>
@@ -234,8 +234,8 @@ export default function AdminSignInForm() {
                 isPasswordError
                   ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                   : isDark
-                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                  ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                  : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
               }`}
             />
             <button
@@ -267,7 +267,7 @@ export default function AdminSignInForm() {
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors disabled:opacity-50"
+          className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors disabled:opacity-50"
         >
           {formik.isSubmitting ? "Signing in..." : "Sign In to Admin Workspace"}
         </button>

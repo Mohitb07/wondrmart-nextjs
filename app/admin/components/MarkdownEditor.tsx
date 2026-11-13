@@ -102,7 +102,7 @@ export default function MarkdownEditor({
             onClick={handleBulletList}
             title="Bullet List (- item)"
             className={`p-1 rounded text-xs font-semibold flex items-center gap-1 transition-colors ${
-              isDark ? "hover:bg-neutral-700 text-amber-400" : "hover:bg-neutral-200 text-amber-600"
+              isDark ? "hover:bg-neutral-700 text-[#BEF264]" : "hover:bg-neutral-200 text-neutral-800"
             }`}
           >
             <FiList className="w-3.5 h-3.5" /> Bullet List
@@ -120,7 +120,7 @@ export default function MarkdownEditor({
             onClick={() => setActiveTab("write")}
             className={`px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition-all ${
               activeTab === "write"
-                ? "bg-amber-500 text-black shadow-sm"
+                ? "bg-[#BEF264] text-black shadow-sm"
                 : isDark
                 ? "text-neutral-400 hover:text-neutral-200"
                 : "text-neutral-600 hover:text-neutral-900"
@@ -133,7 +133,7 @@ export default function MarkdownEditor({
             onClick={() => setActiveTab("preview")}
             className={`px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition-all ${
               activeTab === "preview"
-                ? "bg-amber-500 text-black shadow-sm"
+                ? "bg-[#BEF264] text-black shadow-sm"
                 : isDark
                 ? "text-neutral-400 hover:text-neutral-200"
                 : "text-neutral-600 hover:text-neutral-900"

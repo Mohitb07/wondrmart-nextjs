@@ -67,7 +67,7 @@ export default function AdminForgotPasswordPage() {
           onClick={toggleTheme}
           className={`p-2 rounded-lg border flex items-center gap-2 text-xs font-semibold transition-all ${
             isDark
-              ? "bg-neutral-900 border-neutral-800 text-amber-400 hover:bg-neutral-800"
+              ? "bg-neutral-900 border-neutral-800 text-[#BEF264] hover:bg-neutral-800"
               : "bg-white border-neutral-200 text-neutral-800 hover:bg-neutral-100 shadow-sm"
           }`}
         >
@@ -91,7 +91,7 @@ export default function AdminForgotPasswordPage() {
         }`}
       >
         <div className="text-center mb-6">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-amber-500 text-black flex items-center justify-center text-xl font-bold shadow-sm">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-[#BEF264] text-black flex items-center justify-center text-xl font-bold shadow-sm">
             <FiShield className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-bold tracking-tight">
@@ -147,7 +147,7 @@ export default function AdminForgotPasswordPage() {
 
               <Link
                 href="/admin/login"
-                className="w-full py-2.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black text-center transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black text-center transition-colors flex items-center justify-center gap-2"
               >
                 <FiArrowLeft className="w-4 h-4" />
                 Return to Admin Sign In
@@ -189,8 +189,8 @@ export default function AdminForgotPasswordPage() {
                     formik.touched.email && formik.errors.email
                       ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                       : isDark
-                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
                   }`}
                 />
               </div>
@@ -204,7 +204,7 @@ export default function AdminForgotPasswordPage() {
             <button
               type="submit"
               disabled={formik.isSubmitting}
-              className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors disabled:opacity-50"
+              className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors disabled:opacity-50"
             >
               {formik.isSubmitting
                 ? "Sending Reset Link..."

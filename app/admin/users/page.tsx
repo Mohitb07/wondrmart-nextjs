@@ -60,7 +60,7 @@ export default function AdminUsersPage() {
   if (loading || !admin) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function AdminUsersPage() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-black flex items-center justify-center text-lg font-bold shadow-sm">
+            <div className="w-10 h-10 rounded-xl bg-[#BEF264] text-black flex items-center justify-center text-lg font-bold shadow-sm">
               <FiUsers className="w-5 h-5" />
             </div>
             <div>
@@ -128,8 +128,8 @@ export default function AdminUsersPage() {
             onChange={(e) => setSearchInput(e.target.value)}
             className={`w-full pl-10 pr-9 py-2 rounded-lg border text-xs focus:outline-none transition-colors ${
               isDark
-                ? "bg-neutral-800 border-neutral-700 text-white placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                ? "bg-neutral-800 border-neutral-700 text-white placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
             }`}
           />
           {searchInput && (
@@ -158,7 +158,7 @@ export default function AdminUsersPage() {
                 setSortBy(e.target.value as "desc" | "oldest");
                 setCurrentPage(1);
               }}
-              className={`px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+              className={`px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
                 isDark
                   ? "bg-neutral-800 border-neutral-700 text-neutral-200"
                   : "bg-neutral-50 border-neutral-300 text-neutral-800"
@@ -181,7 +181,7 @@ export default function AdminUsersPage() {
       >
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
             <p className="text-xs opacity-50">Loading customer list...</p>
           </div>
         ) : users.length === 0 ? (
@@ -228,7 +228,7 @@ export default function AdminUsersPage() {
                     {/* Customer Avatar & Name */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#BEF264]/10 text-[#BEF264] border border-[#BEF264]/30 flex items-center justify-center font-bold text-xs flex-shrink-0">
                           {user.username?.charAt(0)?.toUpperCase() || "U"}
                         </div>
                         <div>
@@ -268,7 +268,7 @@ export default function AdminUsersPage() {
 
                     {/* Orders Count */}
                     <td className="py-3 px-4 text-center">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#BEF264]/10 text-[#BEF264] border border-[#BEF264]/20">
                         <FiShoppingBag className="w-3 h-3" />
                         {user._count?.orders ?? 0}
                       </span>
@@ -292,7 +292,7 @@ export default function AdminUsersPage() {
                             : "bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-200"
                         }`}
                       >
-                        <FiEye className="w-3.5 h-3.5 text-amber-500" />
+                        <FiEye className="w-3.5 h-3.5 text-[#BEF264]" />
                         View Profile
                       </button>
                     </td>
@@ -327,7 +327,7 @@ export default function AdminUsersPage() {
                 <FiChevronLeft className="w-4 h-4" />
               </button>
 
-              <span className="px-2 font-bold text-amber-500">
+              <span className="px-2 font-bold text-[#BEF264]">
                 {currentPage}
               </span>
 

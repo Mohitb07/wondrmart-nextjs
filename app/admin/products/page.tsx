@@ -112,7 +112,7 @@ export default function AdminProductsPage() {
   if (loading || !admin) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -123,7 +123,7 @@ export default function AdminProductsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-            <FiBox className="w-5 h-5 text-amber-500" /> Product Inventory
+            <FiBox className="w-5 h-5 text-[#BEF264]" /> Product Inventory
           </h1>
           <p className="text-xs opacity-60 mt-1">
             Total {totalCount} product{totalCount === 1 ? "" : "s"} found
@@ -144,7 +144,7 @@ export default function AdminProductsPage() {
           </button>
           <button
             onClick={handleOpenCreateModal}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors"
           >
             <FiPlus className="w-3.5 h-3.5" /> Add Product
           </button>
@@ -165,7 +165,7 @@ export default function AdminProductsPage() {
               placeholder="Search products by name or description..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full pl-10 pr-4 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 transition-colors ${
+              className={`w-full pl-10 pr-4 py-2 rounded-lg border text-xs focus:outline-none focus:ring-1 focus:ring-[#BEF264] transition-colors ${
                 isDark
                   ? "bg-neutral-800/80 border-neutral-700 text-neutral-100 placeholder-neutral-500"
                   : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400"
@@ -174,7 +174,7 @@ export default function AdminProductsPage() {
           </div>
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg font-semibold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors"
+            className="px-4 py-2 rounded-lg font-semibold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors"
           >
             Search
           </button>
@@ -189,11 +189,11 @@ export default function AdminProductsPage() {
       >
         {isProductsLoading ? (
           <div className="flex items-center justify-center py-16">
-            <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#BEF264] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <div className="w-10 h-10 mx-auto mb-3 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+            <div className="w-10 h-10 mx-auto mb-3 rounded-lg bg-[#BEF264]/10 text-[#BEF264] flex items-center justify-center">
               <FiBox className="w-5 h-5" />
             </div>
             <h3 className="text-sm font-bold">No Products Found</h3>
@@ -242,7 +242,7 @@ export default function AdminProductsPage() {
                         {product.description}
                       </p>
                     </td>
-                    <td className="py-3 px-5 font-bold text-sm text-amber-500">
+                    <td className="py-3 px-5 font-bold text-sm text-[#BEF264]">
                       {formatPrice(Number(product.price))}
                     </td>
                     <td className="py-3 px-5 text-right">

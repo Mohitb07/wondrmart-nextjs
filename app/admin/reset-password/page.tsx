@@ -98,7 +98,7 @@ function AdminResetPasswordForm() {
           onClick={toggleTheme}
           className={`p-2 rounded-lg border flex items-center gap-2 text-xs font-semibold transition-all ${
             isDark
-              ? "bg-neutral-900 border-neutral-800 text-amber-400 hover:bg-neutral-800"
+              ? "bg-neutral-900 border-neutral-800 text-[#BEF264] hover:bg-neutral-800"
               : "bg-white border-neutral-200 text-neutral-800 hover:bg-neutral-100 shadow-sm"
           }`}
         >
@@ -122,7 +122,7 @@ function AdminResetPasswordForm() {
         }`}
       >
         <div className="text-center mb-6">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-amber-500 text-black flex items-center justify-center text-xl font-bold shadow-sm">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-[#BEF264] text-black flex items-center justify-center text-xl font-bold shadow-sm">
             <FiShield className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-bold tracking-tight">
@@ -158,7 +158,7 @@ function AdminResetPasswordForm() {
             <div className="pt-2">
               <Link
                 href="/admin/login"
-                className="w-full py-2.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black text-center transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black text-center transition-colors flex items-center justify-center gap-2"
               >
                 Sign In to Admin Workspace
               </Link>
@@ -166,13 +166,13 @@ function AdminResetPasswordForm() {
           </div>
         ) : !token ? (
           <div className="space-y-4 text-center">
-            <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs text-left flex items-start gap-3">
-              <FiAlertCircle className="w-5 h-5 flex-shrink-0 text-amber-500 mt-0.5" />
+            <div className="p-4 rounded-lg bg-[#BEF264]/10 border border-[#BEF264]/30 text-[#BEF264] text-xs text-left flex items-start gap-3">
+              <FiAlertCircle className="w-5 h-5 flex-shrink-0 text-[#BEF264] mt-0.5" />
               <div>
-                <p className="font-bold text-sm text-amber-300">
+                <p className="font-bold text-sm text-[#BEF264]">
                   Invalid Reset Link
                 </p>
-                <p className="mt-1 text-amber-400/90 leading-relaxed">
+                <p className="mt-1 text-[#BEF264]/90 leading-relaxed">
                   The password reset link is missing a security token or is invalid. Please request a new reset link.
                 </p>
               </div>
@@ -180,7 +180,7 @@ function AdminResetPasswordForm() {
 
             <Link
               href="/admin/forgot-password"
-              className="w-full py-2.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black text-center transition-colors block"
+              className="w-full py-2.5 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black text-center transition-colors block"
             >
               Request New Reset Link
             </Link>
@@ -234,8 +234,8 @@ function AdminResetPasswordForm() {
                     formik.touched.email && formik.errors.email
                       ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                       : isDark
-                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
                   }`}
                 />
               </div>
@@ -275,8 +275,8 @@ function AdminResetPasswordForm() {
                     formik.touched.password && formik.errors.password
                       ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                       : isDark
-                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
                   }`}
                 />
                 <button
@@ -334,8 +334,8 @@ function AdminResetPasswordForm() {
                     formik.touched.confirmPassword && formik.errors.confirmPassword
                       ? "bg-rose-500/5 border-rose-500 text-rose-200 placeholder-rose-400/50 focus:ring-1 focus:ring-rose-500"
                       : isDark
-                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-amber-500"
-                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-amber-500"
+                      ? "bg-neutral-800 border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:ring-1 focus:ring-[#BEF264]"
+                      : "bg-neutral-50 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:ring-1 focus:ring-[#BEF264]"
                   }`}
                 />
                 <button
@@ -367,7 +367,7 @@ function AdminResetPasswordForm() {
             <button
               type="submit"
               disabled={formik.isSubmitting}
-              className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-black transition-colors disabled:opacity-50"
+              className="w-full py-2.5 mt-2 rounded-lg font-bold text-xs bg-[#BEF264] hover:bg-[#aee64f] text-black transition-colors disabled:opacity-50"
             >
               {formik.isSubmitting
                 ? "Resetting Password..."
@@ -399,7 +399,7 @@ export default function AdminResetPasswordPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center p-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-amber-500 border-r-2" />
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#BEF264] border-r-2" />
         </div>
       }
     >

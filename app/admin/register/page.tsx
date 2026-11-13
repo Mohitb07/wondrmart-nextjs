@@ -26,7 +26,7 @@ export default function AdminRegisterPage() {
           onClick={toggleTheme}
           className={`p-2 rounded-lg border flex items-center gap-2 text-xs font-semibold transition-all ${
             isDark
-              ? "bg-neutral-900 border-neutral-800 text-amber-400 hover:bg-neutral-800"
+              ? "bg-neutral-900 border-neutral-800 text-[#BEF264] hover:bg-neutral-800"
               : "bg-white border-neutral-200 text-neutral-800 hover:bg-neutral-100 shadow-sm"
           }`}
         >
@@ -50,7 +50,7 @@ export default function AdminRegisterPage() {
         }`}
       >
         <div className="text-center mb-6">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-amber-500 text-black flex items-center justify-center text-xl font-bold shadow-sm">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-[#BEF264] text-black flex items-center justify-center text-xl font-bold shadow-sm">
             <FiShield className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-bold tracking-tight">
@@ -79,7 +79,7 @@ export default function AdminRegisterPage() {
           >
             SIGN IN
           </Link>
-          <span className="flex-1 py-1.5 text-xs font-bold rounded text-center bg-amber-500 text-black shadow-sm">
+          <span className="flex-1 py-1.5 text-xs font-bold rounded text-center bg-[#BEF264] text-black shadow-sm">
             REGISTER
           </span>
         </div>

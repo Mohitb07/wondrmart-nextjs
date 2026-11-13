@@ -8,11 +8,10 @@ export const metadata = {
   robots: noindexRobots,
 };
 
-
 export default function CheckoutPage() {
   return (
     <Container>
-      <main className="p-3 space-y-5">
+      <main className="py-6 px-4 sm:px-3">
         <Checkout />
       </main>
     </Container>

@@ -18,7 +18,7 @@ import {
 } from "@/api";
 import { getUserByIdClient } from "@/actions/getUserClient";
 import { useQueryClient } from "@tanstack/react-query";
-import { User } from "@/types";
+import { RegisterResponse, User, UserData } from "@/types";
 
 type AuthContextValue = {
   user: User | null;
@@ -28,7 +28,9 @@ type AuthContextValue = {
     email: string;
     username: string;
     password: string;
-  }) => Promise<void>;
+  }) => Promise<RegisterResponse>;
+  verifyOtp: (email: string, otp: string) => Promise<UserData>;
+  resendOtp: (email: string) => Promise<{ message: string }>;
   logout: () => Promise<void>;
   logoutAll: () => Promise<void>;
 };
@@ -105,12 +107,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = useCallback(
     async (body: { email: string; username: string; password: string }) => {
       const res = await axiosInstance.post("/auth/register", body);
-      const data = res.data as { user: User; accessToken: string };
+      return res.data as RegisterResponse;
+    },
+    []
+  );
+
+  const verifyOtp = useCallback(
+    async (email: string, otp: string) => {
+      const res = await axiosInstance.post("/auth/verify-otp", { email, otp });
+      const data = res.data as UserData;
       setAccessToken(data.accessToken);
       setUser(data.user);
       qc.setQueryData(["user"], data.user);
+      return data;
     },
     [qc]
+  );
+
+  const resendOtp = useCallback(
+    async (email: string) => {
+      const res = await axiosInstance.post("/auth/resend-otp", { email });
+      return res.data as { message: string };
+    },
+    []
   );
 
   const logout = useCallback(async () => {
@@ -137,7 +156,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, register, logout, logoutAll }}
+      value={{
+        user,
+        loading,
+        login,
+        register,
+        verifyOtp,
+        resendOtp,
+        logout,
+        logoutAll,
+      }}
     >
       {children}
     </AuthContext.Provider>

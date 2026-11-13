@@ -22,6 +22,11 @@ const nextConfig = {
         destination: "/auth/signup",
         permanent: true,
       },
+      {
+        source: "/verify-otp",
+        destination: "/auth/verify-otp",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

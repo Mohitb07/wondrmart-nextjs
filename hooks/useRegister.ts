@@ -1,19 +1,23 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import { createUser } from "@/actions/createUser";
-import { SignUpFormData, UserData } from "@/types";
+import { RegisterResponse, SignUpFormData } from "@/types";
 
 type Error = AxiosError<
   {
-    errors: { message: string; property: "username" | "email" | "password" }[];
+    message?: string;
+    errors?: { message: string; property?: "username" | "email" | "password" }[];
   },
   any
 >;
 
 const useRegister = () => {
-  const queryClient = useQueryClient();
-  return useMutation<UserData, Error, SignUpFormData, UserData>({
+  const router = useRouter();
+
+  return useMutation<RegisterResponse, Error, SignUpFormData>({
     mutationFn: (data: SignUpFormData) =>
       createUser({
         email: data.email,
@@ -21,10 +25,13 @@ const useRegister = () => {
         password: data.password,
         username: data.username,
       }),
-    onSuccess: (data: UserData) => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      console.log("data", data);
-      window.location.href = "/";
+    onSuccess: (data: RegisterResponse, variables) => {
+      const email = data.email || variables.email;
+      toast.success(
+        data.message ||
+          "Registration successful! We have sent a 6-digit verification code to your email."
+      );
+      router.push(`/auth/verify-otp?email=${encodeURIComponent(email)}`);
     },
   });
 };

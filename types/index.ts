@@ -77,6 +77,21 @@ export type User = {
   createdAt?: string;
 };
 
+export type RegisterResponse = {
+  requiresVerification: boolean;
+  email: string;
+  message?: string;
+};
+
+export type VerifyOtpParams = {
+  email: string;
+  otp: string;
+};
+
+export type ResendOtpParams = {
+  email: string;
+};
+
 export type UserData = {
   user: User;
   accessToken: string;
@@ -131,7 +146,8 @@ export interface CashPaymentParams {
 
 export type CustomError = AxiosError<
   {
-    errors: { message: string; property?: string }[];
+    message?: string;
+    errors?: { message: string; property?: string }[];
   },
   any
 >;

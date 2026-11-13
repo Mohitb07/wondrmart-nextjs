@@ -26,22 +26,21 @@ export const registerValidationSchema = yup.object({
 });
 
 type SignUpFields = "username" | "email" | "password";
-type SignUpFieldsErrors = { message: string; property: SignUpFields }[];
 
 const hasErrorForProperties = (
-  errors: CustomError,
+  errors: CustomError | null,
   properties: SignUpFields[]
 ) => {
   return properties.some((property) =>
-    errors.response?.data.errors.find((err) => err.property === property)
+    errors?.response?.data?.errors?.find((err) => err.property === property)
   );
 };
 
 const getErrorMessageForProperty = (
-  errors: CustomError,
+  errors: CustomError | null,
   property: SignUpFields
 ) => {
-  const error = errors.response?.data.errors.find(
+  const error = errors?.response?.data?.errors?.find(
     (err) => err.property === property
   );
   return error ? error.message : null;
@@ -71,25 +70,15 @@ export default function SignUpBody() {
     onSubmit: async (values) => mutate(values),
   });
 
-  const updateErrors = (errors: SignUpFieldsErrors, field: string) => {
-    return errors.filter((err) => err.property !== field);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     formik.handleChange(e);
 
-    if (isError && error.response) {
-      let errors = error.response.data.errors;
-      if (errors) {
-        // Update the errors array by removing the specific field's error
-        errors = updateErrors(errors, e.target.name);
-        error.response.data.errors = errors;
-
-        // Clear Formik's validation error state for the specific field
-        formik.setFieldError(e.target.name, "");
-
-        console.log("Updated errors:", errors);
-      }
+    if (isError && error?.response?.data?.errors) {
+      const fieldName = e.target.name;
+      error.response.data.errors = error.response.data.errors.filter(
+        (err) => err.property !== fieldName
+      );
+      formik.setFieldError(fieldName, "");
     }
   };
 

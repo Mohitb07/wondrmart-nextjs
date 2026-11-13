@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import { Button, Input, Link } from "@nextui-org/react";
 import NextLink from "next/link";
 import { useSearchParams } from "next/navigation";
-import { HiOutlinePencilAlt, HiOutlineCheck } from "react-icons/hi";
+import {
+  HiOutlinePencilAlt,
+  HiOutlineCheck,
+  HiOutlineClock,
+  HiOutlineExclamationCircle,
+} from "react-icons/hi";
 
 import OtpInput from "@/common/OtpInput";
 import useVerifyOtp from "@/hooks/useVerifyOtp";
@@ -40,9 +45,30 @@ export default function VerifyOtpBody({ initialEmail }: VerifyOtpBodyProps) {
     reset: resetCountdown,
   } = useCountdown(60);
 
-  const { mutate: resendMutate, isLoading: isResending } = useResendOtp(() => {
+  const {
+    mutate: resendMutate,
+    isLoading: isResending,
+    isError: isResendError,
+    error: resendError,
+    reset: resetResend,
+  } = useResendOtp(() => {
     resetCountdown();
+    resetVerify();
+    setOtp("");
   });
+
+  const isVerifyRateLimited = verifyError?.response?.status === 429;
+  const isResendRateLimited = resendError?.response?.status === 429;
+
+  const verifyErrorMessage =
+    verifyError?.response?.data?.errors?.[0]?.message ||
+    verifyError?.response?.data?.message ||
+    "The code entered is invalid or has expired.";
+
+  const resendErrorMessage =
+    resendError?.response?.data?.errors?.[0]?.message ||
+    resendError?.response?.data?.message ||
+    "Failed to resend verification code. Please try again.";
 
   useEffect(() => {
     if (email && !isRunning && secondsLeft === 60) {
@@ -60,12 +86,14 @@ export default function VerifyOtpBody({ initialEmail }: VerifyOtpBodyProps) {
 
   const handleOtpChange = (newOtp: string) => {
     setOtp(newOtp);
-    if (isVerifyError) {
+    // Clear ordinary error messages on edit, but preserve the rate-limit lockout warning
+    if (isVerifyError && !isVerifyRateLimited) {
       resetVerify();
     }
   };
 
   const handleVerify = (otpToSubmit?: string) => {
+    if (isVerifyRateLimited) return;
     const code = otpToSubmit || otp;
     if (!email.trim()) {
       setIsEditingEmail(true);
@@ -81,6 +109,9 @@ export default function VerifyOtpBody({ initialEmail }: VerifyOtpBodyProps) {
       setIsEditingEmail(true);
       return;
     }
+    if (isResendError) {
+      resetResend();
+    }
     resendMutate({ email: email.trim() });
   };
 
@@ -90,6 +121,9 @@ export default function VerifyOtpBody({ initialEmail }: VerifyOtpBodyProps) {
       setEmail(editedEmail.trim());
       setIsEditingEmail(false);
       resetCountdown();
+      resetVerify();
+      if (isResendError) resetResend();
+      setOtp("");
     }
   };
 
@@ -152,25 +186,68 @@ export default function VerifyOtpBody({ initialEmail }: VerifyOtpBodyProps) {
           onComplete={(completedOtp) => handleVerify(completedOtp)}
         />
 
-        {isVerifyError && (
+        {/* Rate limit lockout warning banner */}
+        {isVerifyError && isVerifyRateLimited && (
+          <div className="p-4 rounded-xl bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 text-warning-900 dark:text-warning-200 space-y-2 text-sm text-left">
+            <div className="flex items-start gap-2.5">
+              <HiOutlineClock className="w-5 h-5 text-warning-600 dark:text-warning-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-sm">Too Many Failed Attempts</p>
+                <p className="text-xs text-default-600 dark:text-default-400 mt-0.5">
+                  {verifyErrorMessage}
+                </p>
+              </div>
+            </div>
+            {(!isRunning || secondsLeft === 0) && (
+              <div className="flex justify-end pt-1">
+                <Button
+                  size="sm"
+                  color="warning"
+                  variant="flat"
+                  isDisabled={isResending || !email}
+                  onClick={handleResend}
+                  className="font-semibold text-xs"
+                >
+                  {isResending ? "Sending New Code..." : "Request Fresh Code"}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Standard verification error message */}
+        {isVerifyError && !isVerifyRateLimited && (
           <div className="text-center">
             <p className="text-xs text-danger font-medium">
-              {verifyError?.response?.data?.errors?.[0]?.message ||
-                verifyError?.response?.data?.message ||
-                "The code entered is invalid or has expired."}
+              {verifyErrorMessage}
             </p>
+          </div>
+        )}
+
+        {/* Resend error alert */}
+        {isResendError && (
+          <div className="p-3.5 rounded-xl bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 text-danger text-xs font-medium flex items-start gap-2.5 text-left">
+            <HiOutlineExclamationCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold">
+                {isResendRateLimited ? "Too Many Resend Requests" : "Resend Failed"}
+              </p>
+              <p className="text-default-600 dark:text-default-400 mt-0.5 font-normal">
+                {resendErrorMessage}
+              </p>
+            </div>
           </div>
         )}
 
         <Button
           isLoading={isVerifying}
-          isDisabled={otp.length !== 6 || !email}
+          isDisabled={otp.length !== 6 || !email || isVerifyRateLimited}
           onClick={() => handleVerify()}
           className="w-full font-bold"
           color="primary"
           variant="shadow"
         >
-          Verify &amp; Continue
+          {isVerifyRateLimited ? "Attempts Exceeded" : "Verify & Continue"}
         </Button>
       </div>
 
